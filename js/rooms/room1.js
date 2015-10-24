@@ -6,8 +6,9 @@ var room1 = function(game){
 room1.prototype.preload = function() {
 }
 
-room1.prototype.init = function(roomName) {
+room1.prototype.init = function(roomName, playerStart) {
 	this.roomName = roomName;
+	this.playerStart = playerStart;
 }
 
 room1.prototype.create = function() {
@@ -20,7 +21,7 @@ room1.prototype.create = function() {
 
 	configureBackground(actualRoomData);
 
-	configurePlayerAt(actualRoomData.playerStart[0], actualRoomData.playerStart[1]);
+	configurePlayerAt(this.playerStart[0], this.playerStart[1]);
 
     createWalkableArea(actualRoomData);
     createExitRoom(actualRoomData);
@@ -42,7 +43,7 @@ function configurePlayerAt(x, y) {
 
 
     // The player and its settings
-    player = game.add.sprite(x, game.world.height - y, 'hero');
+    player = game.add.sprite(x, y, 'hero');
 
     //player.pivot.x = player.width * .5;
 	//player.pivot.y = player.height * .5;
@@ -208,7 +209,7 @@ room1.prototype.update = function() {
         player.frame = 2;
     }
 
-    player.scale.set(1, (player.body.y + player.height) / game.world.height);
+    player.scale.set((player.body.y + player.height) / game.world.height, (player.body.y + player.height) / game.world.height);
     console.log("scale : " + player.scale);
 
     /*if (exitArea.contains(player.body.x, player.body.y))
@@ -221,7 +222,7 @@ function verifyIfPlayerIsInExitArea(player) {
 
 	exitAreas.every(function(exitArea) {
 		if (exitArea.polygon.contains(player.body.x, player.body.y)) {
-			game.state.start("room1", true, false, exitArea.goTo);
+			game.state.start("room1", true, false, exitArea.goTo.roomName, exitArea.goTo.playerStart);
 			return false;
 		}
 		return true;

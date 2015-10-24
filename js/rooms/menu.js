@@ -11,10 +11,10 @@ menu.prototype = {
 
 		var gameTitle = this.game.add.sprite(300, 200, "title");
 		gameTitle.anchor.setTo(0.5,0.5);
-		var playButton = this.game.add.button(480, 420, "playButton", this.playTheGame, this);
+		var playButton = this.game.add.button(480, 320, "playButton", this.playTheGame, this);
 		playButton.anchor.setTo(0.5,0.5);
 	},
 	playTheGame: function() {
-		this.game.state.start("room1", true, false, "room1");
+		this.game.state.start("room1", true, false, "room1", [32, 350]);
 	}
 }
