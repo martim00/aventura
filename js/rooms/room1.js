@@ -1,3 +1,5 @@
+goog.require('aventura.ClickableAreaManager');
+
 debug = true;
 var room1 = function(game){
 };
@@ -21,14 +23,24 @@ room1.prototype.create = function() {
 
 	configureBackground(actualRoomData);
 
-	configurePlayerAt(this.playerStart[0], this.playerStart[1]);
+    this.mouseHandlers = [];
 
-    createWalkableArea(actualRoomData);
+    this.createWalkableArea(actualRoomData);
+
+    this.createClickableAreas(actualRoomData);
+    this.configurePlayerAt(this.playerStart[0], this.playerStart[1]);
+
     createExitRoom(actualRoomData);
+
+    game.input.onDown.add(this.callMouseHandlers, this);
+
 }
 
 function initGame() {
     cursors = game.input.keyboard.createCursorKeys();
+
+	 //  We're going to be using physics, so enable the Arcade Physics system
+    game.physics.startSystem(Phaser.Physics.Arcade);
 }
 
 function configureBackground(roomData) {
@@ -37,32 +49,15 @@ function configureBackground(roomData) {
 
 }
 
-function configurePlayerAt(x, y) {
-	 //  We're going to be using physics, so enable the Arcade Physics system
-    game.physics.startSystem(Phaser.Physics.Arcade);
+room1.prototype.configurePlayerAt = function(x, y) {
+	player = new Player(game, x, y, this.walkableArea);
+    this.mouseHandlers.push(player);
+}
 
-
-    // The player and its settings
-    player = game.add.sprite(x, y, 'hero');
-
-    //player.pivot.x = player.width * .5;
-	//player.pivot.y = player.height * .5;
-    player.anchor.setTo(0.5);
-
-    //  We need to enable physics on the player
-    game.physics.arcade.enable(player, true);
-
-    //  Player physics properties. Give the little guy a slight bounce.
-    player.body.gravity.y = 0;
-    player.body.collideWorldBounds = true;
-
-    //  Our two animations, walking left and right.
-    player.animations.add('left', [10, 11, 12, 14], 10, true);
-    player.animations.add('right', [5, 6, 8, 9], 10, true);
-    player.animations.add('up', [15, 16, 18, 19], 10, true);
-    player.animations.add('down', [0, 1, 3, 4], 10, true);
-
-
+room1.prototype.createClickableAreas = function(roomData) {
+    this.clickableAreaManager = new aventura.ClickableAreaManager(game, this);
+    this.clickableAreaManager.init(roomData);
+    this.mouseHandlers.push(this.clickableAreaManager);
 }
 
 
@@ -89,38 +84,19 @@ function createExitRoom(roomData) {
 	});
 	
 
-    //  And then populate it via setTo, using any combination of values as above
-    /*exitArea.setTo([ 
-    	new Phaser.Point(671, 450)
-    	, new Phaser.Point(671, 548)
-    	, new Phaser.Point(500, 548)
-    	, new Phaser.Point(500, 450)
-     ]);*/
-
 
 }
 
-function createWalkableArea(roomData) {
+room1.prototype.createWalkableArea = function(roomData) {
 
-    walkableArea = new Phaser.Polygon();
+    this.walkableArea = new Phaser.Polygon();
 
-    //  And then populate it via setTo, using any combination of values as above
-    /*walkableArea.setTo([ new Phaser.Point(0, 400)
-    	, new Phaser.Point(25, 340)
-    	, new Phaser.Point(40, 340)
-    	, new Phaser.Point(70, 400)
-    	, new Phaser.Point(671, 450)
-    	, new Phaser.Point(671, 548)
-    	, new Phaser.Point(0, 548)
-
-
-     ]);*/
 	var polygonArray = [];
 	roomData.walkableArea.forEach(function(point) {
 		polygonArray.push(new Phaser.Point(point[0], point[1]));
 	});
 	
-	walkableArea.setTo(polygonArray);
+	this.walkableArea.setTo(polygonArray);
 
     graphics = game.add.graphics(0, 0);
 
@@ -128,7 +104,7 @@ function createWalkableArea(roomData) {
     
 
     graphics.beginFill(0xFF33ff);
-    graphics.drawPolygon(walkableArea.points);
+    graphics.drawPolygon(this.walkableArea.points);
     graphics.endFill();
 
 }
@@ -149,13 +125,6 @@ function playerCanWalk(direction, player) {
 			walkableArea.contains(player.body.x + player.width, player.body.y + player.height);
 
 	return false;
-
-	/*if (poly.contains(player.body.x, player.body.y) 
-    	&& poly.contains(player.body.x + player.width, player.body.y)
-    	&& poly.contains(player.body.x + player.width, player.body.y + player.height)
-    	&& poly.contains(player.body.x, player.body.y + player.height)
-    	)
-    	return true;*/
 }
 
 room1.prototype.update = function() {
@@ -169,11 +138,11 @@ room1.prototype.update = function() {
     //if (!playerCanWalk) 
     	//return;
 
-    console.log(player.body.x);
-    console.log(player.body.y);
+    //console.log(player.body.x);
+    //console.log(player.body.y);
 
     //  Reset the players velocity (movement)
-    player.body.velocity.x = 0;
+    /*player.body.velocity.x = 0;
     player.body.velocity.y = 0;    
 
     
@@ -207,15 +176,88 @@ room1.prototype.update = function() {
         player.animations.stop();
 
         player.frame = 2;
-    }
+    }*/
+
+     //  only move when you click
+    /*if (game.input.mousePointer.isDown)
+    {
+        //  400 is the speed it will move towards the mouse
+        game.physics.arcade.moveToPointer(player, 400);
+
+        //  if it's overlapping the mouse, don't move any more
+        if (Phaser.Rectangle.contains(player.body, game.input.x, game.input.y))
+        {
+            player.body.velocity.setTo(0, 0);
+        }
+    }*/
 
     player.scale.set((player.body.y + player.height) / game.world.height, (player.body.y + player.height) / game.world.height);
-    console.log("scale : " + player.scale);
+  //  console.log("scale : " + player.scale);
 
     /*if (exitArea.contains(player.body.x, player.body.y))
     	game.state.start("room2");*/
+
+    //this.callMouseHandlers();
+
     verifyIfPlayerIsInExitArea(player);
 
+    //this.verifyClickAtClickableArea();
+}
+
+room1.prototype.callMouseHandlers = function() {
+    //if (game.input.mousePointer.isDown) {
+        this.mouseHandlers.every(function(mouseHandler) {
+
+            return mouseHandler.handleMouse(game.input.mousePointer);
+
+        });
+
+    //}
+}
+
+room1.prototype.verifyClickAtClickableArea = function() {
+
+
+
+}
+
+room1.prototype.verifyClickAtClickableArea = function() {
+    if (game.input.mousePointer.isDown) {
+        this.clickableAreas.every(function(clickableArea) {
+            if (clickableArea.polygon.contains(game.input.x, game.input.y)) {
+                this.showTextAtCenter(clickableArea.text);
+            }        
+        }.bind(this));
+
+    }
+}
+
+room1.prototype.showTextAtCenter = function(text) {
+    var style = { font: "12px Arial", fill: "#000000", align: "center" };
+
+    var textMarginBottom = 10;
+
+    var text = game.add.text(game.world.centerX, (game.world.centerY + game.height / 2) - textMarginBottom, text, style);
+
+    text.anchor.set(0.5);
+
+    setTimeout(function() {
+        text.destroy();
+
+    }.bind(this), 1000);
+}
+
+room1.prototype.showTextAt = function(x, y, text) {
+    var style = { font: "12px Arial", fill: "#000000", align: "center" };
+
+    var text = game.add.text(x, y, text, style);
+
+    text.anchor.set(0.5);
+
+    setTimeout(function() {
+        text.destroy();
+
+    }.bind(this), 1000);
 }
 
 function verifyIfPlayerIsInExitArea(player) {

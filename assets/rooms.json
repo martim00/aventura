@@ -9,6 +9,12 @@
 					"polygon" : [[671, 350], [671, 448], [500, 448], [500, 350]], 
 					"goTo" : { "roomName" : "room2", "playerStart" : [120, 370] }
 				}
+			], 
+			"clickableAreas" : [
+				{
+					"polygon" : [[600, 250], [600, 300], [550, 300], [550, 250]], 
+					"text" : "Ola mundo"
+				}
 			]
 		},
 		"room2" : {
