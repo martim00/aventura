@@ -30,17 +30,22 @@ aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
     game.input.onDown.add(this.callMouseHandlers, this);
 }
 
-aventura.Engine.prototype.showTextAtCenter = function(text) {
+aventura.Engine.prototype.showTextAtCenter = function(txt) {
     var style = { font: "12px Arial", fill: "#000000", align: "center" };
 
     var textMarginBottom = 10;
 
-    var text = this.game.add.text(game.world.centerX, (game.world.centerY + game.height / 2) - textMarginBottom, text, style);
+    if (this.text) {
+        this.text.destroy();
+        clearTimeout(this.textTimeout);
+    }
+    
+    this.text = this.game.add.text(game.world.centerX, (game.world.centerY + game.height / 2) - textMarginBottom, txt, style);
 
-    text.anchor.set(0.5);
+    this.text.anchor.set(0.5);
 
-    setTimeout(function() {
-        text.destroy();
+    this.textTimeout = setTimeout(function() {
+        this.text.destroy();
 
     }.bind(this), 1000);
 }
