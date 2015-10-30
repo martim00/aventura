@@ -1,6 +1,7 @@
-Player = function (game, x, y, walkableArea) {
+Player = function (game, x, y, walkableAreaManager, exitAreaManager) {
 
-	this.walkableArea = walkableArea;
+	this.walkableAreaManager = walkableAreaManager;
+	this.exitAreaManager = exitAreaManager;
 
     //  We call the Phaser.Sprite passing in the game reference
     //  We're giving it a random X/Y position here, just for the sake of this demo - you could also pass the x/y in the constructor
@@ -74,20 +75,27 @@ Player.prototype.update = function() {
     	this.animations.stop();
   	}
 
-  	if (!this.playerCanWalk2(this.moveDirection, this)) {
+  	if (!this.playerCanWalk(this.moveDirection, this)) {
   		this.isMoving = false;
     	if (this.tween)
     		this.tween.stop();
 
   	}
 
-  	//this.render();
+  	this.updatePlayerScale();
+
+  	this.exitAreaManager.verifyIfPlayerIsInExitArea(this);
+
 
   	this.createDebugInfo();
 
-
-
 };
+
+Player.prototype.updatePlayerScale = function() {
+    this.scale.set((this.body.y + this.height) / this.game.world.height, 
+    	(this.body.y + this.height) / this.game.world.height);
+}
+
 
 Player.prototype.render = function() {
 	game.debug.bodyInfo(this, 32, 32);
@@ -172,35 +180,35 @@ Player.prototype.moveCharacter = function(pointer) {
   	//this.tween.onLoop.add(this.verifyIfCanWalk, this);
 }
 
-Player.prototype.playerCanWalk2 = function(direction, player) {
+Player.prototype.playerCanWalk = function(direction, player) {
 
 	var centerX = player.body.x + player.width / 2;
 	var centerY = player.body.y + player.height / 2;
 
 	if (direction == RIGHT) // right
-		return this.walkableArea.contains(player.body.x + player.width, player.body.y + player.height / 2) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x + player.width, player.body.y + player.height / 2) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == LEFT) //left
-		return this.walkableArea.contains(player.body.x, player.body.y + player.height / 2) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x, player.body.y + player.height / 2) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == TOP) // top
-		return this.walkableArea.contains(player.body.x + player.width / 2, player.body.y) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x + player.width / 2, player.body.y) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == DOWN)
-		return this.walkableArea.contains(player.body.x + player.width / 2, player.body.y + player.height / 2) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x + player.width / 2, player.body.y + player.height / 2) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == RIGHT_UP)
-		return this.walkableArea.contains(player.body.x + player.width, player.body.y) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x + player.width, player.body.y) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == RIGHT_DOWN)
-		return this.walkableArea.contains(player.body.x + player.width, player.body.y + player.height) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x + player.width, player.body.y + player.height) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == LEFT_DOWN)
-		return this.walkableArea.contains(player.body.x, player.body.y + player.height) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x, player.body.y + player.height) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 	else if (direction == LEFT_UP)
-		return this.walkableArea.contains(player.body.x, player.body.y) &&
-			this.walkableArea.contains(centerX, centerY);
+		return this.walkableAreaManager.contains(player.body.x, player.body.y) &&
+			this.walkableAreaManager.contains(centerX, centerY);
 
 	return false;
 }

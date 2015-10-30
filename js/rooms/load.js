@@ -20,6 +20,6 @@ load.prototype = {
 	},
   	create: function(){
 		//this.game.state.start("menu");
-		this.game.state.start("room1", true, false, "room1", [32, 350]);
+		this.game.state.start("room", true, false, "room1", [32, 350]);
 	}
 }
