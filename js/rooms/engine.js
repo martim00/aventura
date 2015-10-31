@@ -7,6 +7,7 @@ aventura.Engine = function(game) {
     this.walkableAreaManager = new aventura.WalkableAreaManager(game, this);
     this.clickableAreaManager = new aventura.ClickableAreaManager(game, this);
     this.exitAreaManager = new aventura.ExitAreaManager(game, this);
+    this.inventory = new aventura.Inventory(game, this);
 };
 
 aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
@@ -21,6 +22,7 @@ aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
 	this.configureBackground(actualRoomData);
 
     this.createWalkableArea(actualRoomData);
+    this.createInventory(actualRoomData);
 
     this.createClickableAreas(actualRoomData);
     this.configurePlayerAt(this.playerStart[0], this.playerStart[1]);
@@ -30,17 +32,22 @@ aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
     game.input.onDown.add(this.callMouseHandlers, this);
 }
 
-aventura.Engine.prototype.showTextAtCenter = function(text) {
+aventura.Engine.prototype.showTextAtCenter = function(txt) {
     var style = { font: "12px Arial", fill: "#000000", align: "center" };
 
     var textMarginBottom = 10;
 
-    var text = this.game.add.text(game.world.centerX, (game.world.centerY + game.height / 2) - textMarginBottom, text, style);
+    if (this.text) {
+        this.text.destroy();
+        clearTimeout(this.textTimeout);
+    }
+    
+    this.text = this.game.add.text(game.world.centerX, (game.world.centerY + game.height / 2) - textMarginBottom, txt, style);
 
-    text.anchor.set(0.5);
+    this.text.anchor.set(0.5);
 
-    setTimeout(function() {
-        text.destroy();
+    this.textTimeout = setTimeout(function() {
+        this.text.destroy();
 
     }.bind(this), 1000);
 }
@@ -85,6 +92,10 @@ aventura.Engine.prototype.createExitRoom = function(roomData) {
 
 aventura.Engine.prototype.createWalkableArea = function(roomData) {
     this.walkableAreaManager.init(roomData);
+}
+
+aventura.Engine.prototype.createInventory = function(roomData) {
+    this.inventory.init(roomData);
 }
 
 aventura.Engine.prototype.callMouseHandlers = function() {
