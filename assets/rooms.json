@@ -13,7 +13,16 @@
 			"clickableAreas" : [
 				{
 					"polygon" : [[600, 250], [600, 300], [550, 300], [550, 250]], 
-					"text" : "Ola mundo"
+					"actions": [ 
+						{ 
+							"name" : "showTextAtCenter", 
+							"params" : "Ola mundo" 
+						},
+						{
+							"name" : "putItemOnInventory",
+							"params" : "item1"
+						}
+					]
 				}
 			]
 		},

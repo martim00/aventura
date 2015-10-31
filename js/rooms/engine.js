@@ -59,6 +59,11 @@ aventura.Engine.prototype.showTextAt = function(x, y, text) {
     }.bind(this), 1000);
 }
 
+
+aventura.Engine.prototype.putItemOnInventory = function() {
+	console.log("putItemOnInventory");
+}
+
 aventura.Engine.prototype.configureBackground = function(roomData) {
     //  A simple background for our game
     this.game.add.sprite(0, 0, roomData.bg);

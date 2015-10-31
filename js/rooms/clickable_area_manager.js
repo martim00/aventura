@@ -16,7 +16,7 @@ aventura.ClickableAreaManager.prototype.init = function(roomData) {
     roomData.clickableAreas.forEach(function(clickableData) {
         
         clickableArea = new Phaser.Polygon();
-        this.clickableAreas.push({"polygon" : clickableArea, "text" : clickableData.text});
+        this.clickableAreas.push({"polygon" : clickableArea, "actions" : clickableData.actions});
         clickableData.polygon.forEach(function(point) {
             polygonArray.push(new Phaser.Point(point[0], point[1]));
         });
@@ -32,12 +32,21 @@ aventura.ClickableAreaManager.prototype.init = function(roomData) {
 
 }
 
+aventura.ClickableAreaManager.prototype.doClickableActions = function(clickableArea) {
+
+	clickableArea.actions.forEach(function(action) {
+		var methodName = action.name;
+		var params = action.params;
+		this.engine[methodName](params);
+	}.bind(this));
+}
+
 aventura.ClickableAreaManager.prototype.handleMouse = function(pointer) {
 
 	for (var i = 0; i < this.clickableAreas.length; i++) {
 		var clickableArea = this.clickableAreas[i];
      	if (clickableArea.polygon.contains(pointer.x, pointer.y)) {
-            this.engine.showTextAtCenter(clickableArea.text);
+     		this.doClickableActions(clickableArea);
             return false;
         }        
 	}
