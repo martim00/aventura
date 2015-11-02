@@ -1,4 +1,7 @@
 {
+	"items" : [
+		{ "name" : "ticket", "label" : "Ticket", "visible" : true, "position" : [100, 100], "image" : "ticket"}
+	],
 	"rooms" : {
 
 		"room1" : {
@@ -20,7 +23,7 @@
 						},
 						{
 							"name" : "putItemOnInventory",
-							"params" : "item1"
+							"params" : "ticket"
 						}
 					]
 				}

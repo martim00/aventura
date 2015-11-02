@@ -35,7 +35,7 @@ aventura.ExitAreaManager.prototype.verifyIfPlayerIsInExitArea = function(player)
 	this.exitAreas.every(function(exitArea) {
 
 		if (exitArea.polygon.contains(player.body.x, player.body.y)) {
-			this.game.state.start("room", true, false, exitArea.goTo.roomName, exitArea.goTo.playerStart);
+			this.game.state.start("room", true, false, exitArea.goTo.roomName, exitArea.goTo.playerStart, this.engine);
 			return false;
 		}
 		return true;

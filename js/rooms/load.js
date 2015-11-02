@@ -1,6 +1,7 @@
 
 var load = function(game){
 	console.log("%cStarting an adventure game", "color:white; background:red");
+	this.game = game;
 };
   
 load.prototype = {
@@ -20,6 +21,8 @@ load.prototype = {
 	},
   	create: function(){
 		//this.game.state.start("menu");
-		this.game.state.start("room", true, false, "room1", [32, 350]);
+		this.engine = new aventura.Engine(this.game);
+
+		this.game.state.start("room", true, false, "room1", [32, 350], this.engine);
 	}
 }

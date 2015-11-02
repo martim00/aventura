@@ -4,18 +4,22 @@ goog.provide('aventura.Engine');
 
 aventura.Engine = function(game) {
 	this.game = game;
+	this.data = JSON.parse(this.game.cache.getText('rooms'));
+
     this.walkableAreaManager = new aventura.WalkableAreaManager(game, this);
     this.clickableAreaManager = new aventura.ClickableAreaManager(game, this);
     this.exitAreaManager = new aventura.ExitAreaManager(game, this);
     this.inventory = new aventura.Inventory(game, this);
 };
 
+aventura.Engine.prototype.getData = function() {
+	return this.data;
+}
+
 aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
 	this.actualRoomName = roomName;
 	this.playerStart = playerStart;
     this.mouseHandlers = [];
-
-	this.data = JSON.parse(this.game.cache.getText('rooms'));
 
 	var actualRoomData = this.data.rooms[this.actualRoomName];
 
@@ -67,8 +71,8 @@ aventura.Engine.prototype.showTextAt = function(x, y, text) {
 }
 
 
-aventura.Engine.prototype.putItemOnInventory = function() {
-	console.log("putItemOnInventory");
+aventura.Engine.prototype.putItemOnInventory = function(itemName) {
+	this.inventory.putItem(itemName);
 }
 
 aventura.Engine.prototype.configureBackground = function(roomData) {

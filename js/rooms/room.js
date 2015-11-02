@@ -4,14 +4,15 @@ goog.require('aventura.Engine');
 
 debug = true;
 var Room = function(game) {
-    this.engine = new aventura.Engine(game);
+    this.game = game;
 };
   
 
 Room.prototype.preload = function() {
 }
 
-Room.prototype.init = function(roomName, playerStart) {
+Room.prototype.init = function(roomName, playerStart, engine) {
+    this.engine = engine;
 	this.roomName = roomName;
 	this.playerStart = playerStart;
 }
