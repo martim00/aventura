@@ -17,16 +17,41 @@
 				{
 					"polygon" : [[600, 250], [600, 300], [550, 300], [550, 250]], 
 					"actions": [ 
+						{
+							"name" : "showTextAtCenter",
+							"params" : ["You already have it!"],
+							"enableIf" : "this.engine.containsItem('ticket')"
+						},
 						{ 
 							"name" : "showTextAtCenter", 
-							"params" : "Ola mundo" 
+							"params" : ["Ola mundo"], 
+							"enableIf" : "!this.engine.containsItem('ticket')"
 						},
 						{
 							"name" : "putItemOnInventory",
-							"params" : "ticket"
+							"params" : ["ticket"],
+							"enableIf" : "!this.engine.containsItem('ticket')"
 						}
+				
+					]
+				},
+				{
+					"polygon" : [[271, 227], [433, 223], [432, 322], [268, 310]],
+					"actions" : [
+						{
+							"name" : "goToRoom",
+							"params" : ["room2", [120, 370]],
+							"enableIf" : "this.engine.containsItem('ticket')"
+						},
+						{
+							"name" : "showTextAtCenter",
+							"params" : ["It's locked"],
+							"enableIf" : "!this.engine.containsItem('ticket')"
+						}
+						
 					]
 				}
+
 			]
 		},
 		"room2" : {

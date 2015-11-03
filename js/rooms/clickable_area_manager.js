@@ -8,20 +8,19 @@ aventura.ClickableAreaManager = function(game, engine) {
 aventura.ClickableAreaManager.prototype.init = function(roomData) {
     this.clickableAreas = [];
 
-    var polygonArray = [];
-
     if (!roomData.clickableAreas)
     	return;
 
     roomData.clickableAreas.forEach(function(clickableData) {
         
-        clickableArea = new Phaser.Polygon();
+        var clickableArea = new Phaser.Polygon();
+    	var polygonArray = [];
         this.clickableAreas.push({"polygon" : clickableArea, "actions" : clickableData.actions});
         clickableData.polygon.forEach(function(point) {
             polygonArray.push(new Phaser.Point(point[0], point[1]));
         });
         clickableArea.setTo(polygonArray);
-        graphics = this.game.add.graphics(0, 0);
+        var graphics = this.game.add.graphics(0, 0);
 
         graphics.alpha = debug ? 0.5 : 0;
 
@@ -37,7 +36,13 @@ aventura.ClickableAreaManager.prototype.doClickableActions = function(clickableA
 	clickableArea.actions.forEach(function(action) {
 		var methodName = action.name;
 		var params = action.params;
-		this.engine[methodName](params);
+		var sliced = Array.prototype.slice.call(params, 1);
+		console.log(sliced);
+		var enableIf = action.enableIf;
+		var result = eval(enableIf);
+		console.log(result);
+		if (!enableIf || (enableIf && eval(result)))
+			this.engine[methodName].apply(this.engine, params);
 	}.bind(this));
 }
 

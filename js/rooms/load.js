@@ -14,6 +14,7 @@ load.prototype = {
     	game.load.image('bg2', 'assets/bg2.png');
     	game.load.image('playButton', 'assets/playButton.png');
     	game.load.image('title', 'assets/title.png');
+    	game.load.image('ticket', 'assets/ticket.png');
     	game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     	game.load.spritesheet('hero', 'assets/adventure_time_grid.png', 32, 48);
 		game.load.text("rooms", "assets/rooms.json");

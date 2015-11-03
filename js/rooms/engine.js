@@ -26,7 +26,7 @@ aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
 	this.configureBackground(actualRoomData);
 
     this.createWalkableArea(actualRoomData);
-    this.createInventory(actualRoomData);
+    this.createInventory();
 
     this.createClickableAreas(actualRoomData);
     this.configurePlayerAt(this.playerStart[0], this.playerStart[1]);
@@ -98,8 +98,8 @@ aventura.Engine.prototype.createWalkableArea = function(roomData) {
     this.walkableAreaManager.init(roomData);
 }
 
-aventura.Engine.prototype.createInventory = function(roomData) {
-    this.inventory.init(roomData);
+aventura.Engine.prototype.createInventory = function() {
+    this.inventory.init();
 }
 
 aventura.Engine.prototype.callMouseHandlers = function() {
@@ -108,5 +108,13 @@ aventura.Engine.prototype.callMouseHandlers = function() {
         return mouseHandler.handleMouse(game.input.mousePointer);
 
     });
-
 }
+
+aventura.Engine.prototype.containsItem = function(itemName) {
+	return this.inventory.getInventoryItem(itemName) != null;
+}
+
+aventura.Engine.prototype.goToRoom = function(roomName, playerStart) {
+	this.game.state.start("room", true, false, roomName, playerStart, this);
+}
+
