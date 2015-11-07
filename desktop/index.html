@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aventura Engine</title>
+      <link rel="stylesheet" type="text/css"  href="css/style.css" />
+      <script src="js/jquery-1.11.3.min.js"></script>
+      <script src="js/jquery.layout-latest.js"></script>
+
+      <script>
+          $(document).ready(function () {
+              $('body').layout({
+                  resizable:					true,
+                  applyDefaultStyles: true,
+                  west__size:			100,
+                  west__minSize:				100
+
+                  ,	west__spacing_closed:			1
+                  ,	west__spacing_open:				1
+                  ,	west__togglerLength_closed:		100
+                  ,	west__togglerLength_open:		100
+                  , north__size:			40
+                  , north__minSize:				40
+                  ,	north__spacing_closed:			1
+                  ,	north__spacing_open:				1
+                  ,	north__togglerLength_closed:		100
+                  ,	north__togglerLength_open:		100
+
+              });
+          });
+      </script>
+  </head>
+  <body>
+  <div class="ui-layout-north">
+      <ul class="menu">
+          <li><a href="#">game</a>
+              <ul>
+                  <li><a href="#">new</a></li>
+                  <li><a href="#">save</a></li>
+                  <li><a href="#">save as</a></li>
+                  <li><a href="#">exit</a></li>
+              </ul>
+          </li>
+      </ul>
+  </div>
+
+    <div class="ui-layout-west">
+        <ul class="rooms-list">
+            <li>
+                rooms
+                <span style="float:right"><a href="">+</a></span>
+            </li>
+            <li>room 1</li>
+            <li>room 2</li>
+            <li>room 3</li>
+
+        </ul>
+    </div>
+
+      <div class="ui-layout-center">
+          main
+      </div>
+
+
+
+  </body>
+</html>
