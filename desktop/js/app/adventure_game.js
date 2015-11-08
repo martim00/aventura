@@ -1,7 +1,8 @@
 goog.provide('aventura.app.AdventureGame');
 
-aventura.app.AdventureGame = function(name) {
+aventura.app.AdventureGame = function(name, folder) {
 	this.name = name;
+	this.folder = folder;
 	this.rooms = [];
 
 }

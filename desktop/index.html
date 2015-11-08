@@ -2,7 +2,6 @@
 <html ng-app="adventureApp">
   <head>
     <title>Aventura Engine</title>
-      <link rel="stylesheet" type="text/css"  href="css/style.css" />
       <script src="js/jquery-1.11.3.min.js"></script>
       <script src="js/jquery.layout-latest.js"></script>
       <script type="text/javascript" src="js/closure-library-master/closure/goog/base.js"></script>
@@ -12,6 +11,8 @@
 
       <!-- Optional theme -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+      
+      <link rel="stylesheet" type="text/css"  href="css/style.css" />
 
       <!-- Latest compiled and minified JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
@@ -19,6 +20,7 @@
        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 
       <script src="js/bootbox.min.js"></script>
+      <script src="js/bootstrap-treeview.min.js"></script>
       <script src="js/app/input_service.js"></script>
       <script src="js/app/adventure_game.js"></script>
       <script src="js/app/app.js"></script>
@@ -26,9 +28,8 @@
       <script>
           $(document).ready(function () {
               $('body').layout({
-                  resizable:					true,
                   applyDefaultStyles: true,
-                  west__size:			100,
+                  west__size:			150,
                   west__minSize:				100
 
                   ,	west__spacing_closed:			1
@@ -74,14 +75,19 @@
                     <span>{{room}}</span>
                 </li>
 
+
+
             </ul>
+            <div id="game-tree"></div>
         </div>
 
         <div class="properties-window">
             <ul>
                 <li><label>room : </label><span>{{makerApp.selectedRoom}}</span></li>
-                <li><label>bg: </label><span>...</span></li>
-                <li><label>clickable areas: </label><span>...</span></li>
+                <li><label>bg: </label><a ng-click="makerApp.askForBackground()" href="">..</a></li>
+                <output id="list"></output>
+                <input id="bg-input" type="file" name="bg-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
+                <li><label>clickable areas: </label><span>..</span></li>
 
             </ul>
         </div>
