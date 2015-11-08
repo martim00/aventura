@@ -64,3 +64,31 @@ body{
     z-index: 50 !important;
     overflow: visible !important;
 }
+
+.rooms-window {
+    height: 50%;
+    padding: 10px;
+}
+.properties-window {
+    padding: 10px;
+    height: 50%;
+    border-top: 1px solid #c0c0c0;
+}
+
+.ui-layout-west {
+    padding: 0 !important;
+}
+
+.rooms-list-item:hover {
+    background:#333;
+    color:#fff;
+    cursor: pointer;
+}
+
+.room-selected {
+    background-color: blue;
+}
+
+.room-unselected {
+    background-color: red;
+}

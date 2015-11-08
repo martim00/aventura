@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="adventureApp">
   <head>
     <title>Aventura Engine</title>
       <link rel="stylesheet" type="text/css"  href="css/style.css" />
       <script src="js/jquery-1.11.3.min.js"></script>
       <script src="js/jquery.layout-latest.js"></script>
+      <script type="text/javascript" src="js/closure-library-master/closure/goog/base.js"></script>
+
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+       <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+
+      <script src="js/bootbox.min.js"></script>
+      <script src="js/app/input_service.js"></script>
+      <script src="js/app/adventure_game.js"></script>
+      <script src="js/app/app.js"></script>
 
       <script>
           $(document).ready(function () {
@@ -26,15 +43,18 @@
                   ,	north__togglerLength_open:		100
 
               });
+              
+
+              //$("#newGameButton").click(makerApp.makeNewGame.bind(makerApp));
           });
       </script>
   </head>
-  <body>
+  <body ng-controller="MakerAppController as makerApp">
   <div class="ui-layout-north">
       <ul class="menu">
           <li><a href="#">game</a>
               <ul>
-                  <li><a href="#">new</a></li>
+                  <li><a ng-click="makerApp.makeNewGame()" href="#">new</a></li>
                   <li><a href="#">save</a></li>
                   <li><a href="#">save as</a></li>
                   <li><a href="#">exit</a></li>
@@ -44,16 +64,27 @@
   </div>
 
     <div class="ui-layout-west">
-        <ul class="rooms-list">
-            <li>
-                rooms
-                <span style="float:right"><a href="">+</a></span>
-            </li>
-            <li>room 1</li>
-            <li>room 2</li>
-            <li>room 3</li>
+        <div class="rooms-window">
+            <ul class="rooms-list">
+                <li>
+                    rooms
+                    <span style="float:right"><a ng-click="makerApp.createNewRoom()" href="">+</a></span>
+                </li>
+                <li class="rooms-list-item room-{{makerApp.getRoomStyle(room)}}" ng-repeat="room in makerApp.actualGame.rooms" ng-click="makerApp.setSelectedRoom(room)">
+                    <span>{{room}}</span>
+                </li>
 
-        </ul>
+            </ul>
+        </div>
+
+        <div class="properties-window">
+            <ul>
+                <li><label>room : </label><span>{{makerApp.selectedRoom}}</span></li>
+                <li><label>bg: </label><span>...</span></li>
+                <li><label>clickable areas: </label><span>...</span></li>
+
+            </ul>
+        </div>
     </div>
 
       <div class="ui-layout-center">
