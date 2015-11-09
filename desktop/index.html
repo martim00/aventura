@@ -21,9 +21,12 @@
 
       <script src="js/bootbox.min.js"></script>
       <script src="js/bootstrap-treeview.min.js"></script>
-      <script src="js/app/input_service.js"></script>
-      <script src="js/app/adventure_game.js"></script>
+
       <script src="js/app/app.js"></script>
+      <script src="js/app/input_service.js"></script>
+      <script src="js/app/main_controller.js"></script>
+      <script src="js/app/adventure_game.js"></script>
+      
 
       <script>
           $(document).ready(function () {
@@ -36,8 +39,8 @@
                   ,	west__spacing_open:				1
                   ,	west__togglerLength_closed:		100
                   ,	west__togglerLength_open:		100
-                  , north__size:			40
-                  , north__minSize:				40
+                  , north__size:			27
+                  , north__minSize:				27
                   ,	north__spacing_closed:			1
                   ,	north__spacing_open:				1
                   ,	north__togglerLength_closed:		100
@@ -46,16 +49,16 @@
               });
               
 
-              //$("#newGameButton").click(makerApp.makeNewGame.bind(makerApp));
+              //$("#newGameButton").click(mainController.makeNewGame.bind(mainController));
           });
       </script>
   </head>
-  <body ng-controller="MakerAppController as makerApp">
+  <body ng-controller="MainController as mainController">
   <div class="ui-layout-north">
       <ul class="menu">
           <li><a href="#">game</a>
               <ul>
-                  <li><a ng-click="makerApp.makeNewGame()" href="#">new</a></li>
+                  <li><a ng-click="mainController.makeNewGame()" href="#">new</a></li>
                   <li><a href="#">save</a></li>
                   <li><a href="#">save as</a></li>
                   <li><a href="#">exit</a></li>
@@ -69,9 +72,9 @@
             <ul class="rooms-list">
                 <li>
                     rooms
-                    <span style="float:right"><a ng-click="makerApp.createNewRoom()" href="">+</a></span>
+                    <span style="float:right"><a ng-click="mainController.createNewRoom()" href="">+</a></span>
                 </li>
-                <!--<li class="rooms-list-item room-{{makerApp.getRoomStyle(room)}}" ng-repeat="room in makerApp.actualGame.rooms" ng-click="makerApp.setSelectedRoom(room)">
+                <!--<li class="rooms-list-item room-{{mainController.getRoomStyle(room)}}" ng-repeat="room in mainController.actualGame.rooms" ng-click="mainController.setSelectedRoom(room)">
                     <span>{{room}}</span>
                 </li>-->
 
@@ -83,8 +86,8 @@
 
         <div class="properties-window">
             <ul>
-                <li><label>room : </label><span>{{makerApp.selectedRoom}}</span></li>
-                <li><label>bg: </label><a ng-click="makerApp.askForBackground()" href="">..</a></li>
+                <li><label>room : </label><span>{{mainController.selectedRoom}}</span></li>
+                <li><label>bg: </label><a ng-click="mainController.askForBackground()" href="">..</a></li>
                 <output id="list"></output>
                 <input id="bg-input" type="file" name="bg-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
                 <li><label>clickable areas: </label><span>..</span></li>
