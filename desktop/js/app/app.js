@@ -133,9 +133,9 @@ app.controller('MakerAppController', ["inputService", "$scope", function(inputSe
     makerApp.createNewRoom = function() {
         this.inputService.askFor("What is the name of the room?", function(result) {
             if (result !== null) {
-                this.inputService.askFor();
                 this.actualGame.createNewRoom(result);
-                this.selectedRoom = result;
+                this.setSelectedRoom(result);
+                this.invalidateTreeView();
                 $scope.$apply();
             }
         }.bind(this));
@@ -152,6 +152,7 @@ app.controller('MakerAppController', ["inputService", "$scope", function(inputSe
 
     makerApp.setSelectedRoom = function(room) {
         this.selectedRoom = room;
+        $scope.$apply();
     };
 
     makerApp.getRoomStyle = function(room) {
@@ -160,17 +161,44 @@ app.controller('MakerAppController', ["inputService", "$scope", function(inputSe
     };
 
     makerApp.getGameTree = function() {
-       return [
+        var result = [];
+        this.actualGame.rooms.forEach(function(room) {
+            result.push({text : room, state : {selected: room == this.selectedRoom}});
+
+        }.bind(this));
+        return result;
+       /*return [
        {
             text: "Parent 1",
             nodes: [
             {
                 text: "Child 1",
             }]
-      }];
+      }];*/
     };
 
-    $('#game-tree').treeview({data: makerApp.getGameTree()});
+    makerApp.invalidateTreeView = function() {
+        $('#game-tree').treeview({
+            data: this.getGameTree(),
+            onNodeSelected: function(event, data) {
+                this.setSelectedRoom(data.text);
+
+                console.log(event);
+                console.log(data);
+            }.bind(this),
+        });
+
+        //$('#tree').treeview(true).selectNode([ nodeId, { silent: true } ]);
+        //$('#game-tree').treeview('selectNode', [ nodeId, { silent: true } ])
+    }
+
+    this.invalidateTreeView();
+
+    /*$('#game-tree').treeview({
+        data: makerApp.getGameTree()
+    });*/
+
+
 
 }]);
 
