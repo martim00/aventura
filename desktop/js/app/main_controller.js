@@ -31,11 +31,29 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
     };
 
     this.askForBackground = function() {
-        this.inputService.askForFile("#bg-input", function(file, rawData) {
+        this.inputService.askForFile("#bg-input", function(file, filename, rawData) {
             console.log(file);
+            console.log(filename);
             console.log(rawData);
 
-        });
+            var path = this.actualGame.folder + "/" + filename;
+
+            //writeToFile("c:/tmp/nw.png", rawData);
+            writeToFile(path, rawData);
+
+            /*window.requestFileSystem(window.TEMPORARY, 1024*1024, function(fs) {
+
+                (function(f) {
+                    fs.root.getFile(file.name, {create: true, exclusive: true}, function(fileEntry) {
+                        fileEntry.createWriter(function(fileWriter) {
+                        fileWriter.write(f); 
+                    }, fileErrorHandler);
+                }, fileErrorHandler);
+                })(file);
+
+            }, fileErrorHandler);*/
+
+        }.bind(this));
     }
 
     this.setSelectedRoom = function(room) {

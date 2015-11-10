@@ -8,9 +8,8 @@ app.service("inputService", function() {
     this.askForFolder = function() {
     }
 
-    this.askForGameSettings = function(fn) {
-        bootbox.dialog({
-            message: '<div class="row">  ' +
+    this.getGameSettingsContent = function() {
+        var content = $('<div class="row"></div>').html(            
                     '<div class="col-md-12"> ' +
                     '<form class="form-horizontal"> ' +
                     '<div class="form-group"> ' +
@@ -25,17 +24,32 @@ app.service("inputService", function() {
                     '<input id="folder" name="folder" type="text" placeholder="Your game folder" class="form-control input-md"> ' +
                     '<input id="folderChooser" type="file" nwdirectory webkitdirectory />' +
                     '<span class="help-block">Folder where the game source and assets will be placed</span> </div> ' +
-                    '</div> ' +
-                    /*'<div class="form-group"> ' +
-                    '<label class="col-md-4 control-label" for="awesomeness">How awesome is this?</label> ' +
-                    '<div class="col-md-4"> <div class="radio"> <label for="awesomeness-0"> ' +
-                    '<input type="radio" name="awesomeness" id="awesomeness-0" value="Really awesome" checked="checked"> ' +
-                    'Really awesome </label> ' +
-                    '</div><div class="radio"> <label for="awesomeness-1"> ' +
-                    '<input type="radio" name="awesomeness" id="awesomeness-1" value="Super awesome"> Super awesome </label> ' +
-                    '</div> ' +
-                    '</div> </div>' +*/
-                    '</form> </div>  </div>',
+                    '</div> ' +                    
+                    '</form> </div>'
+            );
+        //var content = $("#frm").clone(true);
+        //$(content).css('visibility','visible');
+        //content.find('.mask').mask("999-99-9999",{placeholder:"_"});
+        var chooser = content.find('#folderChooser');
+        var folderInput = content.find('#folder');
+        chooser.unbind('change');
+        chooser.change(function(evt) {
+            var files = evt.target.files;
+            if (files.length > 0)
+                folderInput.val(files[0].path);
+
+            
+        }.bind(this));
+
+        /*.change(function() {
+            alert('changed!');
+        });*/
+        return content;
+    }
+
+    this.askForGameSettings = function(fn) {
+        bootbox.dialog({
+            message: this.getGameSettingsContent(),
             title: "Game settings",
             buttons: {
                 success: {
@@ -73,7 +87,7 @@ app.service("inputService", function() {
             // Closure to capture the file information.
             reader.onload = (function(theFile) {
                 return function(e) {
-                    fn(theFile.name, e.target.result);
+                    fn(theFile, theFile.name, e.target.result);
                     // Render thumbnail.
                     /*var span = document.createElement('span');
                     span.innerHTML = ['<img class="thumb" src="', e.target.result,
@@ -83,7 +97,8 @@ app.service("inputService", function() {
             })(f);
 
             // Read in the image file as a data URL.
-            reader.readAsBinaryString(f);
+            //reader.readAsBinaryString(f);
+            reader.readAsArrayBuffer(f);
             //reader.readAsDataURL(f);
 
             /*output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
