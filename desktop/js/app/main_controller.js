@@ -3,9 +3,13 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
     this.inputService = inputService;
 
-    var makerApp = this;
-    this.selectedRoom = null;
-    this.actualGame = new aventura.app.AdventureGame("Unnamed game");
+    //this.selectedRoom = null;
+    this.actualGame = new aventura.app.AdventureGame("Unnamed game", 
+        "C:/Users/Aniceto/workspace/aventura/desktop/game-folder");
+
+    this.actualGame.createNewRoom("room1");
+    this.actualGame.currentRoom.bg = 
+        "Chrysanthemum.jpg";
 
     this.makeNewGame = function() {
         this.inputService.askForGameSettings(function(result, name, folder) {
@@ -22,7 +26,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
         this.inputService.askFor("What is the name of the room?", function(result) {
             if (result !== null) {
                 this.actualGame.createNewRoom(result);
-                this.setSelectedRoom(result);
+                //this.setSelectedRoom(result);
                 this.invalidateTreeView();
                 $scope.$apply();
             }
@@ -31,15 +35,17 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
     };
 
     this.askForBackground = function() {
-        this.inputService.askForFile("#bg-input", function(file, filename, rawData) {
+        this.inputService.askForFile("#bg-input", function(file, rawData) {
             console.log(file);
-            console.log(filename);
             console.log(rawData);
 
-            var path = this.actualGame.folder + "/" + filename;
+            this.actualGame.setCurrentRoomBg(file.name, rawData, function() {
+                $scope.$apply();    
+            });
 
             //writeToFile("c:/tmp/nw.png", rawData);
-            writeToFile(path, rawData);
+            //writeToFile(path, rawData);
+            
 
             /*window.requestFileSystem(window.TEMPORARY, 1024*1024, function(fs) {
 
@@ -57,19 +63,24 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
     }
 
     this.setSelectedRoom = function(room) {
-        this.selectedRoom = room;
+        //this.selectedRoom = room;
+        this.actualGame.setCurrentRoom(room);
         $scope.$apply();
     };
 
     this.getRoomStyle = function(room) {
-        return this.selectedRoom === room ? "selected" : "unselected";
+        return this.actualGame.isCurrentRoom(room) ? "selected" : "unselected";
 
     };
 
     this.getGameTree = function() {
         var result = [];
         this.actualGame.rooms.forEach(function(room) {
-            result.push({text : room, state : {selected: room == this.selectedRoom}});
+            result.push({text : room.name, state : 
+                {
+                    selected: this.actualGame.isCurrentRoom(room.name) 
+                }
+            });
 
         }.bind(this));
         return result;

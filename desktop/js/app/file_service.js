@@ -37,7 +37,7 @@ function toBuffer(ab) {
     return buffer;
 }
 
-function writeToFile(filename, content) {
+function writeToFile(filename, content, fn) {
 
   // chunk is the Uint8Array object
   fs.writeFile(filename, toBuffer(content), function (err) {
@@ -45,6 +45,7 @@ function writeToFile(filename, content) {
       console.log("error");
     } else {
       console.log("sucess");
+      fn();
     }
   });
 

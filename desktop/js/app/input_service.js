@@ -87,7 +87,7 @@ app.service("inputService", function() {
             // Closure to capture the file information.
             reader.onload = (function(theFile) {
                 return function(e) {
-                    fn(theFile, theFile.name, e.target.result);
+                    fn(theFile, e.target.result);
                     // Render thumbnail.
                     /*var span = document.createElement('span');
                     span.innerHTML = ['<img class="thumb" src="', e.target.result,

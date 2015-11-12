@@ -22,10 +22,12 @@
       <script src="js/bootbox.min.js"></script>
       <script src="js/bootstrap-treeview.min.js"></script>
 
+      <script src="js/app/dbc.js"></script>
       <script src="js/app/app.js"></script>
       <script src="js/app/file_service.js"></script>
       <script src="js/app/input_service.js"></script>
       <script src="js/app/main_controller.js"></script>
+      <script src="js/app/game_room.js"></script>
       <script src="js/app/adventure_game.js"></script>
       
 
@@ -46,6 +48,12 @@
                   ,	north__spacing_open:				1
                   ,	north__togglerLength_closed:		100
                   ,	north__togglerLength_open:		100
+                  , south__size:      27
+                  , south__minSize:       27
+                  , south__spacing_closed:      1
+                  , south__spacing_open:        1
+                  , south__togglerLength_closed:    100
+                  , south__togglerLength_open:    100
 
               });
               
@@ -87,7 +95,7 @@
 
         <div class="properties-window">
             <ul>
-                <li><label>room : </label><span>{{mainController.selectedRoom}}</span></li>
+                <li><label>room : </label><span>{{mainController.actualGame.currentRoom.name}}</span></li>
                 <li><label>bg: </label><a ng-click="mainController.askForBackground()" href="">..</a></li>
                 <output id="list"></output>
                 <input id="bg-input" type="file" name="bg-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
@@ -98,9 +106,25 @@
     </div>
 
       <div class="ui-layout-center">
-          main
+          {{mainController.actualGame.getCurrentRoomBg()}}
+          <img ng-src="{{mainController.actualGame.getCurrentRoomBg()}}" alt="Game image" >
+
+          <!--<img src="C:/Users/Aniceto/workspace/aventura/desktop/game-folder/Chrysanthemum.jpg" />-->
+
+          <!--<img ng-src="c:/users/aniceto/workspace/aventura/desktop/game-folder/Desert.jpg" alt="Game image" />-->
+
+          
+
       </div>
 
+      <div class="ui-layout-south">
+          <div style="float:left">
+            <label>Game name: </label><span>{{mainController.actualGame.name}}</span>
+          </div>
+          <div style="float:right">
+            <label>Game folder: </label><span>{{mainController.actualGame.folder}}</span>
+          </div>
+      </div>
 
 
   </body>

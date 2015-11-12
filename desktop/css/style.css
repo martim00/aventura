@@ -79,6 +79,14 @@ body{
     padding: 0 !important;
 }
 
+.ui-layout-north {
+    padding: 0 !important;
+}
+
+.ui-layout-south {
+    padding: 0 !important;
+}
+
 .rooms-list-item:hover {
     background:#333;
     color:#fff;
