@@ -5,11 +5,24 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
     //this.selectedRoom = null;
     this.actualGame = new aventura.app.AdventureGame("Unnamed game", 
-        "C:/Users/Aniceto/workspace/aventura/desktop/game-folder");
+        "C:/Users/Aniceto/workspace/aventura/desktop/game-folder", 600, 600);
 
     this.actualGame.createNewRoom("room1");
     this.actualGame.currentRoom.bg = 
         "Chrysanthemum.jpg";
+
+
+    this.initializeCanvas = function() {
+        this.canvas = new fabric.Canvas('main-canvas');
+        this.canvas.setBackgroundColor("rgba(255, 73, 64, 0.6)");
+        this.canvas.setDimensions({width: this.actualGame.width, height: this.actualGame.height});
+        /*fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
+            this.canvas.add(oImg);
+            var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
+            path.set({ left: 120, top: 120 });
+            this.canvas.add(path);
+        }.bind(this));*/
+    }
 
     this.makeNewGame = function() {
         this.inputService.askForGameSettings(function(result, name, folder) {
@@ -63,8 +76,13 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
     }
 
     this.setSelectedRoom = function(room) {
-        //this.selectedRoom = room;
         this.actualGame.setCurrentRoom(room);
+
+        this.canvas.clear();
+        fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
+            this.canvas.add(oImg);
+        }.bind(this));
+
         $scope.$apply();
     };
 
@@ -78,7 +96,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
         this.actualGame.rooms.forEach(function(room) {
             result.push({text : room.name, state : 
                 {
-                    selected: this.actualGame.isCurrentRoom(room.name) 
+                    selected: this.actualGame.isCurrentRoom(room.name)
                 }
             });
 
@@ -99,10 +117,22 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             data: this.getGameTree(),
             onNodeSelected: function(event, data) {
                 this.setSelectedRoom(data.text);
+                $('#game-tree').treeview('disableNode', [ event.nodeId, { silent: true } ]);
+
+//                this.invalidateTreeView();
 
                 console.log(event);
                 console.log(data);
             }.bind(this),
+            onNodeUnselected : function(event, data) {
+ //               this.invalidateTreeView();
+                //var selected = $('#tree').treeview('getSelected', data.nodeId);
+                //if (selected.length == 0) 
+                 //   $('#game-tree').treeview('selectNode', [ data.nodeId, { silent: true } ]);
+                //this('selectNode', [ data.nodeId, { silent: true } ]);
+                //this.selectNode(data.nodeId);
+
+            }.bind(this)
         });
 
         //$('#tree').treeview(true).selectNode([ nodeId, { silent: true } ]);
@@ -110,6 +140,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
     }
 
     this.invalidateTreeView();
+    this.initializeCanvas();
 
     /*$('#game-tree').treeview({
         data: this.getGameTree()

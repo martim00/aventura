@@ -2,9 +2,11 @@ goog.provide('aventura.app.AdventureGame');
 
 goog.require('aventura.app.GameRoom');
 
-aventura.app.AdventureGame = function(name, folder) {
+aventura.app.AdventureGame = function(name, folder, width, height) {
 	this.name = name;
 	this.folder = folder;
+	this.width = width;
+	this.height = height;
 	this.rooms = [];
 	this.currentRoom = undefined;
 }

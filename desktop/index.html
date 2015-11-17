@@ -19,6 +19,8 @@
 
        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 
+      <script src="js/fabric.min.js"></script>
+
       <script src="js/bootbox.min.js"></script>
       <script src="js/bootstrap-treeview.min.js"></script>
 
@@ -106,20 +108,25 @@
     </div>
 
       <div class="ui-layout-center">
-          {{mainController.actualGame.getCurrentRoomBg()}}
-          <img ng-src="{{mainController.actualGame.getCurrentRoomBg()}}" alt="Game image" >
-
+        <canvas id="main-canvas"></canvas>
+          
+          <!--<img ng-src="{{mainController.actualGame.getCurrentRoomBg()}}" alt="Game image" >
+-->
           <!--<img src="C:/Users/Aniceto/workspace/aventura/desktop/game-folder/Chrysanthemum.jpg" />-->
 
           <!--<img ng-src="c:/users/aniceto/workspace/aventura/desktop/game-folder/Desert.jpg" alt="Game image" />-->
 
-          
+
 
       </div>
 
       <div class="ui-layout-south">
           <div style="float:left">
             <label>Game name: </label><span>{{mainController.actualGame.name}}</span>
+          </div>
+          <div style="float:left; margin-left: 50px">
+            <label>Width: </label><span>{{mainController.actualGame.width}}</span>
+            <label>Height: </label><span>{{mainController.actualGame.height}}</span>
           </div>
           <div style="float:right">
             <label>Game folder: </label><span>{{mainController.actualGame.folder}}</span>

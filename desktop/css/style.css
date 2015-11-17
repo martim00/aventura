@@ -87,6 +87,9 @@ body{
     padding: 0 !important;
 }
 
+.ui-layout-center {
+    padding: 0 !important;
+}
 .rooms-list-item:hover {
     background:#333;
     color:#fff;
