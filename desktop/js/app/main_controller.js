@@ -13,16 +13,46 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
 
     this.initializeCanvas = function() {
-        this.canvas = new fabric.Canvas('main-canvas');
-        this.canvas.setBackgroundColor("rgba(255, 73, 64, 0.6)");
+        this.canvas = new fabric.CanvasWithViewport('main-canvas');
+        //this.canvas.setBackgroundColor("rgba(255, 73, 64, 0.6)");
         this.canvas.setDimensions({width: this.actualGame.width, height: this.actualGame.height});
+
+        $(".canvas-container").on('mousewheel', function(e) {
+            var delta = e.originalEvent.wheelDelta / 120;
+            console.log(delta);
+
+            if (delta > 0)
+                this.canvas.setZoom(this.canvas.viewport.zoom * 1.1);
+            else 
+                this.canvas.setZoom(this.canvas.viewport.zoom / 1.1);
+           // console.log(zoom);
+            //this.canvas.setZoom(zoom);
+
+        }.bind(this));
+
         /*fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
             this.canvas.add(oImg);
             var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
             path.set({ left: 120, top: 120 });
             this.canvas.add(path);
         }.bind(this));*/
-    }
+    };
+
+    this.invalidateCanvas = function() {
+
+        this.canvas.clear();
+
+        fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
+            oImg.scale(this.canvas.width / oImg.width 
+                , this.canvas.height / oImg.height );
+            this.canvas.add(oImg);
+            //var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
+            //path.set({ left: 120, top: 120 });
+            //this.canvas.add(path);
+        }.bind(this));
+
+        $scope.$apply();
+    };
 
     this.makeNewGame = function() {
         this.inputService.askForGameSettings(function(result, name, folder) {
@@ -53,8 +83,8 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             console.log(rawData);
 
             this.actualGame.setCurrentRoomBg(file.name, rawData, function() {
-                $scope.$apply();    
-            });
+                this.invalidateCanvas();
+            }.bind(this));
 
             //writeToFile("c:/tmp/nw.png", rawData);
             //writeToFile(path, rawData);
@@ -77,13 +107,8 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
     this.setSelectedRoom = function(room) {
         this.actualGame.setCurrentRoom(room);
+        this.invalidateCanvas();
 
-        this.canvas.clear();
-        fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
-            this.canvas.add(oImg);
-        }.bind(this));
-
-        $scope.$apply();
     };
 
     this.getRoomStyle = function(room) {
