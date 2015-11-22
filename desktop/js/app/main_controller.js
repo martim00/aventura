@@ -43,13 +43,40 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
         this.canvas.clear();
 
         fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
-            oImg.scale(this.canvas.width / oImg.width 
-                , this.canvas.height / oImg.height );
+            //oImg.scale(this.canvas.width / oImg.width 
+//                , this.canvas.height / oImg.height );
+            
+            oImg.setWidth(this.canvas.width);
+            oImg.setHeight(this.canvas.height);
+
+            //oImg.alignX = 'none';
+            //oImg.alignY = 'none';
+            //oImg.meetOrSlice = 'slice'
+
             this.canvas.add(oImg);
+
+            //this.canvas.setBackgroundImage(oImg);
             //var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
             //path.set({ left: 120, top: 120 });
             //this.canvas.add(path);
         }.bind(this));
+
+        // create a rectangle object
+        var rect = new fabric.Rect({
+            left: 0,
+            top: 0,
+            fill: 'rgba(100,200,200,0.5)',
+            width: this.canvas.width,
+            height: this.canvas.height,
+            strokeWidth: 5, 
+            strokeDashArray: [5, 5],
+            stroke: 'rgba(0,0,0,0.5)',
+            selectable: false
+        });
+
+        // "add" rectangle onto canvas
+        this.canvas.add(rect);
+
 
         $scope.$apply();
     };
@@ -142,7 +169,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             data: this.getGameTree(),
             onNodeSelected: function(event, data) {
                 this.setSelectedRoom(data.text);
-                $('#game-tree').treeview('disableNode', [ event.nodeId, { silent: true } ]);
+                //$('#game-tree').treeview('disableNode', [ event.nodeId, { silent: true } ]);
 
 //                this.invalidateTreeView();
 
@@ -166,6 +193,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
     this.invalidateTreeView();
     this.initializeCanvas();
+    this.invalidateCanvas();
 
     /*$('#game-tree').treeview({
         data: this.getGameTree()
