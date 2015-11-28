@@ -3,17 +3,22 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
     this.inputService = inputService;
 
-    //this.selectedRoom = null;
     this.actualGame = new aventura.app.AdventureGame("Unnamed game", 
         "C:/Users/Aniceto/workspace/aventura/desktop/game-folder", 600, 600);
 
-    this.actualGame.createNewRoom("room1");
-    this.actualGame.currentRoom.bg = 
-        "Chrysanthemum.jpg";
+
+    this.elementSelected = undefined;
+
+    this.initializeTestValues = function() {
+        this.actualGame.createNewRoom("room1");
+        this.actualGame.currentRoom.bg = "bg3.png";
+        this.actualGame.createNewCharacter("hero");
+    }
 
 
     this.initializeCanvas = function() {
-        this.canvas = new fabric.CanvasWithViewport('main-canvas');
+        //this.canvas = new fabric.CanvasWithViewport('main-canvas');
+        this.canvas = new fabric.Canvas('main-canvas');
         //this.canvas.setBackgroundColor("rgba(255, 73, 64, 0.6)");
         this.canvas.setDimensions({width: this.actualGame.width, height: this.actualGame.height});
 
@@ -21,10 +26,11 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             var delta = e.originalEvent.wheelDelta / 120;
             console.log(delta);
 
-            if (delta > 0)
+            /*if (delta > 0)
                 this.canvas.setZoom(this.canvas.viewport.zoom * 1.1);
             else 
                 this.canvas.setZoom(this.canvas.viewport.zoom / 1.1);
+            */
            // console.log(zoom);
             //this.canvas.setZoom(zoom);
 
@@ -46,8 +52,11 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             //oImg.scale(this.canvas.width / oImg.width 
 //                , this.canvas.height / oImg.height );
             
-            oImg.setWidth(this.canvas.width);
-            oImg.setHeight(this.canvas.height);
+            oImg.set({
+                width: this.canvas.width,
+                height: this.canvas.height,
+                selectable: false
+            });
 
             //oImg.alignX = 'none';
             //oImg.alignY = 'none';
@@ -66,9 +75,9 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             left: 0,
             top: 0,
             fill: 'rgba(100,200,200,0.5)',
-            width: this.canvas.width,
-            height: this.canvas.height,
-            strokeWidth: 5, 
+            width: this.canvas.width - 1,
+            height: this.canvas.height - 1,
+            strokeWidth: 1, 
             strokeDashArray: [5, 5],
             stroke: 'rgba(0,0,0,0.5)',
             selectable: false
@@ -78,7 +87,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
         this.canvas.add(rect);
 
 
-        $scope.$apply();
+        //$scope.$apply();
     };
 
     this.makeNewGame = function() {
@@ -97,17 +106,27 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             if (result !== null) {
                 this.actualGame.createNewRoom(result);
                 //this.setSelectedRoom(result);
-                this.invalidateTreeView();
+                //this.invalidateTreeView();
                 $scope.$apply();
             }
         }.bind(this));
 
     };
 
+    this.createNewCharacter = function() {
+        this.inputService.askForCharacter(function(result) {
+            if (result !== null) {
+                this.actualGame.createNewCharacter(result);
+                $scope.$apply();
+            }
+        }.bind(this));
+
+    }
+
     this.askForBackground = function() {
         this.inputService.askForFile("#bg-input", function(file, rawData) {
-            console.log(file);
-            console.log(rawData);
+            //console.log(file);
+            //console.log(rawData);
 
             this.actualGame.setCurrentRoomBg(file.name, rawData, function() {
                 this.invalidateCanvas();
@@ -115,8 +134,6 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
             //writeToFile("c:/tmp/nw.png", rawData);
             //writeToFile(path, rawData);
-            
-
             /*window.requestFileSystem(window.TEMPORARY, 1024*1024, function(fs) {
 
                 (function(f) {
@@ -130,18 +147,49 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
             }, fileErrorHandler);*/
 
         }.bind(this));
-    }
+    };
+
+    this.invalidateView = function() {
+        $scope.$apply();
+    };
+
+    this.askForCharacterSprite = function() {
+        this.inputService.askForFile("#sprite-input", function(file, rawData) {
+
+            this.actualGame.setCharacterSprite(file.name, rawData, function() {
+                this.invalidateView();
+                console.log("done");
+
+            }.bind(this));
+
+        }.bind(this));
+
+    };
 
     this.setSelectedRoom = function(room) {
         this.actualGame.setCurrentRoom(room);
         this.invalidateCanvas();
+        this.elementSelected = 'room';
+        $scope.$apply();
 
     };
 
     this.getRoomStyle = function(room) {
         return this.actualGame.isCurrentRoom(room) ? "selected" : "unselected";
-
     };
+
+    this.setSelectedCharacter = function(character) {
+        this.actualGame.setCurrentCharacter(character);
+        this.elementSelected = 'character';
+    }
+
+    this.getCharacterStyle = function(character) {
+        return this.actualGame.isCurrentCharacter(character) ? "selected" : "unselected";
+    };
+
+    this.isElementSelected = function(elementName) {
+        return elementName === this.elementSelected;
+    }
 
     this.getGameTree = function() {
         var result = [];
@@ -191,9 +239,10 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
         //$('#game-tree').treeview('selectNode', [ nodeId, { silent: true } ])
     }
 
-    this.invalidateTreeView();
+    //this.invalidateTreeView();
     this.initializeCanvas();
     this.invalidateCanvas();
+    this.initializeTestValues();
 
     /*$('#game-tree').treeview({
         data: this.getGameTree()

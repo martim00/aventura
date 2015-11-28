@@ -26,10 +26,8 @@ app.service("inputService", function() {
                     '<span class="help-block">Folder where the game source and assets will be placed</span> </div> ' +
                     '</div> ' +                    
                     '</form> </div>'
-            );
-        //var content = $("#frm").clone(true);
-        //$(content).css('visibility','visible');
-        //content.find('.mask').mask("999-99-9999",{placeholder:"_"});
+        );
+
         var chooser = content.find('#folderChooser');
         var folderInput = content.find('#folder');
         chooser.unbind('change');
@@ -41,9 +39,6 @@ app.service("inputService", function() {
             
         }.bind(this));
 
-        /*.change(function() {
-            alert('changed!');
-        });*/
         return content;
     }
 
@@ -108,19 +103,80 @@ app.service("inputService", function() {
         }
         //console.log(output);
         //document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-  }
+    }
 
     this.askForFile = function(id, fn) {
 
-       var chooser = $(id);
-       chooser.unbind('change');
-       chooser.change(function(evt) {
+        var chooser = $(id);
+        chooser.unbind('change');
+        chooser.change(function(evt) {
             this.handleFileSelect(evt, fn)
             //console.log($(this).val());
             //fn($(this).val());
-      }.bind(this));
+        }.bind(this));
 
         //document.getElementById('files').addEventListener('change', handleFileSelect, false);
-       chooser.trigger('click');  
-  };
+        chooser.trigger('click');  
+    };
+
+    this.askForCharacter = function(fn) {
+        bootbox.dialog({
+            message: this.getCharacterSettingsContent(),
+            title: "Character settings",
+            buttons: {
+                success: {
+                    label: "Ok",
+                    className: "btn-success",
+                    callback: function() {
+                        var name = $('#name').val();
+                        //var folder = $('#folderChooser').val();
+                        fn(name);
+                    } 
+                },
+                cancel : {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        fn(null);
+                    }
+                }
+            }
+        });
+    }
+
+    this.getCharacterSettingsContent = function() {
+        var content = $('<div class="row"></div>').html(            
+                    '<div class="col-md-12"> ' +
+                    '<form class="form-horizontal"> ' +
+                    '<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="name">Name</label> ' +
+                    '<div class="col-md-4"> ' +
+                    '<input id="name" name="name" type="text" placeholder="Your character name" class="form-control input-md"> ' +
+                    ' </div> ' +
+                    '</div> ' +
+                    /*'<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="folder">Folder</label> ' +
+                    '<div class="col-md-4"> ' +
+                    '<input id="folder" name="folder" type="text" placeholder="Your game folder" class="form-control input-md"> ' +
+                    '<input id="folderChooser" type="file" nwdirectory webkitdirectory />' +
+                    '<span class="help-block">Folder where the game source and assets will be placed</span> </div> ' +*/
+                    '</div> ' +                    
+                    '</form> </div>'
+        );
+
+        /*var chooser = content.find('#folderChooser');
+        var folderInput = content.find('#folder');
+        chooser.unbind('change');
+        chooser.change(function(evt) {
+            var files = evt.target.files;
+            if (files.length > 0)
+                folderInput.val(files[0].path);
+
+            
+        }.bind(this));*/
+
+        return content;
+    }
+
+
 });

@@ -97,11 +97,11 @@ body{
 }
 
 .room-selected {
-    background-color: blue;
+    background-color: #B7C8B5;
 }
 
 .room-unselected {
-    background-color: red;
+    background-color: #C5EBC3;
 }
 
 .thumb {
@@ -132,3 +132,30 @@ body{
     margin-left: 5px!important;
     margin-right: 5px!important;
 }
+
+.accordion-button {
+    cursor: pointer;
+    background-color: #875C74;
+    color: #54414E;
+}
+
+.list-group-item .node-game-tree .node-selected {
+    background-color: #C5EBC3!important;
+    color: #54414E!important;   
+}
+
+.character-selected {
+    background-color: #B7C8B5;
+}
+
+.character-unselected {
+    background-color: #C5EBC3;
+}
+
+/*
+#C5EBC3
+#B7C8B5
+#A790A5
+#875C74
+#54414E
+*/
