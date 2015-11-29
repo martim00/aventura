@@ -6,8 +6,12 @@ body{
 }
 
 .menu{
+    width: 50px;
     list-style:none;
+    margin-bottom: 0px;
+    display: inline-block;
     /*border:1px solid #c0c0c0;*/
+
     /*float:left;*/
 }
 
@@ -25,7 +29,7 @@ body{
 }
 
 .menu li a:hover{
-    background:#333;
+    background:#C5EBC3;
     color:#fff;
     /*-moz-box-shadow:0 3px 10px 0 #CCC;*/
     /*-webkit-box-shadow:0 3px 10px 0 #ccc;*/
@@ -136,7 +140,7 @@ body{
 .accordion-button {
     cursor: pointer;
     background-color: #875C74;
-    color: #54414E;
+    color: #fff;
 }
 
 .list-group-item .node-game-tree .node-selected {
@@ -150,6 +154,22 @@ body{
 
 .character-unselected {
     background-color: #C5EBC3;
+}
+
+.run-button {
+    width: 100px;
+    display: inline-block;
+}
+
+.run-button a:hover {
+    background-color: #C5EBC3;
+    text-decoration: none;
+}
+
+.run-buttton a {
+    text-decoration: none;
+    color:#333;
+
 }
 
 /*

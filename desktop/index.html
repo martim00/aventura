@@ -31,6 +31,7 @@
       <script src="js/app/app.js"></script>
       <script src="js/app/file_service.js"></script>
       <script src="js/app/input_service.js"></script>
+      <script src="js/app/preview_service.js"></script>
       <script src="js/app/main_controller.js"></script>
       <script src="js/app/game_room.js"></script>
       <script src="js/app/character.js"></script>
@@ -75,7 +76,9 @@
   </head>
   <body ng-controller="MainController as mainController">
   <div class="ui-layout-north">
-      <ul class="menu">
+    <div>
+      <div class="menu">
+        <ul>
           <li><a href="#">game</a>
               <ul>
                   <li><a ng-click="mainController.makeNewGame()" href="#">new</a></li>
@@ -84,7 +87,14 @@
                   <li><a href="#">exit</a></li>
               </ul>
           </li>
-      </ul>
+        </ul> 
+      </div>
+
+      <div class="run-button">
+        <a ng-click="mainController.runGame()" href="#">Run</a>
+      </div>
+    </div>
+
   </div>
 
     <div class="ui-layout-west">
@@ -131,6 +141,8 @@
                 <li><label>name : </label><span>{{mainController.actualGame.currentCharacter.name}}</span></li>
                 <li><label>sprite: </label><a ng-click="mainController.askForCharacterSprite()" href="">..</a></li>
                 <li>{{mainController.actualGame.currentCharacter.spritePath}}</li>
+                <img ng-src="{{mainController.actualGame.getCurrentCharacterSprite()}}" width="130" height="30" alt="Sprite image">
+
                 <input id="sprite-input" type="file" name="sprite-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
             </ul>
           </div>

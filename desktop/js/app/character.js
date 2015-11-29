@@ -8,3 +8,7 @@ aventura.app.Character = function(name) {
 aventura.app.Character.prototype.setSprite = function(spritePath) {
 	this.spritePath = spritePath;
 }
+
+aventura.app.Character.prototype.getSprite = function() {
+	return this.spritePath;
+}

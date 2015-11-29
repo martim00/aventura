@@ -1,7 +1,8 @@
 
-app.controller('MainController', ["inputService", "$scope", function(inputService, $scope) {
+app.controller('MainController', ["inputService", "previewService", "$scope", function(inputService, previewService, $scope) {
 
     this.inputService = inputService;
+    this.previewService = previewService;
 
     this.actualGame = new aventura.app.AdventureGame("Unnamed game", 
         "C:/Users/Aniceto/workspace/aventura/desktop/game-folder", 600, 600);
@@ -13,6 +14,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
         this.actualGame.createNewRoom("room1");
         this.actualGame.currentRoom.bg = "bg3.png";
         this.actualGame.createNewCharacter("hero");
+        this.actualGame.save();
     }
 
 
@@ -130,6 +132,7 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
             this.actualGame.setCurrentRoomBg(file.name, rawData, function() {
                 this.invalidateCanvas();
+
             }.bind(this));
 
             //writeToFile("c:/tmp/nw.png", rawData);
@@ -189,6 +192,10 @@ app.controller('MainController', ["inputService", "$scope", function(inputServic
 
     this.isElementSelected = function(elementName) {
         return elementName === this.elementSelected;
+    };
+
+    this.runGame = function() {
+        this.previewService.previewGame();
     }
 
     this.getGameTree = function() {

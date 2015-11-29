@@ -75,10 +75,25 @@ aventura.Engine.prototype.putItemOnInventory = function(itemName) {
 	this.inventory.putItem(itemName);
 }
 
+aventura.Engine.prototype.imageLoaded = function(resourceId) {
+    console.log("image loaded");
+    this.game.add.sprite(0, 0, resourceId);
+}
+
+aventura.Engine.prototype.loadLazyImage = function(resourceId, resourcePath) {
+    var loader = new Phaser.Loader(this.game);
+
+    loader.image(resourceId, resourcePath);
+    loader.onLoadComplete.addOnce(this.imageLoaded.bind(this, resourceId));
+    loader.start();
+}
+
 aventura.Engine.prototype.configureBackground = function(roomData) {
     //  A simple background for our game
-    this.game.add.sprite(0, 0, roomData.bg);
+    //this.game.add.sprite(0, 0, roomData.bg);
+    this.loadLazyImage(roomData.bg.id, roomData.bg.path);
 }
+
 
 aventura.Engine.prototype.configurePlayerAt = function(x, y) {
 	this.player = new Player(this.game, x, y, this.walkableAreaManager, this.exitAreaManager);

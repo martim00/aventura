@@ -37,17 +37,10 @@ function toBuffer(ab) {
     return buffer;
 }
 
-function writeToFile(filename, content, fn) {
+function writeBinaryFile(filename, content, fn) {
 
   // chunk is the Uint8Array object
-  fs.writeFile(filename, toBuffer(content), function (err) {
-    if (err) {
-      console.log("error");
-    } else {
-      console.log("sucess");
-      fn();
-    }
-  });
+  writeToFile(filename, toBuffer(content), fn);
 
   /*return;
 
@@ -73,4 +66,21 @@ function writeToFile(filename, content, fn) {
 
     console.log("The file was saved!");
   }); */
+}
+
+function writeTextFile(filename, content, fn) {
+  writeToFile(filename, content, fn);
+}
+
+function writeToFile(filename, content, fn) {
+
+  // chunk is the Uint8Array object
+  fs.writeFile(filename, content, function (err) {
+    if (err) {
+      console.log("error");
+    } else {
+      console.log("sucess");
+      fn();
+    }
+  });
 }

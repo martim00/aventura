@@ -77,6 +77,13 @@ aventura.app.AdventureGame.prototype.getCurrentRoomBg = function() {
 	return this.getAbsPath(this.currentRoom.getBg());
 }
 
+aventura.app.AdventureGame.prototype.getCurrentCharacterSprite = function() {
+	if (!this.currentCharacter || this.currentCharacter.getSprite() == undefined)
+		return "";
+
+	return this.getAbsPath(this.currentCharacter.getSprite());
+}
+
 aventura.app.AdventureGame.prototype.getAbsPath = function(relativePath) {
     return this.folder + "/" + relativePath;
 }
@@ -84,8 +91,24 @@ aventura.app.AdventureGame.prototype.getAbsPath = function(relativePath) {
 aventura.app.AdventureGame.prototype.copyFileToGameFolder = 
 	function(targetFileName, rawData, fn) {
 
-    writeToFile(this.getAbsPath(targetFileName), rawData, fn);
+    writeBinaryFile(this.getAbsPath(targetFileName), rawData, fn);
 }
 
+aventura.app.AdventureGame.prototype.save = function() {
+    writeTextFile(this.getAbsPath("game.json"), this.getGameAsJson(), function() {
+
+    });
+}
+
+aventura.app.AdventureGame.prototype.getGameAsJson = function() {
+	var json = {};
+	json.rooms = {};
+	this.rooms.forEach(function(room) {
+		json.rooms[room.name] = {};
+		json.rooms[room.name].bg = { "id" : room.name, "path" : room.getBg() };
+
+	});
+	return JSON.stringify(json);
+}
 
 
