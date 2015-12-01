@@ -84,3 +84,27 @@ function writeToFile(filename, content, fn) {
     }
   });
 }
+
+function copyFile(source, target, fn) {
+  var fnCalled = false;
+
+  var rd = fs.createReadStream(source);
+  rd.on("error", function(err) {
+    done(err);
+  });
+  var wr = fs.createWriteStream(target);
+  wr.on("error", function(err) {
+    done(err);
+  });
+  wr.on("close", function(ex) {
+    done();
+  });
+  rd.pipe(wr);
+
+  function done(err) {
+    if (!fnCalled) {
+      fn(err);
+      fnCalled = true;
+    }
+  }
+}

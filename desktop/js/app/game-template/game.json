@@ -3,8 +3,8 @@
 		{
 			"name" : "player1",
 			"spritesheet" : { 
-					"id" : "assets/adventure_time_grid.png", 
-					"size" : [32, 48]
+					"path" : "adventure_time_grid.png", 
+					"rect" : [32, 48]
 				}, 
 			"startRoom" : "room1"			
 		}
@@ -15,7 +15,7 @@
 	"rooms" : {
 
 		"room1" : {
-			"bg" : { "id" : "bg1", "path" : "assets/bg3.png" },
+			"bg" : { "id" : "bg1", "path" : "bg3.png" },
 			"walkableArea" : [ [0, 300], [25, 240], [40, 240], [70, 300], [671, 350], [671, 448], [0, 448] ],
 			"exits" : [
 				{
@@ -65,7 +65,7 @@
 			]
 		},
 		"room2" : {
-			"bg" : "bg2",			
+			"bg" : { "id" : "bg2", "path" : "bg2.png" },
 			"walkableArea" : [ [0, 380], [200, 350], [230, 360], [600, 310], [671, 310], [671, 419], [0, 419] ],
 			"exits" : [
 				{
