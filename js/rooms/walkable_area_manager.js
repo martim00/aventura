@@ -1,4 +1,4 @@
-goog.provide('aventura.WalkableAreaManager');
+ns.provide('aventura.WalkableAreaManager');
 
 
 aventura.WalkableAreaManager = function(game, engine) {

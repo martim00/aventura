@@ -1,4 +1,13 @@
 {
+	"players" : {
+		"player1" : {
+			"spritesheet" : { 
+				"id" : "assets/adventure_time_grid.png", 
+				"size" : [32, 48]
+				}, 
+			"startRoom" : "room1"
+		}
+	},
 	"items" : [
 		{ "name" : "ticket", "label" : "Ticket", "visible" : true, "position" : [100, 100], "image" : "ticket"}
 	],

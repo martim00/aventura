@@ -1,4 +1,4 @@
-goog.provide('aventura.ExitAreaManager');
+ns.provide('aventura.ExitAreaManager');
 
 aventura.ExitAreaManager = function(game, engine) {
 	this.game = game;

@@ -1,4 +1,5 @@
-goog.provide('aventura.Engine');
+//goog.provide('aventura.Engine');
+ns.provide('aventura.Engine');
 
 
 

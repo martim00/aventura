@@ -1,4 +1,4 @@
-goog.provide('aventura.Inventory');
+ns.provide('aventura.Inventory');
 
 aventura.Inventory = function(game, engine) {
     this.game = game;

@@ -1,6 +1,6 @@
-goog.require('aventura.ClickableAreaManager');
+/*goog.require('aventura.ClickableAreaManager');
 goog.require('aventura.WalkableAreaManager');
-goog.require('aventura.Engine');
+goog.require('aventura.Engine');*/
 
 debug = true;
 var Room = function(game) {

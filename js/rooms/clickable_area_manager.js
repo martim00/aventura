@@ -1,4 +1,5 @@
-goog.provide('aventura.ClickableAreaManager');
+//goog.provide('aventura.ClickableAreaManager');
+ns.provide('aventura.ClickableAreaManager');
 
 aventura.ClickableAreaManager = function(game, engine) {
 	this.game = game;
