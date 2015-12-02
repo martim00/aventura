@@ -6,8 +6,11 @@ aventura.ExitAreaManager = function(game, engine) {
 }
 
 aventura.ExitAreaManager.prototype.init = function(roomData) {
-
+	
 	this.exitAreas = [];
+
+	if (!roomData.exits)
+		return;
 
 	var polygonArray = [];
 	roomData.exits.forEach(function(exitData) {

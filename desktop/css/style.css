@@ -1,5 +1,13 @@
 *{margin: 0; padding: 0;}
 
+/*
+back: #F9F8F8;
+button-strong: #7E7F9A; 
+room-selected : #F3DE8A
+room-unselected : #EB9486
+room-list-item:hover #BEC0DB;
+*/
+
 body{
     font-family: arial, helvetica, sans-serif;
     font-size: 12px;
@@ -63,12 +71,6 @@ body{
     list-style: none;
 }
 
-.ui-layout-north {
-    padding: 0 !important;
-    z-index: 50 !important;
-    overflow: visible !important;
-}
-
 .rooms-window {
     height: 50%;
     padding: 10px;
@@ -81,31 +83,48 @@ body{
 
 .ui-layout-west {
     padding: 0 !important;
+    background-color: #F9F8F8!important;
 }
 
 .ui-layout-north {
     padding: 0 !important;
+    z-index: 50 !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background-color: #F9F8F8!important;
 }
 
 .ui-layout-south {
     padding: 0 !important;
+    background-color: #F9F8F8!important;
 }
 
 .ui-layout-center {
     padding: 0 !important;
 }
+
+.accordion-tools {
+    margin-left: 110px;
+}
+
+.rooms-list-item {
+    margin: 2px;
+    padding-left: 8px;
+    border: 1px solid black;
+}
+
 .rooms-list-item:hover {
-    background:#333;
+    background-color:#BEC0DB;
     color:#fff;
     cursor: pointer;
 }
 
 .room-selected {
-    background-color: #B7C8B5;
+    background-color: #F3DE8A;
 }
 
 .room-unselected {
-    background-color: #C5EBC3;
+    background-color: #EB9486;
 }
 
 .thumb {
@@ -139,8 +158,10 @@ body{
 
 .accordion-button {
     cursor: pointer;
-    background-color: #875C74;
+    background-color: #7E7F9A;
     color: #fff;
+    border: 1px solid black;
+    text-align: center;
 }
 
 .list-group-item .node-game-tree .node-selected {
@@ -171,6 +192,14 @@ body{
     color:#333;
 
 }
+
+/*
+https://coolors.co/272838-f3de8a-eb9486-7e7f9a-f9f8f8
+https://coolors.co/ecba82-81c14b-2e933c-297045-204e4a
+https://coolors.co/b38cb4-b7918c-c5a48a-ddc67b-f8f272
+https://coolors.co/729ea1-b5bd89-dfbe99-ec9192-db5375
+https://coolors.co/e56399-d3a588-ece2d0-7fd1b9-7a6563
+https://coolors.co/a2faa3-92c9b1-4f759b-5d5179-571f4e*/
 
 /*
 #C5EBC3

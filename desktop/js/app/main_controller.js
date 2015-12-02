@@ -14,6 +14,8 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
         this.actualGame.createNewRoom("room1");
         this.actualGame.currentRoom.bg = "bg3.png";
         this.actualGame.createNewCharacter("hero");
+        this.actualGame.getCurrentCharacter()
+            .setSprite(new aventura.app.SpriteSheet("hero1", "adventure_time_grid.png", 32, 48));
         this.actualGame.save();
     }
 
@@ -197,6 +199,10 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
 
     this.runGame = function() {
         this.previewService.previewGame();
+    }
+
+    this.saveGame = function() {
+        this.actualGame.save();
     }
 
     this.getGameTree = function() {

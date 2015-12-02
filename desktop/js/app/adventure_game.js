@@ -23,7 +23,8 @@ aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
 }
 
 aventura.app.AdventureGame.prototype.createNewCharacter = function(name) {
-	this.characters.push(new aventura.app.Character(name));
+	this.currentCharacter = new aventura.app.Character(name);
+	this.characters.push(this.currentCharacter);
 }
 
 aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
@@ -45,6 +46,10 @@ aventura.app.AdventureGame.prototype.isCurrentRoom = function(roomName) {
 
 aventura.app.AdventureGame.prototype.setCurrentCharacter = function(character) {
 	this.currentCharacter = character;
+}
+
+aventura.app.AdventureGame.prototype.getCurrentCharacter = function(character) {
+	return this.currentCharacter;
 }
 
 aventura.app.AdventureGame.prototype.isCurrentCharacter = function(character) {
@@ -99,6 +104,8 @@ aventura.app.AdventureGame.prototype.save = function() {
 
     });
 	this.copyResourceToGameFolder("ns.js");
+	this.copyResourceToGameFolder("async.js");
+	this.copyResourceToGameFolder("lazy_loader.js");
 	this.copyResourceToGameFolder("phaser.min.js");
 	this.copyResourceToGameFolder("game.js");
 	this.copyResourceToGameFolder("player.js");
@@ -132,9 +139,18 @@ aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 
 	json.rooms = {};
 	this.rooms.forEach(function(room) {
-		json.rooms[room.name] = {};
-		json.rooms[room.name].bg = { "id" : room.name, "path" : room.getBg() };
-
+		var roomName = room.getName();
+		var roomBg = room.getBg();
+		var roomBgId = roomName + "_bg"
+		json.rooms[roomName] = {};
+		json.rooms[roomName].bg = { "image" : roomBgId };
+		if (roomBg) {
+			json.resources.push({
+				"name" : roomBgId,
+				"path" : roomBg,
+				"type" : "image"
+			});
+		}
 	});
 
 	json.players = [];
@@ -158,7 +174,7 @@ aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 		}
 
 	});
-	return JSON.stringify(json);
+	return JSON.stringify(json, null, "\t");
 }
 
 
