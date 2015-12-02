@@ -1,11 +1,11 @@
-Player = function (game, group, x, y, walkableAreaManager, exitAreaManager) {
+Player = function (game, spritesheet, group, x, y, walkableAreaManager, exitAreaManager) {
 
 	this.walkableAreaManager = walkableAreaManager;
 	this.exitAreaManager = exitAreaManager;
 
     //  We call the Phaser.Sprite passing in the game reference
     //  We're giving it a random X/Y position here, just for the sake of this demo - you could also pass the x/y in the constructor
-    Phaser.Sprite.call(this, game, x, y, 'player');
+    Phaser.Sprite.call(this, game, x, y, spritesheet);
 
     //game.add.existing(this);
     group.add(this);

@@ -1,21 +1,25 @@
 {
+	"resources" : [
+		{ "name": "ticket", "path" : "ticket.png", "type" : "image" },
+		{ "name": "player1Sprite", "path" : "adventure_time_grid.png", "type" : "spritesheet", "width" : 32, "height" : 48 },
+		{ "name": "bg1", "path" : "bg3.png", "type" : "image" },
+		{ "name": "bg2", "path" : "bg2.png", "type" : "image" }
+	],
+
 	"players" : [
 		{
 			"name" : "player1",
-			"spritesheet" : { 
-					"path" : "adventure_time_grid.png", 
-					"rect" : [32, 48]
-				}, 
+			"spritesheet" : "player1Sprite", 
 			"startRoom" : "room1"			
 		}
 	],
 	"items" : [
-		{ "name" : "ticket", "label" : "Ticket", "visible" : true, "position" : [100, 100], "image" : "ticket"}
+		{ "name" : "ticket", "label" : "Ticket", "visible" : true, "position" : [100, 100], "image" : "ticket" }
 	],
 	"rooms" : {
 
 		"room1" : {
-			"bg" : { "id" : "bg1", "path" : "bg3.png" },
+			"bg" : { "image" : "bg1" },
 			"walkableArea" : [ [0, 300], [25, 240], [40, 240], [70, 300], [671, 350], [671, 448], [0, 448] ],
 			"exits" : [
 				{
@@ -65,7 +69,7 @@
 			]
 		},
 		"room2" : {
-			"bg" : { "id" : "bg2", "path" : "bg2.png" },
+			"bg" : { "image" : "bg2" },
 			"walkableArea" : [ [0, 380], [200, 350], [230, 360], [600, 310], [671, 310], [671, 419], [0, 419] ],
 			"exits" : [
 				{

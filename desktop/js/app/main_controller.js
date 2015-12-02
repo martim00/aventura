@@ -159,7 +159,8 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
     this.askForCharacterSprite = function() {
         this.inputService.askForFile("#sprite-input", function(file, rawData) {
 
-            this.actualGame.setCharacterSprite(file.name, rawData, function() {
+            // TODO: parametrize this 
+            this.actualGame.setCharacterSprite("player1", file.name, 48, 32, rawData, function() {
                 this.invalidateView();
                 console.log("done");
 

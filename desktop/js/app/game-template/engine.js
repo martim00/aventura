@@ -80,54 +80,18 @@ aventura.Engine.prototype.putItemOnInventory = function(itemName) {
     this.inventory.putItem(itemName);
 }
 
-aventura.Engine.prototype.imageLoaded = function(resourceId, fn) {
-    console.log("image loaded");
-    fn(resourceId);
-}
-
-aventura.Engine.prototype.loadLazyImage = function(resourceId, resourcePath, fn) {
-    var loader = new Phaser.Loader(this.game);
-
-    loader.image(resourceId, resourcePath);
-    loader.onLoadComplete.addOnce(this.imageLoaded.bind(this, resourceId, fn));
-    loader.start();
-}
-
-aventura.Engine.prototype.spritesheetLoaded = function(resourceId, fn) {
-    console.log("spritesheet loaded");
-    fn(resourceId);
-}
-
-aventura.Engine.prototype.loadLazySpritesheet = function(resourceId, resourcePath, width, height, fn) {
-    var loader = new Phaser.Loader(this.game);
-
-    loader.spritesheet(resourceId, resourcePath, width, height);
-    loader.onLoadComplete.addOnce(this.spritesheetLoaded.bind(this, resourceId, fn));
-    loader.start();
-}
-
 aventura.Engine.prototype.createGroups = function() {
     this.backLayer = this.game.add.group();
     this.frontLayer = this.game.add.group();
 }
 
 aventura.Engine.prototype.configureBackground = function(roomData) {
-    
-
-    //this.game.add.sprite(0, 0, roomData.bg);
-    this.loadLazyImage(roomData.bg.id, roomData.bg.path, function(resourceId) {
-        //this.game.add.sprite(0, 0, resourceId);
-        this.backLayer.create(0, 0, resourceId);
-    }.bind(this));
+    this.backLayer.create(0, 0, roomData.bg.image);
 }
 
 aventura.Engine.prototype.configurePlayerAt = function(x, y, playerData) {
-    this.loadLazySpritesheet("player", 
-        playerData.spritesheet.path, playerData.spritesheet.rect[0], 
-        playerData.spritesheet.rect[1], function(resourceId) {
-            this.player = new Player(this.game, this.frontLayer, x, y, this.walkableAreaManager, this.exitAreaManager);
-            this.mouseHandlers.push(this.player);
-    }.bind(this));
+    this.player = new Player(this.game, playerData.spritesheet, this.frontLayer, x, y, this.walkableAreaManager, this.exitAreaManager);
+    this.mouseHandlers.push(this.player);
 }
 
 aventura.Engine.prototype.createClickableAreas = function(roomData) {
@@ -162,4 +126,33 @@ aventura.Engine.prototype.containsItem = function(itemName) {
 aventura.Engine.prototype.goToRoom = function(roomName, playerStart) {
     this.game.state.start("room", true, false, roomName, playerStart, this);
 }
+
+aventura.Engine.prototype.loadAndStart = function() {
+
+    var lazyLoader = new aventura.LazyLoader(this.game);
+
+    async.each(this.data.resources, function(resource, callback) {
+        if (resource.type === 'image') {
+            lazyLoader.loadLazyImage(resource.name, resource.path, function() {
+                callback();
+            });
+        }
+        else if (resource.type === 'spritesheet') {
+            lazyLoader.loadLazySpritesheet(resource.name, resource.path, resource.width, resource.height, function() {
+                callback();
+            });
+
+        }
+
+    }, function(err) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            this.game.state.start("room", true, false, "room1", [32, 350], this);
+        }
+
+    }.bind(this));
+}
+
 

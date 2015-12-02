@@ -20,10 +20,10 @@ load.prototype = {
 		game.load.text("gameData", "game.json");
 
 	},
-  	create: function(){
+  	create: function() {
 		//this.game.state.start("menu");
-		this.engine = new aventura.Engine(this.game);
-		this.game.state.start("room", true, false, "room1", [32, 350], this.engine);
 
+        this.engine = new aventura.Engine(this.game);
+        this.engine.loadAndStart();
 	}
 }

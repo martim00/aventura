@@ -9,7 +9,6 @@ aventura.Inventory = function(game, engine) {
 
 	this.inventoryItems = [];
 
-
     this.x = 100;
     this.y = 10;
     this.width = 500;

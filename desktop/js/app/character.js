@@ -2,13 +2,21 @@ goog.provide('aventura.app.Character');
 
 aventura.app.Character = function(name) {
 	this.name = name;
-	this.spritePath = "";
+	this.spriteSheet = null;
 }
 
-aventura.app.Character.prototype.setSprite = function(spritePath) {
-	this.spritePath = spritePath;
+aventura.app.Character.prototype.setSprite = function(spriteSheet) {
+	this.spriteSheet = spriteSheet;
 }
 
 aventura.app.Character.prototype.getSprite = function() {
-	return this.spritePath;
+	return this.spriteSheet;
+}
+
+aventura.app.Character.prototype.getName = function() {
+	return this.name;
+}
+
+aventura.app.Character.prototype.hasSprite = function() {
+	return this.spriteSheet != null;
 }

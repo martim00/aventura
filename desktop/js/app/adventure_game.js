@@ -63,12 +63,10 @@ aventura.app.AdventureGame.prototype.setCurrentRoomBg =
 /*
 *	Sets the current character sprite
 */
-aventura.app.AdventureGame.prototype.setCharacterSprite = 
-	function(filename, rawData, fn) {
-
+aventura.app.AdventureGame.prototype.setCharacterSprite = function(name, filename, width, height, rawData, fn) {
 	DbC.require(this.currentCharacter != undefined, "should have a current character to set its sprite");
 
-    this.currentCharacter.setSprite(filename);
+    this.currentCharacter.setSprite(new aventura.app.SpriteSheet(name, filename, width, height));
 	this.copyFileToGameFolder(filename, rawData, fn);
 }
 
@@ -83,7 +81,7 @@ aventura.app.AdventureGame.prototype.getCurrentCharacterSprite = function() {
 	if (!this.currentCharacter || this.currentCharacter.getSprite() == undefined)
 		return "";
 
-	return this.getAbsPath(this.currentCharacter.getSprite());
+	return this.getAbsPath(this.currentCharacter.getSprite().getPath());
 }
 
 aventura.app.AdventureGame.prototype.getAbsPath = function(relativePath) {
@@ -130,19 +128,35 @@ aventura.app.AdventureGame.prototype.copyResourceToGameFolder = function(filenam
 
 aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 	var json = {};
+	json.resources = [];
+
 	json.rooms = {};
 	this.rooms.forEach(function(room) {
 		json.rooms[room.name] = {};
 		json.rooms[room.name].bg = { "id" : room.name, "path" : room.getBg() };
 
 	});
+
+	json.players = [];
 	this.characters.forEach(function(character) {
-		json.players[character.name] = {};
-		json.players[character.name].spritesheet = {
-			"path" : character.spritePath ,
-			"size" : [32, 48]
-		};
-		json.players[character.name].startRoom = "room1" // TODO: allow to configure in gui
+		json.players.push({
+			"name" : character.getName(), 
+			"spritesheet" : character.hasSprite() ? character.getSprite().getName() : "",
+			"startRoom" : "room1" // TODO: allow to configure in gui
+		});
+
+		if (character.hasSprite()) {
+
+			json.resources.push({
+				"name" : character.getSprite().getName(), 
+				"path" : character.getSprite().getPath(), 
+				"type" : "spritesheet",
+				"width" : character.getSprite().getWidth(),
+				"height" : character.getSprite().getHeight(),
+			});
+
+		}
+
 	});
 	return JSON.stringify(json);
 }
