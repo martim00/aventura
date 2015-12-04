@@ -4,8 +4,8 @@
 back: #F9F8F8;
 button-strong: #7E7F9A; 
 room-selected : #F3DE8A
-room-unselected : #EB9486
-room-list-item:hover #BEC0DB;
+room-unselected : #BEC0DB
+room-list-item:hover #F3DE8A;
 */
 
 body{
@@ -114,7 +114,7 @@ body{
 }
 
 .rooms-list-item:hover {
-    background-color:#BEC0DB;
+    background-color:#F3DE8A;
     color:#fff;
     cursor: pointer;
 }
@@ -124,7 +124,7 @@ body{
 }
 
 .room-unselected {
-    background-color: #EB9486;
+    background-color: #BEC0DB;
 }
 
 .thumb {

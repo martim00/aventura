@@ -106,7 +106,7 @@
             <div id="rooms">
               <div class="accordion-tools"><a ng-click="mainController.createNewRoom()" href="">+</a></div>
               <ul class="rooms-list">
-                <li class="rooms-list-item room-{{mainController.getRoomStyle(room.name)}}" ng-repeat="room in mainController.actualGame.rooms" ng-click="mainController.setSelectedRoom(room.name)">
+                <li class="rooms-list-item room-{{mainController.getRoomStyle(room.name)}}" ng-repeat="room in mainController.actualGame.rooms" ng-click="mainController.setSelectedRoom(room)">
                     <span>{{room.name}}</span>
                 </li>
               </ul>

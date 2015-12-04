@@ -36,8 +36,8 @@ aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
 	return null;
 }
 
-aventura.app.AdventureGame.prototype.setCurrentRoom = function(roomName) {
-	this.currentRoom = this.getRoomByName(roomName);
+aventura.app.AdventureGame.prototype.setCurrentRoom = function(room) {
+	this.currentRoom = room;
 }
 
 aventura.app.AdventureGame.prototype.isCurrentRoom = function(roomName) {

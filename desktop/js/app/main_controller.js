@@ -13,6 +13,7 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
     this.initializeTestValues = function() {
         this.actualGame.createNewRoom("room1");
         this.actualGame.currentRoom.bg = "bg3.png";
+        this.setSelectedRoom(this.actualGame.currentRoom);
         this.actualGame.createNewCharacter("hero");
         this.actualGame.getCurrentCharacter()
             .setSprite(new aventura.app.SpriteSheet("hero1", "adventure_time_grid.png", 32, 48));
@@ -40,12 +41,69 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
 
         }.bind(this));
 
-        /*fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
-            this.canvas.add(oImg);
-            var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
-            path.set({ left: 120, top: 120 });
-            this.canvas.add(path);
-        }.bind(this));*/
+        var mode = "add",
+            currentShape;
+
+        this.canvas.observe("mouse:move", function (event) {
+            var pos = this.canvas.getPointer(event.e);
+            if (mode === "edit" && currentShape) {
+                var points = currentShape.get("points");
+                points[points.length - 1].x = pos.x - currentShape.get("left");
+                points[points.length - 1].y = pos.y - currentShape.get("top");
+                currentShape.set({
+                    points: points
+                });
+                this.canvas.renderAll();
+            }
+        }.bind(this));
+
+        this.canvas.observe("mouse:down", function (event) {
+            var pos = this.canvas.getPointer(event.e);
+
+            if (mode === "add") {
+                var polygon = new fabric.Polygon([{
+                    x: pos.x,
+                    y: pos.y
+                }, {
+                    x: pos.x + 0.5,
+                    y: pos.y + 0.5
+                }], {
+                    fill: 'blue',
+                    opacity: 0.5,
+                    selectable: false
+                });
+                currentShape = polygon;
+                this.canvas.add(currentShape);
+                mode = "edit";
+            } else if (mode === "edit" && currentShape && currentShape.type === "polygon") {
+                var points = currentShape.get("points");
+                points.push({
+                    x: pos.x - currentShape.get("left"),
+                    y: pos.y - currentShape.get("top")
+                });
+                currentShape.set({
+                    points: points
+                });
+                this.canvas.renderAll();
+            }
+        }.bind(this));
+
+        fabric.util.addListener(window, 'keyup', function (e) {
+            if (e.keyCode === 27) {
+                if (mode === 'edit' || mode === 'add') {
+                    mode = 'normal';
+                    currentShape.set({
+                        selectable: true
+                    });
+                    currentShape._calcDimensions(false);
+                    currentShape.setCoords();
+                } else {
+                    mode = 'add';
+                }
+                currentShape = null;
+            }
+        });
+
     };
 
     this.invalidateCanvas = function() {
@@ -176,8 +234,6 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
         this.actualGame.setCurrentRoom(room);
         this.invalidateCanvas();
         this.elementSelected = 'room';
-        $scope.$apply();
-
     };
 
     this.getRoomStyle = function(room) {
