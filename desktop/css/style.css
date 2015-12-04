@@ -1,5 +1,14 @@
 *{margin: 0; padding: 0;}
 
+@font-face {
+    font-family: 'silkscreen'; /*a name to be used later*/
+    src: url('../font/slkscre.ttf');
+    /*src: url('../font/04B_30__.TTF'); */
+    /*src: url('../font/digiffiti.ttf');*//
+    /*src: url('../font/thin_pixel-7.ttf');*/
+    /*src: url('../font/V5Xtende.ttf');*/
+}
+
 /*
 back: #F9F8F8;
 button-strong: #7E7F9A; 
@@ -9,12 +18,13 @@ room-list-item:hover #F3DE8A;
 */
 
 body{
-    font-family: arial, helvetica, sans-serif;
+    /*font-family: arial, helvetica, sans-serif;*/
+    font-family: 'silkscreen';
     font-size: 12px;
 }
 
 .menu{
-    width: 50px;
+    width: 55;
     list-style:none;
     margin-bottom: 0px;
     display: inline-block;
@@ -37,7 +47,7 @@ body{
 }
 
 .menu li a:hover{
-    background:#C5EBC3;
+    background:#BEC0DB;
     color:#fff;
     /*-moz-box-shadow:0 3px 10px 0 #CCC;*/
     /*-webkit-box-shadow:0 3px 10px 0 #ccc;*/
@@ -110,7 +120,7 @@ body{
 .rooms-list-item {
     margin: 2px;
     padding-left: 8px;
-    border: 1px solid black;
+    border: 1px solid #ccc;
 }
 
 .rooms-list-item:hover {
@@ -120,11 +130,11 @@ body{
 }
 
 .room-selected {
-    background-color: #F3DE8A;
+    background-color: #CADED9;
 }
 
 .room-unselected {
-    background-color: #BEC0DB;
+    background-color: #F0FAFA;
 }
 
 .thumb {
@@ -160,7 +170,7 @@ body{
     cursor: pointer;
     background-color: #7E7F9A;
     color: #fff;
-    border: 1px solid black;
+    border: 1px solid #ccc;
     text-align: center;
 }
 
@@ -170,11 +180,11 @@ body{
 }
 
 .character-selected {
-    background-color: #B7C8B5;
+    background-color: #CADED9;
 }
 
 .character-unselected {
-    background-color: #C5EBC3;
+    background-color: #F0FAFA;
 }
 
 .run-button {

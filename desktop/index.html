@@ -32,6 +32,9 @@
       <script src="js/app/file_service.js"></script>
       <script src="js/app/input_service.js"></script>
       <script src="js/app/preview_service.js"></script>
+      <script src="js/app/draw_interaction.js"></script>
+      <script src="js/app/draw_tool.js"></script>
+      <script src="js/app/editor_canvas.js"></script>
       <script src="js/app/main_controller.js"></script>
       <script src="js/app/game_room.js"></script>
       <script src="js/app/sprite_sheet.js"></script>
@@ -134,6 +137,7 @@
                 <!--<output id="list"></output>-->
                 <input id="bg-input" type="file" name="bg-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
                 <li><label>clickable areas: </label><span>..</span></li>
+                <li><label>walkable areas: </label><span><a ng-click="mainController.askForWalkableArea()" href="">..</a></span></li>
 
             </ul>
           </div>

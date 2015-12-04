@@ -7,6 +7,7 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
     this.actualGame = new aventura.app.AdventureGame("Unnamed game", 
         "C:/Users/Aniceto/workspace/aventura/desktop/game-folder", 600, 600);
 
+    this.canvas = new aventura.app.EditorCanvas();
 
     this.elementSelected = undefined;
 
@@ -22,134 +23,13 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
 
 
     this.initializeCanvas = function() {
-        //this.canvas = new fabric.CanvasWithViewport('main-canvas');
-        this.canvas = new fabric.Canvas('main-canvas');
-        //this.canvas.setBackgroundColor("rgba(255, 73, 64, 0.6)");
-        this.canvas.setDimensions({width: this.actualGame.width, height: this.actualGame.height});
-
-        $(".canvas-container").on('mousewheel', function(e) {
-            var delta = e.originalEvent.wheelDelta / 120;
-            console.log(delta);
-
-            /*if (delta > 0)
-                this.canvas.setZoom(this.canvas.viewport.zoom * 1.1);
-            else 
-                this.canvas.setZoom(this.canvas.viewport.zoom / 1.1);
-            */
-           // console.log(zoom);
-            //this.canvas.setZoom(zoom);
-
-        }.bind(this));
-
-        var mode = "add",
-            currentShape;
-
-        this.canvas.observe("mouse:move", function (event) {
-            var pos = this.canvas.getPointer(event.e);
-            if (mode === "edit" && currentShape) {
-                var points = currentShape.get("points");
-                points[points.length - 1].x = pos.x - currentShape.get("left");
-                points[points.length - 1].y = pos.y - currentShape.get("top");
-                currentShape.set({
-                    points: points
-                });
-                this.canvas.renderAll();
-            }
-        }.bind(this));
-
-        this.canvas.observe("mouse:down", function (event) {
-            var pos = this.canvas.getPointer(event.e);
-
-            if (mode === "add") {
-                var polygon = new fabric.Polygon([{
-                    x: pos.x,
-                    y: pos.y
-                }, {
-                    x: pos.x + 0.5,
-                    y: pos.y + 0.5
-                }], {
-                    fill: 'blue',
-                    opacity: 0.5,
-                    selectable: false
-                });
-                currentShape = polygon;
-                this.canvas.add(currentShape);
-                mode = "edit";
-            } else if (mode === "edit" && currentShape && currentShape.type === "polygon") {
-                var points = currentShape.get("points");
-                points.push({
-                    x: pos.x - currentShape.get("left"),
-                    y: pos.y - currentShape.get("top")
-                });
-                currentShape.set({
-                    points: points
-                });
-                this.canvas.renderAll();
-            }
-        }.bind(this));
-
-        fabric.util.addListener(window, 'keyup', function (e) {
-            if (e.keyCode === 27) {
-                if (mode === 'edit' || mode === 'add') {
-                    mode = 'normal';
-                    currentShape.set({
-                        selectable: true
-                    });
-                    currentShape._calcDimensions(false);
-                    currentShape.setCoords();
-                } else {
-                    mode = 'add';
-                }
-                currentShape = null;
-            }
-        });
-
+        this.canvas.init(this.actualGame);
     };
 
     this.invalidateCanvas = function() {
 
-        this.canvas.clear();
+        this.canvas.invalidate();
 
-        fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
-            //oImg.scale(this.canvas.width / oImg.width 
-//                , this.canvas.height / oImg.height );
-            
-            oImg.set({
-                width: this.canvas.width,
-                height: this.canvas.height,
-                selectable: false
-            });
-
-            //oImg.alignX = 'none';
-            //oImg.alignY = 'none';
-            //oImg.meetOrSlice = 'slice'
-
-            this.canvas.add(oImg);
-
-            //this.canvas.setBackgroundImage(oImg);
-            //var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
-            //path.set({ left: 120, top: 120 });
-            //this.canvas.add(path);
-        }.bind(this));
-
-        // create a rectangle object
-        var rect = new fabric.Rect({
-            left: 0,
-            top: 0,
-            fill: 'rgba(100,200,200,0.5)',
-            width: this.canvas.width - 1,
-            height: this.canvas.height - 1,
-            strokeWidth: 1, 
-            strokeDashArray: [5, 5],
-            stroke: 'rgba(0,0,0,0.5)',
-            selectable: false
-        });
-
-        // "add" rectangle onto canvas
-        this.canvas.add(rect);
-
-
-        //$scope.$apply();
     };
 
     this.makeNewGame = function() {
@@ -211,6 +91,11 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
 
         }.bind(this));
     };
+
+    this.askForWalkableArea = function() {
+        var tool = new aventura.app.DrawTool(this.canvas, this.actualGame);
+        tool.activate();
+    }
 
     this.invalidateView = function() {
         $scope.$apply();
