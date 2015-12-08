@@ -13,9 +13,10 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 	this.actualGame = actualGame;
 
     //this.canvas = new fabric.CanvasWithViewport('main-canvas');
-    this.canvas = new fabric.Canvas('main-canvas');
+    this.canvas = new fabric.CanvasEx('main-canvas');
     //this.canvas.setBackgroundColor("rgba(255, 73, 64, 0.6)");
     this.canvas.setDimensions({width: this.actualGame.width, height: this.actualGame.height});
+    this.canvas.freeDrawingCursor='url(http://ani.cursors-4u.net/movie/mov-2/mov130.cur),default';
 
     $(".canvas-container").on('mousewheel', function(e) {
         var delta = e.originalEvent.wheelDelta / 120;

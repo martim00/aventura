@@ -92,9 +92,15 @@ app.controller('MainController', ["inputService", "previewService", "$scope", fu
         }.bind(this));
     };
 
+    this.setActiveTool = function(tool) {
+        if (this.activeTool)
+            this.activeTool.deactivate();
+        this.activeTool = tool;
+        this.activeTool.activate();
+    }
+
     this.askForWalkableArea = function() {
-        var tool = new aventura.app.DrawTool(this.canvas, this.actualGame);
-        tool.activate();
+        this.setActiveTool(new aventura.app.DrawTool(this.canvas, this.actualGame));
     }
 
     this.invalidateView = function() {
