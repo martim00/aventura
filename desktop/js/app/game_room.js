@@ -1,8 +1,11 @@
 goog.provide('aventura.app.GameRoom');
 
-aventura.app.GameRoom = function(name) {
+aventura.app.GameRoom = function(name, width, height) {
 	this.name = name;
 	this.bg;
+	this.walkableAreas = [];
+	this.width = width;
+	this.height = height;
 }
 
 aventura.app.GameRoom.prototype.setBg = function(bg) {
@@ -19,4 +22,31 @@ aventura.app.GameRoom.prototype.setName = function(name) {
 
 aventura.app.GameRoom.prototype.getName = function() {
 	return this.name;
+}
+
+aventura.app.GameRoom.prototype.createWalkableArea = function(polygon) {
+	var walkableArea = new aventura.app.WalkableArea(polygon);
+	this.walkableAreas.push(walkableArea);
+}
+
+aventura.app.GameRoom.prototype.serialize = function(json) {
+
+	var roomBgId = this.name + "_bg"
+	json.rooms[this.name] = {};
+	json.rooms[this.name].bg = { "image" : roomBgId, "width" : this.width, "height" : this.height };
+	if (this.bg) {
+		json.resources.push({
+			"name" : roomBgId,
+			"path" : this.bg,
+			"type" : "image"
+		});
+	}
+
+	this.walkableAreas.forEach(function(walkableArea) {
+		var points = walkableArea.getPoints();
+		json.rooms[this.name].walkableArea = points;
+
+	}.bind(this));
+
+	//"walkableArea" : [ [0, 300], [25, 240], [40, 240], [70, 300], [671, 350], [671, 448], [0, 448] ]
 }

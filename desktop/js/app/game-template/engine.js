@@ -7,6 +7,8 @@ aventura.Engine = function(game) {
     this.game = game;    
     this.data = JSON.parse(this.game.cache.getText('gameData'));
 
+    this.game.scale.setGameSize(600, 600);
+
     this.walkableAreaManager = new aventura.WalkableAreaManager(game, this);
     this.clickableAreaManager = new aventura.ClickableAreaManager(game, this);
     this.exitAreaManager = new aventura.ExitAreaManager(game, this);
@@ -86,7 +88,9 @@ aventura.Engine.prototype.createGroups = function() {
 }
 
 aventura.Engine.prototype.configureBackground = function(roomData) {
-    this.backLayer.create(0, 0, roomData.bg.image);
+    var bg = this.backLayer.create(0, 0, roomData.bg.image);
+    bg.width = roomData.bg.width;
+    bg.height = roomData.bg.height;
 }
 
 aventura.Engine.prototype.configurePlayerAt = function(x, y, playerData) {
@@ -149,7 +153,7 @@ aventura.Engine.prototype.loadAndStart = function() {
             console.log(err);
         }
         else {
-            this.game.state.start("room", true, false, "room1", [32, 350], this);
+            this.game.state.start("room", true, false, "room1", [32, 500], this);
         }
 
     }.bind(this));

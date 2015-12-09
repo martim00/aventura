@@ -8,13 +8,21 @@ aventura.app.DrawInteraction = function(canvasEditor) {
 	this.onMouseDblClickHandler = this.onMouseDoubleClicked.bind(this);
 	this.onMouseMoveHandler = this.onMouseMove.bind(this);
 	this.onMouseDownHandler = this.onMouseDown.bind(this);
+
+	this.onPolygonCompletedHandlers = [];
 }
+
+//http://stackoverflow.com/questions/28769421/wrong-border-coords-on-draw-a-polygon-with-the-fabric-js
+
 aventura.app.DrawInteraction.prototype.onMouseMove = function(event) {
 //function onMouseMove(event) {
     var pos = this.canvas.getPointer(event.e);
+    //console.log(pos);
     if (this.mode === "edit" && this.currentShape) {
         var points = this.currentShape.get("points");
-        points[points.length - 1].x = pos.x - this.currentShape.get("left");
+        //points[points.length - 1].x = pos.x;        
+        //points[points.length - 1].y = pos.y;
+        points[points.length - 1].x = pos.x - this.currentShape.get("left");        
         points[points.length - 1].y = pos.y - this.currentShape.get("top");
         this.currentShape.set({
             points: points
@@ -45,10 +53,13 @@ aventura.app.DrawInteraction.prototype.onMouseDown = function(event) {
         this.canvas.add(this.currentShape);
         this.mode = "edit";
     } else if (this.mode === "edit" && this.currentShape && this.currentShape.type === "polygon") {
+    	console.log("mouse down " + pos.x + ", " + pos.y);
         var points = this.currentShape.get("points");
         points.push({
             x: pos.x - this.currentShape.get("left"),
             y: pos.y - this.currentShape.get("top")
+            //x: pos.x,
+            //y: pos.y
         });
         this.currentShape.set({
             points: points
@@ -98,6 +109,8 @@ aventura.app.DrawInteraction.prototype.onMouseDoubleClicked = function(options) 
 
     this.canvas.renderAll();
 
+    this.callOnPolygonCompletedHandlers(this.currentShape);
+
     /*this.currentShape.set({
     	selectable: true
     });
@@ -142,4 +155,35 @@ aventura.app.DrawInteraction.prototype.start = function() {
             currentShape = null;
         }
     });*/
+}
+
+aventura.app.DrawInteraction.prototype.onPolygonCompleted = function(fn) {
+	this.onPolygonCompletedHandlers.push(fn);
+}
+
+aventura.app.DrawInteraction.prototype.callOnPolygonCompletedHandlers = function(polygon) {
+
+	var pCenter = polygon.getCenterPoint();
+	var l = polygon.get("left");
+    var t = polygon.get("top");
+     var minx = polygon.get("minX");
+    var miny = polygon.get("minY");
+
+	var points = polygon.get('points').map(function(point) {
+		return {
+			//x: point.x + pCenter.x - l + minx,
+            //y: point.y + pCenter.y - t + miny
+            x: point.x + pCenter.x,
+            y: point.y + pCenter.y
+			
+        };
+	});
+
+	polygon.set({
+        points: points
+    });
+
+	this.onPolygonCompletedHandlers.forEach(function(handler) {
+		handler(polygon);
+	});
 }

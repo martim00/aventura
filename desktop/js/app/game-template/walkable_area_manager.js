@@ -14,7 +14,7 @@ aventura.WalkableAreaManager.prototype.init = function(roomData) {
 
 	var polygonArray = [];
 	roomData.walkableArea.forEach(function(point) {
-		polygonArray.push(new Phaser.Point(point[0], point[1]));
+		polygonArray.push(new Phaser.Point(point['x'], point['y']));
 	});
 	
 	this.walkableArea.setTo(polygonArray);

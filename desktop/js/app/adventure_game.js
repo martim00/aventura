@@ -12,12 +12,13 @@ aventura.app.AdventureGame = function(name, folder, width, height) {
 	this.height = height;
 	this.rooms = [];
 	this.characters = [];
+	this.walkableAreas = [];
 	this.currentRoom = undefined;
 	this.currentCharacter = undefined;
 }
 
 aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
-	var room = new aventura.app.GameRoom(roomName);
+	var room = new aventura.app.GameRoom(roomName, this.width, this.height);
 	this.rooms.push(room);
 	this.currentRoom = room;
 }
@@ -25,6 +26,10 @@ aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
 aventura.app.AdventureGame.prototype.createNewCharacter = function(name) {
 	this.currentCharacter = new aventura.app.Character(name);
 	this.characters.push(this.currentCharacter);
+}
+
+aventura.app.AdventureGame.prototype.createWalkableArea = function(polygon) {
+	this.currentRoom.createWalkableArea(polygon);
 }
 
 aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
@@ -139,18 +144,9 @@ aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 
 	json.rooms = {};
 	this.rooms.forEach(function(room) {
-		var roomName = room.getName();
-		var roomBg = room.getBg();
-		var roomBgId = roomName + "_bg"
-		json.rooms[roomName] = {};
-		json.rooms[roomName].bg = { "image" : roomBgId };
-		if (roomBg) {
-			json.resources.push({
-				"name" : roomBgId,
-				"path" : roomBg,
-				"type" : "image"
-			});
-		}
+
+		room.serialize(json);
+
 	});
 
 	json.players = [];
