@@ -7,7 +7,7 @@ aventura.Engine = function(game) {
     this.game = game;    
     this.data = JSON.parse(this.game.cache.getText('gameData'));
 
-    this.game.scale.setGameSize(600, 600);
+    this.game.scale.setGameSize(this.data.width, this.data.height);
 
     this.walkableAreaManager = new aventura.WalkableAreaManager(game, this);
     this.clickableAreaManager = new aventura.ClickableAreaManager(game, this);
@@ -153,7 +153,8 @@ aventura.Engine.prototype.loadAndStart = function() {
             console.log(err);
         }
         else {
-            this.game.state.start("room", true, false, "room1", [32, 500], this);
+            //this.game.state.start("room", true, false, "room1", [32, 500], this);
+            this.game.state.start("room", true, false, "room1", [32, 400], this);
         }
 
     }.bind(this));

@@ -1,7 +1,9 @@
-goog.provide('aventura.app.AdventureGame');
+ns.provide('aventura.app.AdventureGame');
+
+/*goog.provide('aventura.app.AdventureGame');
 
 goog.require('aventura.app.GameRoom');
-goog.require('aventura.app.Character');
+goog.require('aventura.app.Character');*/
 
 var path = require('path');
 
@@ -17,6 +19,14 @@ aventura.app.AdventureGame = function(name, folder, width, height) {
 	this.currentCharacter = undefined;
 }
 
+aventura.app.AdventureGame.prototype.getCharacters = function() {
+	return this.characters;
+}
+
+aventura.app.AdventureGame.prototype.getRooms = function() {
+	return this.rooms;
+}
+
 aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
 	var room = new aventura.app.GameRoom(roomName, this.width, this.height);
 	this.rooms.push(room);
@@ -28,8 +38,8 @@ aventura.app.AdventureGame.prototype.createNewCharacter = function(name) {
 	this.characters.push(this.currentCharacter);
 }
 
-aventura.app.AdventureGame.prototype.createWalkableArea = function(polygon) {
-	this.currentRoom.createWalkableArea(polygon);
+aventura.app.AdventureGame.prototype.createWalkableArea = function(points) {
+	this.currentRoom.createWalkableArea(points);
 }
 
 aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
@@ -140,37 +150,29 @@ aventura.app.AdventureGame.prototype.copyResourceToGameFolder = function(filenam
 
 aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 	var json = {};
+	json.width = this.width;
+	json.height = this.height;
 	json.resources = [];
 
 	json.rooms = {};
 	this.rooms.forEach(function(room) {
-
 		room.serialize(json);
-
 	});
 
 	json.players = [];
 	this.characters.forEach(function(character) {
-		json.players.push({
-			"name" : character.getName(), 
-			"spritesheet" : character.hasSprite() ? character.getSprite().getName() : "",
-			"startRoom" : "room1" // TODO: allow to configure in gui
-		});
-
-		if (character.hasSprite()) {
-
-			json.resources.push({
-				"name" : character.getSprite().getName(), 
-				"path" : character.getSprite().getPath(), 
-				"type" : "spritesheet",
-				"width" : character.getSprite().getWidth(),
-				"height" : character.getSprite().getHeight(),
-			});
-
-		}
+		character.serialize(json);
 
 	});
 	return JSON.stringify(json, null, "\t");
+}
+
+aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
+
+	var json = JSON.parse(jsonAsString);
+	this.width = json.width;
+	this.height = json.height;
+
 }
 
 

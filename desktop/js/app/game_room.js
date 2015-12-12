@@ -24,8 +24,8 @@ aventura.app.GameRoom.prototype.getName = function() {
 	return this.name;
 }
 
-aventura.app.GameRoom.prototype.createWalkableArea = function(polygon) {
-	var walkableArea = new aventura.app.WalkableArea(polygon);
+aventura.app.GameRoom.prototype.createWalkableArea = function(points) {
+	var walkableArea = new aventura.app.WalkableArea(points);
 	this.walkableAreas.push(walkableArea);
 }
 

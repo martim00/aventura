@@ -179,11 +179,9 @@ aventura.app.DrawInteraction.prototype.callOnPolygonCompletedHandlers = function
         };
 	});
 
-	polygon.set({
-        points: points
-    });
 
 	this.onPolygonCompletedHandlers.forEach(function(handler) {
-		handler(polygon);
+		handler(points);
 	});
+
 }

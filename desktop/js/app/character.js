@@ -3,6 +3,7 @@ goog.provide('aventura.app.Character');
 aventura.app.Character = function(name) {
 	this.name = name;
 	this.spriteSheet = null;
+	this.startRoom = null;
 }
 
 aventura.app.Character.prototype.setSprite = function(spriteSheet) {
@@ -20,3 +21,42 @@ aventura.app.Character.prototype.getName = function() {
 aventura.app.Character.prototype.hasSprite = function() {
 	return this.spriteSheet != null;
 }
+
+aventura.app.Character.prototype.getStartRoom = function() {
+	return this.startRoom;
+}
+
+aventura.app.Character.prototype.setStartRoom = function(room) {
+	this.startRoom = room;
+}
+
+aventura.app.Character.prototype.hasStartRoom = function() {
+	return this.startRoom != null;
+}
+
+aventura.app.Character.prototype.serialize = function(json) {
+
+	if (!this.hasStartRoom())
+		console.log("You are saving a character without start room. This will fail to start him");
+
+	var room = this.getStartRoom();
+
+	json.players.push({
+		"name" : this.getName(), 
+		"spritesheet" : this.hasSprite() ? this.getSprite().getName() : "",
+		"startRoom" : this.hasStartRoom() ? this.getStartRoom().getName() : ""
+	});
+
+	if (this.hasSprite()) {
+
+		json.resources.push({
+			"name" : this.getSprite().getName(), 
+			"path" : this.getSprite().getPath(), 
+			"type" : "spritesheet",
+			"width" : this.getSprite().getWidth(),
+			"height" : this.getSprite().getHeight(),
+		});
+
+	}
+}
+

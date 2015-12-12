@@ -11,8 +11,8 @@ aventura.app.DrawTool = function(canvas, actualGame) {
 	this.drawInteraction.onPolygonCompleted(this.addWalkableArea.bind(this));
 }
 
-aventura.app.DrawTool.prototype.addWalkableArea = function(polygon) {
-	this.actualGame.createWalkableArea(polygon);
+aventura.app.DrawTool.prototype.addWalkableArea = function(points) {
+	this.actualGame.createWalkableArea(points);
 }
 
 aventura.app.DrawTool.prototype.activate = function() {

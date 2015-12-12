@@ -203,6 +203,14 @@ body{
 
 }
 
+.spinner-float {
+    width: 35px;
+}
+
+.ui-spinner-button {
+    cursor: pointer;
+}
+
 /*
 https://coolors.co/272838-f3de8a-eb9486-7e7f9a-f9f8f8
 https://coolors.co/ecba82-81c14b-2e933c-297045-204e4a
