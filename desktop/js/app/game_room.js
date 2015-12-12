@@ -1,4 +1,4 @@
-goog.provide('aventura.app.GameRoom');
+ns.provide('aventura.app.GameRoom');
 
 aventura.app.GameRoom = function(name, width, height) {
 	this.name = name;
