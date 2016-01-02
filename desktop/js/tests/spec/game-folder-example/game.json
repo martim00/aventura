@@ -21,9 +21,7 @@
 	"rooms" : {
 
 		"room1" : {
-			"width" : 671, 
-			"height" : 419,
-			"bg" : { "image" : "bg1" },
+			"bg" : { "image" : "bg1", "width" : 671, "height" : 419 },
 			"walkableArea" : [ 
 				{ "x" : 0, "y" : 300 }, 
 				{ "x" : 25, "y" : 240 }, 
@@ -80,9 +78,7 @@
 			]
 		},
 		"room2" : {
-			"width" : 671, 
-			"height" : 419,
-			"bg" : { "image" : "bg2" },
+			"bg" : { "image" : "bg2", "width" : 671, "height" : 419 },
 			"walkableArea" : [ 
 				{ "x" : 0, "y" : 380 }, 
 				{ "x" : 200, "y" : 350 }, 

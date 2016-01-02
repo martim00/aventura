@@ -33,7 +33,9 @@ aventura.app.GameRoom.prototype.serialize = function(json) {
 
 	var roomBgId = this.name + "_bg"
 	json.rooms[this.name] = {};
-	json.rooms[this.name].bg = { "image" : roomBgId, "width" : this.width, "height" : this.height };
+	json.rooms[this.name].width = this.width;
+	json.rooms[this.name].height = this.height;
+	json.rooms[this.name].bg = { "image" : roomBgId };
 	if (this.bg) {
 		json.resources.push({
 			"name" : roomBgId,

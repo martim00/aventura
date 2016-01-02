@@ -89,8 +89,8 @@ aventura.Engine.prototype.createGroups = function() {
 
 aventura.Engine.prototype.configureBackground = function(roomData) {
     var bg = this.backLayer.create(0, 0, roomData.bg.image);
-    bg.width = roomData.bg.width;
-    bg.height = roomData.bg.height;
+    bg.width = roomData.width;
+    bg.height = roomData.height;
 }
 
 aventura.Engine.prototype.configurePlayerAt = function(x, y, playerData) {

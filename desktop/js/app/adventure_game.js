@@ -175,15 +175,38 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
 
 	for (var roomName in json.rooms) {
   		if (json.rooms.hasOwnProperty(roomName)) {
-  			var room = json.rooms[roomName]
-  			var gameRoom = new aventura.app.GameRoom(roomName, json.width, json.height); // width and height is same for all rooms
+  			var room = json.rooms[roomName];
+  			var width = room.width;
+  			var height = room.height;
+  			var gameRoom = new aventura.app.GameRoom(roomName, width, height); 
 			this.rooms.push(gameRoom); 
 			if (room.bg)
 				gameRoom.setBg(room.bg.image);
 		}
   	}
 
+  	if (this.rooms.length > 0) {
+  		this.currentRoom = this.rooms[0];
+  	}
+}
 
+aventura.app.AdventureGame.prototype.open = function(folder, fn) {
+    var gameFile = path.resolve(folder, "game.json");
+    try {
+    	var content = readFile(gameFile);
+    	this.load(content);
+
+	} catch(e) {
+		throw new Error("the folder should have a game.json file");
+
+	}
+
+	/*readFile(gameFile, function(err, data) {
+		if (err)
+			fn(new Error("the folder should have a game.json file"));
+
+		this.load(data);
+	}.bind(this));*/
 }
 
 

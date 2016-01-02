@@ -13,16 +13,16 @@ app.controller('MainController', ["inputService", "previewService", "gameService
 
     this.initializeTestValues = function() {
 
-        this.gameService.getActualGame().open("c:/");
+        this.gameService.getActualGame().open("c:/users/aniceto/workspace/aventura/desktop/game-folder");
 
-        this.gameService.getActualGame().createNewRoom("room1");
+        /*/this.gameService.getActualGame().createNewRoom("room1");
         this.gameService.getActualGame().currentRoom.bg = "bg3.png";
         this.setSelectedRoom(this.gameService.getActualGame().currentRoom);
         this.gameService.getActualGame().createNewCharacter("hero");
         this.gameService.getActualGame().getCurrentCharacter()
             .setSprite(new aventura.app.SpriteSheet("hero1", "adventure_time_grid.png", 32, 48));
         this.gameService.getActualGame().save();        
-        this.rooms = this.gameService.getActualGame().rooms;
+        this.rooms = this.gameService.getActualGame().rooms;*/
     }
 
 

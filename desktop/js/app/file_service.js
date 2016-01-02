@@ -1,3 +1,6 @@
+var fs = require('fs');
+var crypto = require('crypto');
+
 function fileErrorHandler(e) {
   var msg = '';
 
@@ -25,8 +28,6 @@ function fileErrorHandler(e) {
   console.log('Error: ' + msg);
 }
 
-var fs = require('fs');
-var crypto = require('crypto');
 
 function toBuffer(ab) {
     var buffer = new Buffer(ab.byteLength);
@@ -107,4 +108,9 @@ function copyFile(source, target, fn) {
       fnCalled = true;
     }
   }
+}
+
+function readFile(filename) {
+  var content = fs.readFileSync(filename, "utf8");
+  return content;
 }
