@@ -175,13 +175,8 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
 
 	for (var roomName in json.rooms) {
   		if (json.rooms.hasOwnProperty(roomName)) {
-  			var room = json.rooms[roomName];
-  			var width = room.width;
-  			var height = room.height;
-  			var gameRoom = new aventura.app.GameRoom(roomName, width, height); 
+  			var gameRoom = new aventura.app.GameRoom.loadFrom(json, roomName);
 			this.rooms.push(gameRoom); 
-			if (room.bg)
-				gameRoom.setBg(room.bg.image);
 		}
   	}
 

@@ -52,3 +52,20 @@ aventura.app.GameRoom.prototype.serialize = function(json) {
 
 	//"walkableArea" : [ [0, 300], [25, 240], [40, 240], [70, 300], [671, 350], [671, 448], [0, 448] ]
 }
+
+aventura.app.GameRoom.loadFrom = function(json, roomName) {
+  	var room = json.rooms[roomName];
+	var width = room.width;
+	var height = room.height;
+	var gameRoom = new aventura.app.GameRoom(roomName, width, height); 
+	if (room.bg) {
+		json.resources.forEach(function(resource) {
+			if (resource.name == room.bg.image)
+				gameRoom.setBg(resource.path);
+		});
+		
+		
+	}
+	return gameRoom;
+
+}
