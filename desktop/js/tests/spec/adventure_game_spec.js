@@ -40,9 +40,17 @@ describe("AdventureGame", function() {
               "name": "room1_bg",
               "path": "bg3.png",
               "type": "image"
+            },
+            {
+              "name": "hero1",
+              "path": "adventure_time_grid.png",
+              "type": "spritesheet",
+              "width": 32,
+              "height": 48
             }
         ],        
-        "rooms" : {
+        "rooms" : 
+        {
             "room 1" : {
               "width": 600,
               "height": 600,
@@ -50,7 +58,14 @@ describe("AdventureGame", function() {
                 "image": "room1_bg"
               }
             }
-          }
+          },
+        "players": [
+        {
+          "name": "hero",
+          "spritesheet": "hero1",
+          "startRoom": ""
+        }
+      ]
       };
       game.load(JSON.stringify(json));
 
@@ -78,6 +93,18 @@ describe("AdventureGame", function() {
 
     it("the first room is the current", function() {
       expect(game.isCurrentRoom("room 1")).toEqual(true);
+    });
+
+    it("should be able to load a player", function() {
+      var character = game.getCharacterByName("hero");
+      expect(character).not.toBeNull();
+      expect(character).not.toBeUndefined();
+      expect(character.hasSprite()).toEqual(true);
+      expect(character.getSprite().getName()).toEqual("hero1");
+      expect(character.getSprite().getPath()).toEqual("adventure_time_grid.png");
+      expect(character.getSprite().getWidth()).toEqual(32);
+      expect(character.getSprite().getHeight()).toEqual(48);
+
     });
   });
 

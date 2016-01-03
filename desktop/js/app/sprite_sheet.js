@@ -1,4 +1,4 @@
-goog.provide("aventura.app.SpriteSheet");
+ns.provide("aventura.app.SpriteSheet");
 
 aventura.app.SpriteSheet = function(name, path, width, height) {
 	this.name = name;

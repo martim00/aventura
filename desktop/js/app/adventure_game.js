@@ -71,6 +71,16 @@ aventura.app.AdventureGame.prototype.isCurrentCharacter = function(character) {
 	return this.currentCharacter === character;
 }
 
+aventura.app.AdventureGame.prototype.getCharacterByName = function(characterName) {
+	for (var i = 0; i < this.characters.length; i++) {
+		if (this.characters[i].getName() == characterName)
+			return this.characters[i];
+	}
+
+	return null;
+}
+
+
 aventura.app.AdventureGame.prototype.setCurrentRoomBg = 
 	function(filename, rawData, fn) {
 
@@ -175,7 +185,7 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
 
 	for (var roomName in json.rooms) {
   		if (json.rooms.hasOwnProperty(roomName)) {
-  			var gameRoom = new aventura.app.GameRoom.loadFrom(json, roomName);
+  			var gameRoom = aventura.app.GameRoom.loadFrom(json, roomName);
 			this.rooms.push(gameRoom); 
 		}
   	}
@@ -183,6 +193,11 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
   	if (this.rooms.length > 0) {
   		this.currentRoom = this.rooms[0];
   	}
+
+  	json.players.forEach(function(playerJson) {
+		var character = aventura.app.Character.loadFrom(json, playerJson);
+		this.characters.push(character); 
+  	}.bind(this));
 }
 
 aventura.app.AdventureGame.prototype.open = function(folder, fn) {

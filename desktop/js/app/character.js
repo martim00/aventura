@@ -1,4 +1,4 @@
-goog.provide('aventura.app.Character');
+ns.provide('aventura.app.Character');
 
 aventura.app.Character = function(name) {
 	this.name = name;
@@ -60,3 +60,17 @@ aventura.app.Character.prototype.serialize = function(json) {
 	}
 }
 
+aventura.app.Character.loadFrom = function(json, characterJson) {
+
+	var character = new aventura.app.Character(characterJson.name);
+
+	json.resources.forEach(function(resource) {
+		if (resource.name == characterJson.spritesheet) {
+			character.setSprite(new aventura.app.SpriteSheet(characterJson.spritesheet, 
+				resource.path, resource.width, resource.height));
+		}
+	});
+    
+	return character;
+
+}
