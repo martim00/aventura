@@ -1,4 +1,4 @@
-goog.provide("aventura.app.WalkableArea");
+ns.provide("aventura.app.WalkableArea");
 
 aventura.app.WalkableArea = function(points) {
 	this.points = points; 

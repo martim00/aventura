@@ -56,7 +56,15 @@ describe("AdventureGame", function() {
               "height": 600,
               "bg" : {
                 "image": "room1_bg"
-              }
+              },
+              "walkableArea" : [ 
+                { "x" : 0, "y" : 300 }, 
+                { "x" : 25, "y" : 240 }, 
+                { "x" : 40, "y" : 240 }, 
+                { "x" : 70, "y" : 300 }, 
+                { "x" : 671, "y" : 350 }, 
+                { "x" : 671, "y" : 448 }, 
+                { "x" : 0, "y" : 448 }],
             }
           },
         "players": [
@@ -105,6 +113,12 @@ describe("AdventureGame", function() {
       expect(character.getSprite().getWidth()).toEqual(32);
       expect(character.getSprite().getHeight()).toEqual(48);
 
+    });
+
+    it("should be able to load walkable areas", function() {
+      var room = game.getRoomByName("room 1");
+      expect(room.getWalkableAreas().length).toEqual(1);
+      expect(room.getWalkableAreas()[0].getPoints().length).toEqual(7); // 7 points
     });
   });
 

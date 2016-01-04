@@ -29,6 +29,10 @@ aventura.app.GameRoom.prototype.createWalkableArea = function(points) {
 	this.walkableAreas.push(walkableArea);
 }
 
+aventura.app.GameRoom.prototype.getWalkableAreas = function() {
+	return this.walkableAreas;
+}
+
 aventura.app.GameRoom.prototype.serialize = function(json) {
 
 	var roomBgId = this.name + "_bg"
@@ -63,9 +67,12 @@ aventura.app.GameRoom.loadFrom = function(json, roomName) {
 			if (resource.name == room.bg.image)
 				gameRoom.setBg(resource.path);
 		});
-		
-		
 	}
+
+	if (room.walkableArea) {
+		gameRoom.createWalkableArea(room.walkableArea);
+	}
+
 	return gameRoom;
 
 }

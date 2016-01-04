@@ -204,12 +204,11 @@ aventura.app.AdventureGame.prototype.open = function(folder, fn) {
     var gameFile = path.resolve(folder, "game.json");
     try {
     	var content = readFile(gameFile);
-    	this.load(content);
 
 	} catch(e) {
 		throw new Error("the folder should have a game.json file");
-
 	}
+    this.load(content);
 
 	/*readFile(gameFile, function(err, data) {
 		if (err)
