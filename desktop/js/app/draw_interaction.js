@@ -166,7 +166,7 @@ aventura.app.DrawInteraction.prototype.callOnPolygonCompletedHandlers = function
 	var pCenter = polygon.getCenterPoint();
 	var l = polygon.get("left");
     var t = polygon.get("top");
-     var minx = polygon.get("minX");
+    var minx = polygon.get("minX");
     var miny = polygon.get("minY");
 
 	var points = polygon.get('points').map(function(point) {

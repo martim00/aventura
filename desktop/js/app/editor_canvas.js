@@ -11,6 +11,21 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 
 	DbC.requireNotNull(actualGame, "actualGame");
 	this.actualGame = actualGame;
+    var canvas = document.getElementById('main-canvas');
+
+    //canvas.style.width ='100%';
+    //canvas.style.height='100%';
+
+    canvas.style.width = this.actualGame.width + 'px'; 
+    canvas.style.height= this.actualGame.height + 'px';
+  // ...then set the internal size to match
+    /*canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;*/
+        // Create an empty project and a view for the canvas:
+    paper.setup(canvas);
+  
+
+    return;
 
     //this.canvas = new fabric.CanvasWithViewport('main-canvas');
     this.canvas = new fabric.CanvasEx('main-canvas');
@@ -36,11 +51,43 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 
 
 aventura.app.EditorCanvas.prototype.invalidate = function() {
-
-    this.canvas.clear();
+      // Create a Paper.js Path to draw a line into it:
+    var path = new paper.Path();
+        // Give the stroke a color
+    path.strokeColor = 'black';
+    var start = new paper.Point(100, 100);
+        // Move to start and draw a line from there
+    path.moveTo(start);
+        // Note that the plus operator on Point objects does not work
+        // in JavaScript. Instead, we need to call the add() function:
+    path.lineTo(start.add([ 200, -50 ]));
+        // Draw the view now:
+    paper.view.draw();
+    
 
     if (!this.actualGame.getCurrentRoom())
         return;
+
+    $('#image-placeholder').prepend('<img style="display:none" id="theImg" src="' + this.actualGame.getCurrentRoomBg() + '" />');
+
+    $( "#theImg" ).load(function() {
+        // Handler for .load() called.
+        var raster = new paper.Raster('theImg');
+        
+        /*raster.width = this.actualGame.width;
+        raster.height = this.actualGame.height;*/
+
+        // Move the raster to the center of the view
+        raster.position = paper.view.center;
+        var scaleX = this.actualGame.width / raster.width;
+        var scaleY = this.actualGame.height / raster.height ;
+
+        raster.scale(scaleX, scaleY);
+    }.bind(this));
+    
+
+return;
+    this.canvas.clear();
 
     fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
         //oImg.scale(this.canvas.width / oImg.width 
