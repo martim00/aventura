@@ -39,6 +39,9 @@ aventura.app.EditorCanvas.prototype.invalidate = function() {
 
     this.canvas.clear();
 
+    if (!this.actualGame.getCurrentRoom())
+        return;
+
     fabric.Image.fromURL(this.actualGame.getCurrentRoomBg(), function(oImg) {
         //oImg.scale(this.canvas.width / oImg.width 
 //                , this.canvas.height / oImg.height );
@@ -59,6 +62,20 @@ aventura.app.EditorCanvas.prototype.invalidate = function() {
         //var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
         //path.set({ left: 120, top: 120 });
         //this.canvas.add(path);
+
+
+        var walkableAreas = this.actualGame.getCurrentRoom().getWalkableAreas();
+        walkableAreas.forEach(function(walkableArea) {
+
+        var points = walkableArea.getPoints().map(function(point) {
+                return {            
+                    x: point.x ,
+                    y: point.y             
+                };
+            });
+            var polygon = new fabric.Polygon(points);
+            this.canvas.add(polygon);
+        }.bind(this));
     }.bind(this));
 
     // create a rectangle object

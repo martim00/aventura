@@ -100,6 +100,10 @@ aventura.app.AdventureGame.prototype.setCharacterSprite = function(name, filenam
 	this.copyFileToGameFolder(filename, rawData, fn);
 }
 
+aventura.app.AdventureGame.prototype.getCurrentRoom = function() {
+	return this.currentRoom;
+}
+
 aventura.app.AdventureGame.prototype.getCurrentRoomBg = function() {
 	if (!this.currentRoom || this.currentRoom.getBg() == undefined)
 		return "";
