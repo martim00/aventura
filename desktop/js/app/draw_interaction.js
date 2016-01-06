@@ -3,13 +3,44 @@ goog.provide("aventura.app.DrawInteraction");
 aventura.app.DrawInteraction = function(canvasEditor) {
 	DbC.requireNotNull(canvasEditor, "canvasEditor");
 	this.canvasEditor = canvasEditor;
-	this.canvas = this.canvasEditor.getCanvas();
+	//this.canvas = this.canvasEditor.getCanvas();
 
-	this.onMouseDblClickHandler = this.onMouseDoubleClicked.bind(this);
-	this.onMouseMoveHandler = this.onMouseMove.bind(this);
-	this.onMouseDownHandler = this.onMouseDown.bind(this);
+	//this.onMouseDblClickHandler = this.onMouseDoubleClicked.bind(this);
+	//this.onMouseMoveHandler = this.onMouseMove.bind(this);
+	//this.onMouseDownHandler = this.onMouseDown.bind(this);
 
 	this.onPolygonCompletedHandlers = [];
+
+    // Create a simple drawing tool:
+    this.tool = new paper.Tool();
+    //var path = null;
+    var path = null;
+    //new paper.Path();
+
+        // Define a mousedown and mousedrag handler
+    this.tool.onMouseDown = function(event) {
+        if (event.event.detail > 1) { // dbl click
+            path.closed = true;
+            this.callOnPolygonCompletedHandlers(path);
+            path = null;
+        } else {
+            if (!path) {
+                path = new paper.Path();
+                path.strokeColor = 'black';
+                path.add(event.point);
+            }
+
+            path.add(event.point);
+        }
+    }.bind(this);
+
+    this.tool.onMouseMove = function(event) {
+        if (path && path.segments.length > 1) {
+           path.removeSegment(path.segments.length - 1);
+           path.add(event.point);
+        }
+
+    }
 }
 
 //http://stackoverflow.com/questions/28769421/wrong-border-coords-on-draw-a-polygon-with-the-fabric-js
@@ -122,12 +153,17 @@ aventura.app.DrawInteraction.prototype.onMouseDoubleClicked = function(options) 
 }
 
 aventura.app.DrawInteraction.prototype.stop = function() {
-    this.canvas.off("mouse:move", this.onMouseMoveHandler);
+    /*this.canvas.off("mouse:move", this.onMouseMoveHandler);
     this.canvas.off('mouse:dblclick', this.onMouseDblClickHandler);
-    this.canvas.off("mouse:down", this.onMouseDownHandler);
+    this.canvas.off("mouse:down", this.onMouseDownHandler);*/
+    this.tool.stop();
 }
 
 aventura.app.DrawInteraction.prototype.start = function() {
+
+    this.tool.activate();
+
+    return;
 
 	this.mode = "add";
     this.currentShape = null;
@@ -161,8 +197,22 @@ aventura.app.DrawInteraction.prototype.onPolygonCompleted = function(fn) {
 	this.onPolygonCompletedHandlers.push(fn);
 }
 
-aventura.app.DrawInteraction.prototype.callOnPolygonCompletedHandlers = function(polygon) {
+aventura.app.DrawInteraction.prototype.callOnPolygonCompletedHandlers = function(path) {
 
+    var points = path.segments.map(function(segment) {
+        console.log(segment);
+        return {
+            x: segment.point.getX(),
+            y: segment.point.getY()
+        }
+
+    });
+
+    this.onPolygonCompletedHandlers.forEach(function(handler) {
+        handler(points);
+    });
+
+return;
 	var pCenter = polygon.getCenterPoint();
 	var l = polygon.get("left");
     var t = polygon.get("top");

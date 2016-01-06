@@ -51,18 +51,7 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 
 
 aventura.app.EditorCanvas.prototype.invalidate = function() {
-      // Create a Paper.js Path to draw a line into it:
-    var path = new paper.Path();
-        // Give the stroke a color
-    path.strokeColor = 'black';
-    var start = new paper.Point(100, 100);
-        // Move to start and draw a line from there
-    path.moveTo(start);
-        // Note that the plus operator on Point objects does not work
-        // in JavaScript. Instead, we need to call the add() function:
-    path.lineTo(start.add([ 200, -50 ]));
-        // Draw the view now:
-    paper.view.draw();
+
     
 
     if (!this.actualGame.getCurrentRoom())
@@ -83,8 +72,44 @@ aventura.app.EditorCanvas.prototype.invalidate = function() {
         var scaleY = this.actualGame.height / raster.height ;
 
         raster.scale(scaleX, scaleY);
-    }.bind(this));
+
+
+        var walkableAreas = this.actualGame.getCurrentRoom().getWalkableAreas();
+        walkableAreas.forEach(function(walkableArea) {
+
+            var path = new paper.Path();
+            // Give the stroke a color
+            path.strokeColor = 'black';
+
+            var points = walkableArea.getPoints();
+            for (var i = 0; i < points.length; i++) {
+                var point = points[i];
+
+                if (i == 0) {
+                    var start = new paper.Point(point.x, point.y);
+                    // Move to start and draw a line from there
+                    path.moveTo(start);        
+                } else {
+
+                    // Note that the plus operator on Point objects does not work
+                    // in JavaScript. Instead, we need to call the add() function:
+                    //path.lineTo(start.add([ point.x , point.y ]));               
+                    path.lineTo( [point.x , point.y] );               
+
+                }
+            }     
+            path.closed = true;       
+
+            // Draw the view now:
+            paper.view.draw();
+        });
+
+        
     
+    }.bind(this));
+
+          // Create a Paper.js Path to draw a line into it:
+  
 
 return;
     this.canvas.clear();

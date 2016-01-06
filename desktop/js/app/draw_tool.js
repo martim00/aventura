@@ -1,4 +1,4 @@
-goog.provide("aventura.app.DrawTool");
+ns.provide("aventura.app.DrawTool");
 
 aventura.app.DrawTool = function(canvas, actualGame) {
 
