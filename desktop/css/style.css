@@ -129,13 +129,6 @@ body{
     cursor: pointer;
 }
 
-.room-selected {
-    background-color: #CADED9;
-}
-
-.room-unselected {
-    background-color: #F0FAFA;
-}
 
 .thumb {
     height: 75px;
@@ -179,11 +172,12 @@ body{
     color: #54414E!important;   
 }
 
-.character-selected {
+
+.element-selected {
     background-color: #CADED9;
 }
 
-.character-unselected {
+.element-unselected {
     background-color: #F0FAFA;
 }
 

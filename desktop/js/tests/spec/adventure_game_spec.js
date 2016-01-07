@@ -49,6 +49,9 @@ describe("AdventureGame", function() {
               "height": 48
             }
         ],        
+        "items" : [
+          { "name" : "ticket", "label" : "Ticket", "visible" : true, "position" : { "x" : 100, "y" : 100 }, "image" : "ticket" }
+        ],
         "rooms" : 
         {
             "room 1" : {
@@ -57,14 +60,21 @@ describe("AdventureGame", function() {
               "bg" : {
                 "image": "room1_bg"
               },
-              "walkableArea" : [ 
-                { "x" : 0, "y" : 300 }, 
-                { "x" : 25, "y" : 240 }, 
-                { "x" : 40, "y" : 240 }, 
-                { "x" : 70, "y" : 300 }, 
-                { "x" : 671, "y" : 350 }, 
-                { "x" : 671, "y" : 448 }, 
-                { "x" : 0, "y" : 448 }],
+              "walkableAreas" : [ [
+                  { "x" : 0, "y" : 300 }, 
+                  { "x" : 25, "y" : 240 }, 
+                  { "x" : 40, "y" : 240 }, 
+                  { "x" : 70, "y" : 300 }, 
+                  { "x" : 671, "y" : 350 }, 
+                  { "x" : 671, "y" : 448 }, 
+                  { "x" : 0, "y" : 448 }
+                ],
+                [
+                  { "x" : 3, "y" : 340 }, 
+                  { "x" : 671, "y" : 448 }, 
+                  { "x" : 0, "y" : 448 }
+                ]
+              ],
             }
           },
         "players": [
@@ -117,8 +127,21 @@ describe("AdventureGame", function() {
 
     it("should be able to load walkable areas", function() {
       var room = game.getRoomByName("room 1");
-      expect(room.getWalkableAreas().length).toEqual(1);
+      expect(room.getWalkableAreas().length).toEqual(2);
       expect(room.getWalkableAreas()[0].getPoints().length).toEqual(7); // 7 points
+      expect(room.getWalkableAreas()[1].getPoints().length).toEqual(3); // 7 points
+    });
+
+    it("should be able to load inventory items", function() {
+      expect(game.getItems().length).toEqual(1);
+      var item = game.getItems()[0];
+      expect(item.getName()).toEqual("ticket");
+      expect(item.getLabel()).toEqual("Ticket");
+      expect(item.isVisible()).toEqual(true);
+      expect(item.getPosition().x).toEqual(100);
+      expect(item.getPosition().y).toEqual(100);
+      expect(item.getImage()).toEqual("ticket");
+
     });
   });
 

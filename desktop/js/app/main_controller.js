@@ -137,24 +137,28 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     this.setSelectedRoom = function(room) {
         this.gameService.getActualGame().setCurrentRoom(room);
         this.invalidateCanvas();
-        this.elementSelected = 'room';
-    };
-
-    this.getRoomStyle = function(room) {
-        return this.gameService.getActualGame().isCurrentRoom(room) ? "selected" : "unselected";
+        this.elementSelected = { 'type' : 'room', 'element' : room };
     };
 
     this.setSelectedCharacter = function(character) {
         this.gameService.getActualGame().setCurrentCharacter(character);
-        this.elementSelected = 'character';
+        this.elementSelected = { 'type' : 'character', 'element' : character };
     }
 
-    this.getCharacterStyle = function(character) {
-        return this.gameService.getActualGame().isCurrentCharacter(character) ? "selected" : "unselected";
+    this.setSelectedItem = function(item) {
+        this.elementSelected = { 'type' : 'item', 'element' : item };
+    }
+
+    this.getSelectedElement = function() {
+        return this.elementSelected;
+    }
+
+    this.getElementStyle = function(element) {
+        return this.elementSelected && this.elementSelected.element === element ? "selected" : "unselected";
     };
 
     this.isElementSelected = function(elementName) {
-        return elementName === this.elementSelected;
+        return this.elementSelected && elementName === this.elementSelected.type;
     };
 
     this.runGame = function() {

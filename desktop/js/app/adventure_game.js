@@ -17,6 +17,11 @@ aventura.app.AdventureGame = function(name, folder, width, height) {
 	this.walkableAreas = [];
 	this.currentRoom = undefined;
 	this.currentCharacter = undefined;
+	this.items = [];
+}
+
+aventura.app.AdventureGame.prototype.getItems = function() {
+	return this.items;
 }
 
 aventura.app.AdventureGame.prototype.getCharacters = function() {
@@ -201,6 +206,11 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
   	json.players.forEach(function(playerJson) {
 		var character = aventura.app.Character.loadFrom(json, playerJson);
 		this.characters.push(character); 
+  	}.bind(this));
+
+  	json.items.forEach(function(itemJson) {
+  		var item = aventura.app.InventoryItem.loadFrom(json, itemJson);
+  		this.items.push(item);
   	}.bind(this));
 }
 

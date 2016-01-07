@@ -50,6 +50,7 @@
       <script src="js/app/game_room.js"></script>
       <script src="js/app/sprite_sheet.js"></script>
       <script src="js/app/character.js"></script>
+      <script src="js/app/inventory_item.js"></script>
       <script src="js/app/adventure_game.js"></script>
       
 
@@ -130,7 +131,7 @@
             <div id="rooms">
               <div class="accordion-tools"><a ng-click="mainController.createNewRoom()" href="">+</a></div>
               <ul class="rooms-list">
-                <li class="rooms-list-item room-{{mainController.getRoomStyle(room.name)}}" ng-repeat="room in mainController.getActualGame().getRooms()" ng-click="mainController.setSelectedRoom(room)">
+                <li class="rooms-list-item element-{{mainController.getElementStyle(room)}}" ng-repeat="room in mainController.getActualGame().getRooms()" ng-click="mainController.setSelectedRoom(room)">
                     <span>{{room.name}}</span>
                 </li>
               </ul>
@@ -140,8 +141,17 @@
             <div id="characters">
               <div class="accordion-tools"><a ng-click="mainController.createNewCharacter()" href="">+</a></div>
               <ul class="rooms-list">
-                <li class="rooms-list-item character-{{mainController.getCharacterStyle(character)}}" ng-repeat="character in mainController.getActualGame().getCharacters()" ng-click="mainController.setSelectedCharacter(character)">
+                <li class="rooms-list-item element-{{mainController.getElementStyle(character)}}" ng-repeat="character in mainController.getActualGame().getCharacters()" ng-click="mainController.setSelectedCharacter(character)">
                   <span>{{character.name}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="accordion-button">Items</div>
+            <div id="items">
+              <div class="accordion-tools"><a ng-click="mainController.createNewCharacter()" href="">+</a></div>
+              <ul class="rooms-list">
+                <li class="rooms-list-item element-{{mainController.getElementStyle(item)}}" ng-repeat="item in mainController.getActualGame().getItems()" ng-click="mainController.setSelectedItem(item)">
+                  <span>{{item.name}}</span>
                 </li>
               </ul>
             </div>
@@ -180,6 +190,16 @@
                 <img ng-src="{{mainController.getActualGame().getCurrentCharacterSprite()}}" width="130" height="30" alt="Sprite image">
 
                 <input id="sprite-input" type="file" name="sprite-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
+            </ul>
+          </div>
+          <div ng-show="mainController.isElementSelected('item')">
+            <ul>
+                <li><label>name : </label><span>{{mainController.getSelectedElement().element.getName()}}</span></li>
+                <li><label>label : </label><span>{{mainController.getSelectedElement().element.getLabel()}}</span></li>
+                <li><label>image : </label><span>{{mainController.getSelectedElement().element.getImage()}}</span></li>
+                <li><label>visible : </label><span>{{mainController.getSelectedElement().element.isVisible()}}</span></li>
+                <li><label>x : </label><span>{{mainController.getSelectedElement().element.getPosition().x}}</span></li>
+                <li><label>y : </label><span>{{mainController.getSelectedElement().element.getPosition().y}}</span></li>
             </ul>
           </div>
         </div>
