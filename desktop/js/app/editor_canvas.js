@@ -80,6 +80,7 @@ aventura.app.EditorCanvas.prototype.invalidate = function() {
             var path = new paper.Path();
             // Give the stroke a color
             path.strokeColor = 'black';
+            path.fillColor = new paper.Color(1, 0, 0.5, 0.5);
 
             var points = walkableArea.getPoints();
             for (var i = 0; i < points.length; i++) {

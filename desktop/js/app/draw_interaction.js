@@ -25,8 +25,9 @@ aventura.app.DrawInteraction = function(canvasEditor) {
             path = null;
         } else {
             if (!path) {
-                path = new paper.Path();
+                path = new paper.Path();                
                 path.strokeColor = 'black';
+                path.fillColor = new paper.Color(1, 0, 0.5, 0.5);   
                 path.add(event.point);
             }
 

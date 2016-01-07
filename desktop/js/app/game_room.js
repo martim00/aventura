@@ -47,10 +47,11 @@ aventura.app.GameRoom.prototype.serialize = function(json) {
 			"type" : "image"
 		});
 	}
+	json.rooms[this.name].walkableAreas = [];
 
 	this.walkableAreas.forEach(function(walkableArea) {
 		var points = walkableArea.getPoints();
-		json.rooms[this.name].walkableArea = points;
+		json.rooms[this.name].walkableAreas.push(points);
 
 	}.bind(this));
 
@@ -69,9 +70,11 @@ aventura.app.GameRoom.loadFrom = function(json, roomName) {
 		});
 	}
 
-	if (room.walkableArea) {
-		gameRoom.createWalkableArea(room.walkableArea);
-	}
+	DbC.requireNotNull(room.walkableAreas, "room.walkableAreas");
+
+	room.walkableAreas.forEach(function(walkableArea) {
+		gameRoom.createWalkableArea(walkableArea);
+	});
 
 	return gameRoom;
 
