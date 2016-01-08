@@ -32,6 +32,12 @@ aventura.app.AdventureGame.prototype.getRooms = function() {
 	return this.rooms;
 }
 
+aventura.app.AdventureGame.prototype.createNewItem = function(name, label, image) {
+	this.items.push(
+		new aventura.app.InventoryItem(name, label, true, null, image));
+
+}
+
 aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
 	var room = new aventura.app.GameRoom(roomName, this.width, this.height);
 	this.rooms.push(room);
@@ -105,6 +111,12 @@ aventura.app.AdventureGame.prototype.setCharacterSprite = function(name, filenam
 	this.copyFileToGameFolder(filename, rawData, fn);
 }
 
+aventura.app.AdventureGame.prototype.setItemSprite = function(item, filename, width, height, rawData, fn) {
+	DbC.require(item.getName());
+    item.setSprite(new aventura.app.SpriteSheet(item.getName(), filename, width, height));
+	this.copyFileToGameFolder(filename, rawData, fn);
+}
+
 aventura.app.AdventureGame.prototype.getCurrentRoom = function() {
 	return this.currentRoom;
 }
@@ -121,6 +133,13 @@ aventura.app.AdventureGame.prototype.getCurrentCharacterSprite = function() {
 		return "";
 
 	return this.getAbsPath(this.currentCharacter.getSprite().getPath());
+}
+
+aventura.app.AdventureGame.prototype.getItemSpritePath = function(item) {
+	if (!item || item.getSprite() == undefined)
+		return "";
+
+	return this.getAbsPath(item.getSprite().getPath());
 }
 
 aventura.app.AdventureGame.prototype.getAbsPath = function(relativePath) {

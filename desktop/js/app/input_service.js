@@ -145,6 +145,33 @@ app.service("inputService", function() {
 
     }
 
+    this.askForItem = function(fn) {
+        bootbox.dialog({
+            message: this.getItemSettingsContent(),
+            title: "Item settings",
+            buttons: {
+                success: {
+                    label: "Ok",
+                    className: "btn-success",
+                    callback: function() {
+                        var name = $('#name').val();
+                        var label = $('#label').val();
+                        //var folder = $('#folderChooser').val();
+                        fn({"name" : name, "label" : label });
+                    } 
+                },
+                cancel : {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        fn(null);
+                    }
+                }
+            }
+        });
+
+    }
+
     this.askForCharacter = function(fn) {
         bootbox.dialog({
             message: this.getCharacterSettingsContent(),
@@ -168,6 +195,28 @@ app.service("inputService", function() {
                 }
             }
         });
+    }
+
+    this.getItemSettingsContent = function() {
+        var content = $('<div class="row"></div>').html(            
+                    '<div class="col-md-12"> ' +
+                        '<form class="form-horizontal"> ' +
+                            '<div class="form-group"> ' +
+                                '<label class="col-md-4 control-label" for="name">Name</label> ' +
+                                    '<div class="col-md-4"> ' +
+                                        '<input id="name" name="name" type="text" placeholder="Item name (unique identifier)" class="form-control input-md"> ' +
+                                    ' </div> ' +
+                            ' </div> ' +
+                            '<div class="form-group"> ' +
+                                '<label class="col-md-4 control-label" for="label">Label</label> ' +
+                                    '<div class="col-md-4"> ' +
+                                        '<input id="label" name="label" type="text" placeholder="Item label" class="form-control input-md"> ' +
+                                    '</div> ' +
+                            '</div> ' +                    
+                        '</form>' +
+                    '</div>'
+                );
+        return content;
     }
 
     this.getCharacterSettingsContent = function() {
@@ -207,21 +256,20 @@ app.service("inputService", function() {
      this.getStartPositionContent = function() {
         var content = $('<div class="row"></div>').html(            
                     '<div class="col-md-12"> ' +
-                    '<form class="form-horizontal"> ' +
-                    '<div class="form-group"> ' +
-                    '<label class="col-md-4 control-label" for="x">x</label> ' +
-                    '<div class="col-md-4"> ' +
-                    '<input id="x" name="x" type="text" placeholder="Start X" class="form-control input-md"> ' +
-                    ' </div> ' +
-                    ' </div> ' +
-                    '<div class="form-group"> ' +
-                    '<label class="col-md-4 control-label" for="y">y</label> ' +
-                    '<div class="col-md-4"> ' +
-                    '<input id="name" name="name" type="text" placeholder="Start Y" class="form-control input-md"> ' +
-                    '</div> ' +
-                    '</div> ' +
-                    '</div> ' +                    
-                    '</form> </div>'
+                        '<form class="form-horizontal"> ' +
+                            '<div class="form-group"> ' +
+                                '<label class="col-md-4 control-label" for="x">x</label> ' +
+                                    '<div class="col-md-4"> ' +
+                                        '<input id="x" name="x" type="text" placeholder="Start X" class="form-control input-md"> ' +
+                                    ' </div> ' +
+                            ' </div> ' +
+                            '<div class="form-group"> ' +
+                                '<label class="col-md-4 control-label" for="y">y</label> ' +
+                                    '<div class="col-md-4"> ' +
+                                        '<input id="name" name="name" type="text" placeholder="Start Y" class="form-control input-md"> ' +
+                                    '</div> ' +
+                            '</div> ' +                    
+                        '</form> </div>'
         );
 
         return content;

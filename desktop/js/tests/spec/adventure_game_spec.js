@@ -11,6 +11,18 @@ describe("AdventureGame", function() {
     return JSON.stringify(obj);
   };
 
+  describe("inventory items", function() {
+    it("should be able to add an inventory item", function() {
+      game.createNewItem("ticket", "Ticket", "image");
+      expect(game.getItems().length).toEqual(1);
+      var item = game.getItems()[0];
+      expect(item.getName()).toEqual("ticket");
+      expect(item.getLabel()).toEqual("Ticket");
+      expect(item.getImage()).toEqual("image");
+    });
+
+  });
+
   describe("when open game folder", function() {
 
     it("should notify user if folder does not have game.json", function() {
@@ -141,7 +153,6 @@ describe("AdventureGame", function() {
       expect(item.getPosition().x).toEqual(100);
       expect(item.getPosition().y).toEqual(100);
       expect(item.getImage()).toEqual("ticket");
-
     });
   });
 

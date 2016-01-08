@@ -148,7 +148,7 @@
             </div>
             <div class="accordion-button">Items</div>
             <div id="items">
-              <div class="accordion-tools"><a ng-click="mainController.createNewCharacter()" href="">+</a></div>
+              <div class="accordion-tools"><a ng-click="mainController.createNewItem()" href="">+</a></div>
               <ul class="rooms-list">
                 <li class="rooms-list-item element-{{mainController.getElementStyle(item)}}" ng-repeat="item in mainController.getActualGame().getItems()" ng-click="mainController.setSelectedItem(item)">
                   <span>{{item.name}}</span>
@@ -196,7 +196,10 @@
             <ul>
                 <li><label>name : </label><span>{{mainController.getSelectedElement().element.getName()}}</span></li>
                 <li><label>label : </label><span>{{mainController.getSelectedElement().element.getLabel()}}</span></li>
-                <li><label>image : </label><span>{{mainController.getSelectedElement().element.getImage()}}</span></li>
+                <li><label>sprite: </label><a ng-click="mainController.askForItemSprite()" href="">..</a></li>
+                <li>{{mainController.getSelectedElement().element.getSprite().getName()}}</li>
+                <img ng-src="{{mainController.getActualGame().getItemSpritePath(mainController.getSelectedElement().element)}}" width="130" height="30" alt="item image">
+                <input id="item-sprite-input" type="file" name="item-sprite-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
                 <li><label>visible : </label><span>{{mainController.getSelectedElement().element.isVisible()}}</span></li>
                 <li><label>x : </label><span>{{mainController.getSelectedElement().element.getPosition().x}}</span></li>
                 <li><label>y : </label><span>{{mainController.getSelectedElement().element.getPosition().y}}</span></li>

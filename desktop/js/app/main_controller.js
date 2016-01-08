@@ -66,6 +66,31 @@ app.controller('MainController', ["inputService", "previewService", "gameService
                 $scope.$apply();
             }
         }.bind(this));
+    }
+
+    this.createNewItem = function() {
+        this.inputService.askForItem(function(result) {
+            if (result !== null) {
+                this.gameService.getActualGame().createNewItem(result.name, result.label);
+                $scope.$apply();
+            }
+        }.bind(this));
+    }
+
+    this.askForItemSprite = function() {
+
+        DbC.require(this.isElementSelected('item'));
+
+        this.inputService.askForFile("#item-sprite-input", function(file, rawData) {
+
+            this.gameService.getActualGame().setItemSprite(
+                this.getSelectedElement().element, file.name, 48, 32, rawData, function() {
+                this.invalidateView();
+                console.log("done");
+
+            }.bind(this));
+
+        }.bind(this));
 
     }
 
