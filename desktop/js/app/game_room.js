@@ -4,6 +4,7 @@ aventura.app.GameRoom = function(name, width, height) {
 	this.name = name;
 	this.bg;
 	this.walkableAreas = [];
+	this.clickableAreas = [];
 	this.width = width;
 	this.height = height;
 }
@@ -24,6 +25,11 @@ aventura.app.GameRoom.prototype.getName = function() {
 	return this.name;
 }
 
+aventura.app.GameRoom.prototype.createClickableArea = function(points) {
+	var clickableArea = new aventura.app.ClickableArea(points);
+	this.clickableAreas.push(clickableArea);
+}
+
 aventura.app.GameRoom.prototype.createWalkableArea = function(points) {
 	var walkableArea = new aventura.app.WalkableArea(points);
 	this.walkableAreas.push(walkableArea);
@@ -32,6 +38,12 @@ aventura.app.GameRoom.prototype.createWalkableArea = function(points) {
 aventura.app.GameRoom.prototype.getWalkableAreas = function() {
 	return this.walkableAreas;
 }
+
+aventura.app.GameRoom.prototype.getClickableAreas = function() {
+	return this.clickableAreas;
+}
+
+
 
 aventura.app.GameRoom.prototype.serialize = function(json) {
 
@@ -55,7 +67,13 @@ aventura.app.GameRoom.prototype.serialize = function(json) {
 
 	}.bind(this));
 
-	//"walkableArea" : [ [0, 300], [25, 240], [40, 240], [70, 300], [671, 350], [671, 448], [0, 448] ]
+	json.rooms[this.name].clickableAreas = [];
+
+	this.clickableAreas.forEach(function(clickableArea) {
+		var points = clickableArea.getPoints();
+		json.rooms[this.name].clickableAreas.push(points);
+
+	}.bind(this));
 }
 
 aventura.app.GameRoom.loadFrom = function(json, roomName) {
@@ -74,6 +92,12 @@ aventura.app.GameRoom.loadFrom = function(json, roomName) {
 
 	room.walkableAreas.forEach(function(walkableArea) {
 		gameRoom.createWalkableArea(walkableArea);
+	});
+
+	DbC.requireNotNull(room.clickableAreas, "room.clickableAreas");
+
+	room.clickableAreas.forEach(function(clickableArea) {
+		gameRoom.createClickableArea(clickableArea);
 	});
 
 	return gameRoom;

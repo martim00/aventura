@@ -18,7 +18,19 @@ describe("AdventureGame", function() {
       var item = game.getItems()[0];
       expect(item.getName()).toEqual("ticket");
       expect(item.getLabel()).toEqual("Ticket");
-      expect(item.getImage()).toEqual("image");
+    });
+
+  });
+
+  describe("clickable areas", function() {
+    it("should be able to add a clickable area in a room", function() {
+      game.createNewRoom("new room");
+      var room = game.getRoomByName("new room");
+      var points = [{'x' : 10, 'y' : 10}, {'x' : 100, 'y' : 100}, {'x' : 10, 'y' : 100}];
+      room.createClickableArea(points);
+      expect(room.getClickableAreas().length).toEqual(1);
+      var clickableArea = room.getClickableAreas()[0];
+      expect(clickableArea.getPoints()).toEqual(points);
     });
 
   });
@@ -41,6 +53,20 @@ describe("AdventureGame", function() {
     });
 
   });
+  describe("when save to json", function() {
+    beforeEach(function() {
+      var points = [{'x' : 10, 'y' : 10}, {'x' : 100, 'y' : 100}, {'x' : 10, 'y' : 100}];
+      game.createNewRoom("room1");
+      var room1 = game.getRoomByName("room1");
+      room1.createClickableArea(points);
+      json = JSON.parse(game.getGameAsJson());
+    });
+
+    it("should save the clickable areas", function() {
+      expect(json.rooms.room1.clickableAreas).not.toBeUndefined();
+
+    });
+  });
 
   describe("when loads from json", function() {
     beforeEach(function() {
@@ -59,6 +85,13 @@ describe("AdventureGame", function() {
               "type": "spritesheet",
               "width": 32,
               "height": 48
+            },
+            { 
+              "name": "ticket", 
+              "path" : "ticket.png", 
+              "type" : "spritesheet",
+              "width": 32,
+              "height": 48
             }
         ],        
         "items" : [
@@ -72,6 +105,18 @@ describe("AdventureGame", function() {
               "bg" : {
                 "image": "room1_bg"
               },
+              "clickableAreas" : [ [
+                  { "x" : 0, "y" : 300 }, 
+                  { "x" : 25, "y" : 240 }, 
+                  { "x" : 40, "y" : 240 }
+                ],
+                [
+                  { "x" : 70, "y" : 300 }, 
+                  { "x" : 671, "y" : 350 }, 
+                  { "x" : 25, "y" : 240 }, 
+                  { "x" : 671, "y" : 448 } 
+                ]
+              ],
               "walkableAreas" : [ [
                   { "x" : 0, "y" : 300 }, 
                   { "x" : 25, "y" : 240 }, 
@@ -144,6 +189,13 @@ describe("AdventureGame", function() {
       expect(room.getWalkableAreas()[1].getPoints().length).toEqual(3); // 7 points
     });
 
+    it("should be able to load clickable areas", function() {
+      var room = game.getRoomByName("room 1");
+      expect(room.getClickableAreas().length).toEqual(2);
+      expect(room.getClickableAreas()[0].getPoints().length).toEqual(3); // 3 points
+      expect(room.getClickableAreas()[1].getPoints().length).toEqual(4); // 4 points
+    });
+
     it("should be able to load inventory items", function() {
       expect(game.getItems().length).toEqual(1);
       var item = game.getItems()[0];
@@ -152,7 +204,7 @@ describe("AdventureGame", function() {
       expect(item.isVisible()).toEqual(true);
       expect(item.getPosition().x).toEqual(100);
       expect(item.getPosition().y).toEqual(100);
-      expect(item.getImage()).toEqual("ticket");
+      expect(item.getSprite().getName()).toEqual("ticket");
     });
   });
 
