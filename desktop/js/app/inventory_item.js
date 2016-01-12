@@ -46,3 +46,17 @@ aventura.app.InventoryItem.loadFrom = function(gameJson, itemJson) {
 	return item;
     
 }
+
+aventura.app.InventoryItem.prototype.serialize = function(json) {
+	DbC.requireNotNull(json.items);
+	DbC.requireNotNull(json.resources);
+
+	var itemAsJson = { "name" : this.name, "label" : this.label, 
+		"visible" : this.visible, "position" : this.position };
+	if (this.sprite) {
+		this.sprite.serialize(json);
+		itemAsJson["image"] = this.sprite.getName();
+	}
+
+	json.items.push(itemAsJson);
+}

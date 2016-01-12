@@ -26,4 +26,16 @@ aventura.app.SpriteSheet.prototype.getHeight = function() {
 	return this.height;
 }
 
+aventura.app.SpriteSheet.prototype.serialize = function(json) {
+	DbC.requireNotNull(json.resources);
+	json.resources.push({
+		"name" : this.name,
+		"path" : this.path,
+		"width": this.width,
+		"height": this.height,
+		"type": "spritesheet"
+	});
+}
+
+
 

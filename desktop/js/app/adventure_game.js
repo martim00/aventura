@@ -32,10 +32,9 @@ aventura.app.AdventureGame.prototype.getRooms = function() {
 	return this.rooms;
 }
 
-aventura.app.AdventureGame.prototype.createNewItem = function(name, label, image) {
+aventura.app.AdventureGame.prototype.createNewItem = function(name, label) {
 	this.items.push(
-		new aventura.app.InventoryItem(name, label, true, null, image));
-
+		new aventura.app.InventoryItem(name, label, true, null));
 }
 
 aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
@@ -179,11 +178,12 @@ aventura.app.AdventureGame.prototype.copyResourceToGameFolder = function(filenam
 	// TODO: get the application folder 
 	var APP_FOLDER = "C:/users/aniceto/workspace/aventura/desktop/js/app/game-template";
     var gameTemplateFolder = path.resolve(APP_FOLDER, filename);
-
-    copyFile(gameTemplateFolder, this.getAbsPath(filename), function(err) {
+	
+	copyFileSync(gameTemplateFolder, this.getAbsPath(filename));
+    /*copyFile(gameTemplateFolder, this.getAbsPath(filename), function(err) {
     	if (err)
     		console.log("fail to copy " + filename);
-    });
+    });*/
 }
 
 aventura.app.AdventureGame.prototype.getGameAsJson = function() {
@@ -200,8 +200,13 @@ aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 	json.players = [];
 	this.characters.forEach(function(character) {
 		character.serialize(json);
-
 	});
+
+	json.items = [];
+	this.items.forEach(function(item) {
+		item.serialize(json);
+	});
+
 	return JSON.stringify(json, null, "\t");
 }
 

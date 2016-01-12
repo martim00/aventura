@@ -13,7 +13,7 @@ describe("AdventureGame", function() {
 
   describe("inventory items", function() {
     it("should be able to add an inventory item", function() {
-      game.createNewItem("ticket", "Ticket", "image");
+      game.createNewItem("ticket", "Ticket");
       expect(game.getItems().length).toEqual(1);
       var item = game.getItems()[0];
       expect(item.getName()).toEqual("ticket");
@@ -59,12 +59,18 @@ describe("AdventureGame", function() {
       game.createNewRoom("room1");
       var room1 = game.getRoomByName("room1");
       room1.createClickableArea(points);
+      game.createNewItem("ticket", "Ticket");
       json = JSON.parse(game.getGameAsJson());
     });
 
     it("should save the clickable areas", function() {
       expect(json.rooms.room1.clickableAreas).not.toBeUndefined();
+    });
 
+    it("should save the inventory item", function() {
+      expect(json.items).not.toBeUndefined();
+      expect(json.items[0].name).toEqual("ticket");
+      expect(json.items[0].label).toEqual("Ticket");
     });
   });
 

@@ -120,6 +120,9 @@
       <div class="run-button">
         <a ng-click="mainController.runGame()" href="#">Run</a>
       </div>
+      <div class="run-button">
+        <a ng-click="mainController.liveReload()" href="#">Reload</a>
+      </div>
     </div>
 
   </div>
@@ -199,7 +202,7 @@
                 <li><label>label : </label><span>{{mainController.getSelectedElement().element.getLabel()}}</span></li>
                 <li><label>sprite: </label><a ng-click="mainController.askForItemSprite()" href="">..</a></li>
                 <li>{{mainController.getSelectedElement().element.getSprite().getName()}}</li>
-                <img ng-src="{{mainController.getActualGame().getItemSpritePath(mainController.getSelectedElement().element)}}" width="130" height="30" alt="item image">
+                <img ng-src="{{mainController.getItemSpritePath()}}" width="130" height="30" alt="item image">
                 <input id="item-sprite-input" type="file" name="item-sprite-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
                 <li><label>visible : </label><span>{{mainController.getSelectedElement().element.isVisible()}}</span></li>
                 <li><label>x : </label><span>{{mainController.getSelectedElement().element.getPosition().x}}</span></li>
@@ -210,15 +213,17 @@
     </div>
 
       <div class="ui-layout-center">
-        <canvas id="main-canvas"></canvas>
-          
-          <!--<img ng-src="{{mainController.getActualGame().getCurrentRoomBg()}}" alt="Game image" >
--->
-          <!--<img src="C:/Users/Aniceto/workspace/aventura/desktop/game-folder/Chrysanthemum.jpg" />-->
+        <div>
+          <div style="float:left">
+            <canvas id="main-canvas"></canvas>
+            <div id="image-placeholder"></div>
+          </div>
+          <div style="float:right">
+            <iframe id="game-preview" name="game-preview" width="600" height="600" src="file:///c:/users/aniceto/workspace/aventura/desktop/game-folder/index.html"></iframe>
+          </div>
+        </div>
 
-          <!--<img ng-src="c:/users/aniceto/workspace/aventura/desktop/game-folder/Desert.jpg" alt="Game image" />-->
 
-          <div id="image-placeholder"></div>
 
 
 

@@ -186,12 +186,21 @@ app.controller('MainController', ["inputService", "previewService", "gameService
         return this.elementSelected && elementName === this.elementSelected.type;
     };
 
+    this.getItemSpritePath = function() {
+        return this.isElementSelected('item') ? this.gameService.getActualGame().getItemSpritePath() : "";
+    }
+
     this.runGame = function() {
         this.previewService.previewGame();
     }
 
+    this.liveReload = function() {
+        this.previewService.liveReload();
+    }
+
     this.saveGame = function() {
         this.gameService.getActualGame().save();
+        this.previewService.liveReload();
     }
 
     this.getGameTree = function() {

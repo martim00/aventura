@@ -9,6 +9,11 @@ app.service("previewService", function() {
 		var new_win = gui.Window.open('file:///c:/users/aniceto/workspace/aventura/desktop/game-folder/index.html');
 	}
 
+	this.liveReload = function() {
+		var iframe = document.getElementById('game-preview');
+		iframe.src += '';	
+	}
+
 });
 
 

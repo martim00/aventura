@@ -74,16 +74,26 @@ function writeTextFile(filename, content, fn) {
 }
 
 function writeToFile(filename, content, fn) {
+  writeFileSync(filename, content);
 
   // chunk is the Uint8Array object
-  fs.writeFile(filename, content, function (err) {
+  /*fs.writeFile(filename, content, function (err) {
     if (err) {
       console.log("error");
     } else {
       console.log("sucess");
       fn();
     }
-  });
+  });*/
+}
+
+function writeFileSync(target, content) {
+  fs.writeFileSync(target, content);
+}
+
+function copyFileSync(source, target) {
+  writeFileSync(target, fs.readFileSync(source))
+  //fs.writeFileSync(target, fs.readFileSync(source));
 }
 
 function copyFile(source, target, fn) {
