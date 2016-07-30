@@ -39,7 +39,7 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     this.makeNewGame = function() {
         this.inputService.askForGameSettings(function(result, name, folder) {
             if (result) {
-                this.gameService.getActualGame() = new aventura.app.AdventureGame(name, folder);
+                this.gameService.setActualGame(new aventura.app.AdventureGame(name, folder));
                 $scope.$apply();
             }
 
@@ -51,7 +51,7 @@ app.controller('MainController', ["inputService", "previewService", "gameService
         this.inputService.askFor("What is the name of the room?", function(result) {
             if (result !== null) {
                 this.gameService.getActualGame().createNewRoom(result);
-                //this.setSelectedRoom(result);
+                this.setSelectedRoom(this.gameService.getActualGame().getCurrentRoom());
                 //this.invalidateTreeView();
                 $scope.$apply();
             }
@@ -255,8 +255,16 @@ app.controller('MainController', ["inputService", "previewService", "gameService
         return this.gameService.getActualGame();
     }
 
-    this.open = function() {
-
+    this.openGame = function() {
+        this.inputService.askForFolder(function(result, folder) {
+            if (result) {
+                this.gameService.getActualGame().open(folder);
+                // this.gameService.getActualGame().createNewRoom(result);
+                //this.setSelectedRoom(result);
+                //this.invalidateTreeView();
+                // $scope.$apply();
+            }
+        }.bind(this));
     }
 
     //this.invalidateTreeView();

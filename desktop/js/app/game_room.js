@@ -2,11 +2,27 @@ ns.provide('aventura.app.GameRoom');
 
 aventura.app.GameRoom = function(name, width, height) {
 	this.name = name;
-	this.bg;
+	this.bg = undefined;
 	this.walkableAreas = [];
 	this.clickableAreas = [];
 	this.width = width;
 	this.height = height;
+}
+
+aventura.app.GameRoom.prototype.setWidth = function(width) {
+	this.width = width;
+}
+
+aventura.app.GameRoom.prototype.getWidth = function() {
+	return this.width;
+}
+
+aventura.app.GameRoom.prototype.setHeight = function(height) {
+	this.height = height;
+}
+
+aventura.app.GameRoom.prototype.getHeight = function() {
+	return this.height;
 }
 
 aventura.app.GameRoom.prototype.setBg = function(bg) {

@@ -49,68 +49,100 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 
 }
 
+aventura.app.EditorCanvas.prototype.drawWalkableAreas = function() {
+
+    var walkableAreas = this.actualGame.getCurrentRoom().getWalkableAreas();
+    walkableAreas.forEach(function(walkableArea) {
+
+        var path = new paper.Path();
+        // Give the stroke a color
+        path.strokeColor = 'black';
+        path.fillColor = new paper.Color(1, 0, 0.5, 0.5);
+
+        var points = walkableArea.getPoints();
+        for (var i = 0; i < points.length; i++) {
+            var point = points[i];
+
+            if (i == 0) {
+                var start = new paper.Point(point.x, point.y);
+                // Move to start and draw a line from there
+                path.moveTo(start);        
+            } else {
+
+                // Note that the plus operator on Point objects does not work
+                // in JavaScript. Instead, we need to call the add() function:
+                //path.lineTo(start.add([ point.x , point.y ]));               
+                path.lineTo( [point.x , point.y] );               
+
+            }
+        }     
+        path.closed = true;       
+
+        // Draw the view now:
+        paper.view.draw();
+    });
+
+}
+
+aventura.app.EditorCanvas.prototype.loadBg = function(fn) {
+
+    if (this.actualGame.getCurrentRoomBg() == "") {
+        fn();
+    }
+    else {
+
+        $('#image-placeholder').prepend('<img style="display:none" id="theImg" src="' 
+            + this.actualGame.getCurrentRoomBg() + '" />');
+
+        $( "#theImg" ).load(function() {
+            // Handler for .load() called.
+            var raster = new paper.Raster('theImg');
+            
+            /*raster.width = this.actualGame.width;
+            raster.height = this.actualGame.height;*/
+
+            // Move the raster to the center of the view
+            raster.position = paper.view.center;
+            var scaleX = this.actualGame.width / raster.width;
+            var scaleY = this.actualGame.height / raster.height ;
+
+            raster.scale(scaleX, scaleY);
+
+            fn();
+        
+        }.bind(this));
+
+    }
+}
+
+aventura.app.EditorCanvas.prototype.drawGameRect = function() {
+    var width = this.actualGame.getCurrentRoom().getWidth();
+    var height = this.actualGame.getCurrentRoom().getHeight();
+
+    var path = new paper.Path();
+    // Give the stroke a color
+    path.strokeColor = 'black';
+
+    path.moveTo(0, 0);
+    path.lineTo(width, 0);
+    path.lineTo(width, height);
+    path.lineTo(0, height);
+    path.closed = true;
+    paper.view.draw();
+}
 
 aventura.app.EditorCanvas.prototype.invalidate = function() {
-
-    
 
     if (!this.actualGame.getCurrentRoom())
         return;
 
-    $('#image-placeholder').prepend('<img style="display:none" id="theImg" src="' + this.actualGame.getCurrentRoomBg() + '" />');
+    paper.project.clear();
 
-    $( "#theImg" ).load(function() {
-        // Handler for .load() called.
-        var raster = new paper.Raster('theImg');
-        
-        /*raster.width = this.actualGame.width;
-        raster.height = this.actualGame.height;*/
+    this.drawGameRect();
 
-        // Move the raster to the center of the view
-        raster.position = paper.view.center;
-        var scaleX = this.actualGame.width / raster.width;
-        var scaleY = this.actualGame.height / raster.height ;
-
-        raster.scale(scaleX, scaleY);
-
-
-        var walkableAreas = this.actualGame.getCurrentRoom().getWalkableAreas();
-        walkableAreas.forEach(function(walkableArea) {
-
-            var path = new paper.Path();
-            // Give the stroke a color
-            path.strokeColor = 'black';
-            path.fillColor = new paper.Color(1, 0, 0.5, 0.5);
-
-            var points = walkableArea.getPoints();
-            for (var i = 0; i < points.length; i++) {
-                var point = points[i];
-
-                if (i == 0) {
-                    var start = new paper.Point(point.x, point.y);
-                    // Move to start and draw a line from there
-                    path.moveTo(start);        
-                } else {
-
-                    // Note that the plus operator on Point objects does not work
-                    // in JavaScript. Instead, we need to call the add() function:
-                    //path.lineTo(start.add([ point.x , point.y ]));               
-                    path.lineTo( [point.x , point.y] );               
-
-                }
-            }     
-            path.closed = true;       
-
-            // Draw the view now:
-            paper.view.draw();
-        });
-
-        
-    
+    this.loadBg(function() {
+        this.drawWalkableAreas();
     }.bind(this));
-
-          // Create a Paper.js Path to draw a line into it:
-  
 
 return;
     this.canvas.clear();

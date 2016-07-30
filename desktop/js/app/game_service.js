@@ -9,4 +9,8 @@ app.service("gameService", function() {
     	return this.actualGame;
     }
 
+    this.setActualGame = function(actualGame) {
+    	this.actualGame = actualGame;
+    }
+
 });

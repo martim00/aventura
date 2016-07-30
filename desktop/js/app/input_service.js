@@ -42,6 +42,59 @@ app.service("inputService", function() {
         return content;
     }
 
+    this.getAskFolderContent = function() {
+        var content = $('<div class="row"></div>').html(            
+                    '<div class="col-md-12"> ' +
+                    '<form class="form-horizontal"> ' +
+                    '<div class="form-group"> ' +
+                    '<label class="col-md-4 control-label" for="folder">Folder</label> ' +
+                    '<div class="col-md-4"> ' +
+                    '<input id="folder" name="folder" type="text" placeholder="Your game folder" class="form-control input-md"> ' +
+                    '<input id="folderChooser" type="file" nwdirectory webkitdirectory />' +
+                    '<span class="help-block">Folder where game.json are located</span> </div> ' +
+                    '</div> ' +                    
+                    '</form> </div>'
+        );
+
+        var chooser = content.find('#folderChooser');
+        var folderInput = content.find('#folder');
+        chooser.unbind('change');
+        chooser.change(function(evt) {
+            var files = evt.target.files;
+            if (files.length > 0)
+                folderInput.val(files[0].path);
+
+            
+        }.bind(this));
+
+        return content;
+    }
+
+    this.askForFolder = function(fn) {
+        bootbox.dialog({
+            message: this.getAskFolderContent(),
+            title: "Choose a folder",
+            buttons: {
+                success: {
+                    label: "Ok",
+                    className: "btn-success",
+                    callback: function() {
+                        var name = $('#name').val();
+                        var folder = $('#folderChooser').val();
+                        fn(true, folder);
+                    } 
+                },
+                cancel : {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        fn(false, "");
+                    }
+                }
+            }
+        });
+    }
+
     this.askForGameSettings = function(fn) {
         bootbox.dialog({
             message: this.getGameSettingsContent(),
