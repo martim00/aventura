@@ -11,18 +11,20 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 
 	DbC.requireNotNull(actualGame, "actualGame");
 	this.actualGame = actualGame;
-    var canvas = document.getElementById('main-canvas');
+    this.canvas = document.getElementById('main-canvas');
 
     //canvas.style.width ='100%';
     //canvas.style.height='100%';
 
-    canvas.style.width = this.actualGame.width + 'px'; 
-    canvas.style.height= this.actualGame.height + 'px';
+    this.canvas.style.width = this.actualGame.width + 'px'; 
+    this.canvas.style.height= this.actualGame.height + 'px';
   // ...then set the internal size to match
     /*canvas.width  = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;*/
         // Create an empty project and a view for the canvas:
-    paper.setup(canvas);
+    paper.setup(this.canvas);
+
+    this.setupZoom();
   
 
     return;
@@ -47,6 +49,14 @@ aventura.app.EditorCanvas.prototype.init = function(actualGame) {
 
     }.bind(this));
 
+}
+
+aventura.app.EditorCanvas.prototype.setupZoom = function() {
+
+    $(this.canvas).on('mousewheel', function(e) {
+        var delta = e.originalEvent.wheelDelta / 120;
+        paper.view.zoom = paper.view.zoom + 0.1 * delta;
+    }.bind(this));
 }
 
 aventura.app.EditorCanvas.prototype.drawWalkableAreas = function() {

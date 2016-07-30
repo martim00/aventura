@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 var crypto = require('crypto');
 
 function fileErrorHandler(e) {
@@ -88,6 +89,11 @@ function writeToFile(filename, content, fn) {
 }
 
 function writeFileSync(target, content) {
+  var folder = path.dirname(target);
+
+  if (!fs.existsSync(folder)){
+    fs.mkdirSync(folder);
+  }
   fs.writeFileSync(target, content);
 }
 

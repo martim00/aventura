@@ -13,7 +13,7 @@ app.controller('MainController', ["inputService", "previewService", "gameService
 
     this.initializeTestValues = function() {
 
-        this.gameService.getActualGame().open("c:/users/aniceto/workspace/aventura/desktop/game-folder");
+        //this.gameService.getActualGame().open("c:/users/aniceto/workspace/aventura/desktop/game-folder");
 
         /*/this.gameService.getActualGame().createNewRoom("room1");
         this.gameService.getActualGame().currentRoom.bg = "bg3.png";
@@ -39,7 +39,9 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     this.makeNewGame = function() {
         this.inputService.askForGameSettings(function(result, name, folder) {
             if (result) {
-                this.gameService.setActualGame(new aventura.app.AdventureGame(name, folder));
+                var newGame = new aventura.app.AdventureGame(name, folder);
+                newGame.save();
+                this.gameService.setActualGame(newGame);
                 $scope.$apply();
             }
 
@@ -255,16 +257,27 @@ app.controller('MainController', ["inputService", "previewService", "gameService
         return this.gameService.getActualGame();
     }
 
+    this.getActualGameIndex = function() {
+        return this.gameService.getActualGame().getGameIndex();
+
+    }
+
     this.openGame = function() {
-        this.inputService.askForFolder(function(result, folder) {
-            if (result) {
-                this.gameService.getActualGame().open(folder);
-                // this.gameService.getActualGame().createNewRoom(result);
-                //this.setSelectedRoom(result);
-                //this.invalidateTreeView();
-                // $scope.$apply();
-            }
-        }.bind(this));
+
+            this.inputService.askForFolder(function(result, folder) {
+                if (result) {
+                    try {
+                        this.gameService.getActualGame().open(folder);
+
+                    } catch (e) { 
+                        bootbox.alert(e.message);
+                    }
+                    // this.gameService.getActualGame().createNewRoom(result);
+                    //this.setSelectedRoom(result);
+                    //this.invalidateTreeView();
+                    // $scope.$apply();
+                }
+            }.bind(this));
     }
 
     //this.invalidateTreeView();

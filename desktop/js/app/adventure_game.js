@@ -94,6 +94,9 @@ aventura.app.AdventureGame.prototype.getCharacterByName = function(characterName
 	return null;
 }
 
+aventura.app.AdventureGame.prototype.getGameIndex = function() {
+	return this.getAbsPath("index.html");
+}
 
 aventura.app.AdventureGame.prototype.setCurrentRoomBg = 
 	function(filename, rawData, fn) {
@@ -156,6 +159,7 @@ aventura.app.AdventureGame.prototype.copyFileToGameFolder =
 }
 
 aventura.app.AdventureGame.prototype.save = function() {
+
     writeTextFile(this.getAbsPath("game.json"), this.getGameAsJson(), function() {
 
     });

@@ -79,8 +79,7 @@ app.service("inputService", function() {
                     label: "Ok",
                     className: "btn-success",
                     callback: function() {
-                        var name = $('#name').val();
-                        var folder = $('#folderChooser').val();
+                        var folder = $('#folder').val();
                         fn(true, folder);
                     } 
                 },
@@ -105,7 +104,7 @@ app.service("inputService", function() {
                     className: "btn-success",
                     callback: function() {
                         var name = $('#name').val();
-                        var folder = $('#folderChooser').val();
+                        var folder = $('#folder').val();
                         fn(true, name, folder);
                     } 
                 },
