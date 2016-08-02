@@ -63,6 +63,12 @@ describe("AdventureGame", function() {
       json = JSON.parse(game.getGameAsJson());
     });
 
+    it("if game folder is unset throws exception", function() {
+      expect( function(){ game.save(); } )
+        .toThrow(new Error("the game folder is unset"));
+
+    });
+
     it("should save the clickable areas", function() {
       expect(json.rooms.room1.clickableAreas).not.toBeUndefined();
     });

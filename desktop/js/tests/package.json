@@ -1,0 +1,9 @@
+{
+  "name": "tests",
+  "version": "0.0.1",
+  "main": "SpecRunner.html",
+  "dependencies" : {
+    "mocha": "*",
+    "async": "*"
+  }
+}
