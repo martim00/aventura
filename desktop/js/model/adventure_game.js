@@ -8,6 +8,7 @@ goog.require('aventura.app.Character');*/
 var path = require('path');
 
 aventura.app.AdventureGame = function(name, folder, width, height) {
+
 	this.name = name;
 	this.folder = folder;
 	this.width = width;
@@ -157,6 +158,18 @@ aventura.app.AdventureGame.prototype.copyFileToGameFolder =
 
     writeBinaryFile(this.getAbsPath(targetFileName), rawData, fn);
 }
+aventura.app.AdventureGame.prototype.setFolder = function(folder) {
+	this.folder = folder;
+}
+
+aventura.app.AdventureGame.prototype.isPristine = function() {
+	return this.folder == "";
+}
+
+aventura.app.AdventureGame.prototype.saveAs = function(folder) {
+	this.setFolder(folder);
+	this.save();
+}	
 
 aventura.app.AdventureGame.prototype.save = function() {
 
@@ -184,11 +197,13 @@ aventura.app.AdventureGame.prototype.save = function() {
 }
 
 aventura.app.AdventureGame.prototype.copyResourceToGameFolder = function(filename) {
-	//var nwDir = path.dirname(process.execPath);
-	//var cwd = process.cwd();
-	// TODO: get the application folder 
-	//var APP_FOLDER = "C:/users/aniceto/workspace/aventura/desktop/js/app/game-template";
-    var gameTemplateFolder = path.resolve(this.folder, filename);
+	var nwDir = path.dirname(process.execPath);
+	var cwd = process.cwd();
+	var APP_FOLDER = cwd + "/js/game-template";
+	// todo: GET THE APPLICATION FOLDER 
+
+	// var APP_FOLDER = "C:/users/aniceto/workspace/aventura/desktop/js/game-template";
+    var gameTemplateFolder = path.resolve(APP_FOLDER, filename);
 	
 	copyFileSync(gameTemplateFolder, this.getAbsPath(filename));
     /*copyFile(gameTemplateFolder, this.getAbsPath(filename), function(err) {

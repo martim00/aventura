@@ -38,6 +38,7 @@
       <script src="js/controller/app.js"></script>
       <script src="js/service/file_service.js"></script>
       <script src="js/service/input_service.js"></script>
+      <script src="js/service/canvas_service.js"></script>
       <script src="js/service/game_service.js"></script>
       <script src="js/service/preview_service.js"></script>
       <script src="js/model/walkable_area.js"></script>
@@ -108,8 +109,8 @@
               <ul>
                   <li><a ng-click="mainController.makeNewGame()" href="#">new</a></li>
                   <li><a ng-click="mainController.openGame()" href="#">open</a></li>
-                  <li><a ng-click="mainController.saveGame()" href="#">save</a></li>
-                  <li><a href="#">save as</a></li>
+                  <li><a ng-click="mainController.save()" href="#">save</a></li>
+                  <li><a ng-click="mainController.saveAs()" href="#">save as</a></li>
                   <li><a href="#">exit</a></li>
               </ul>
           </li>
