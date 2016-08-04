@@ -5,9 +5,6 @@ app.service("inputService", function() {
         bootbox.prompt(txt, fn);               
     };
 
-    this.askForFolder = function() {
-    }
-
     this.getGameSettingsContent = function() {
         var content = $('<div class="row"></div>').html(            
                     '<div class="col-md-12"> ' +

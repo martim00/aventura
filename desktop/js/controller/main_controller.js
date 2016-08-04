@@ -1,13 +1,16 @@
 var app = angular.module('adventureApp');
 
-app.controller('MainController', ["inputService", "previewService", "gameService", "$scope", 
-    function(inputService, previewService, gameService, $scope) {
+app.controller('MainController', ["inputService", "previewService", 
+        "gameService", "canvasService", "$scope", 
+
+    function(inputService, previewService, gameService, canvasService, $scope) {
 
     this.inputService = inputService;
     this.previewService = previewService;
     this.gameService = gameService;
+    this.canvasService = canvasService;
 
-    this.canvas = new aventura.app.EditorCanvas();
+    //this.canvas = new aventura.app.EditorCanvas();
 
     this.elementSelected = undefined;
 
@@ -27,13 +30,11 @@ app.controller('MainController', ["inputService", "previewService", "gameService
 
 
     this.initializeCanvas = function() {
-        this.canvas.init(this.gameService.getActualGame());
+        this.canvasService.init(this.gameService.getActualGame());
     };
 
     this.invalidateCanvas = function() {
-
-        this.canvas.invalidate();
-
+        this.canvasService.invalidate();
     };
 
     this.makeNewGame = function() {
@@ -131,7 +132,7 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     }
 
     this.askForWalkableArea = function() {
-        this.setActiveTool(new aventura.app.DrawTool(this.canvas, this.gameService.getActualGame()));
+        this.setActiveTool(new aventura.app.DrawTool(this.canvasService.getCanvas(), this.gameService.getActualGame()));
     }
 
     this.askForStartPosition = function() {
@@ -201,24 +202,23 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     }
 
     this.saveAs = function() {
+        inputService.askForFolder(function(result, folder) {
+            if (result) {
+                this.gameService.getActualGame().saveAs(folder);
+            }
+
+        }.bind(this));
 
     }
 
     this.save = function() {
-        /*try {
-            this.gameService.getActualGame().save();
-            this.previewService.liveReload();
-        } catch (e) {
-            bootbox.alert(e.message);
-        }*/
-
-    }
-
-    this.saveGame = function() {
-        /*if (!this.gameService.getActualGame().hasFolder())
+        var actualGame = this.gameService.getActualGame();
+        if (actualGame.isPristine()) {
             this.saveAs();
-        else 
-            this.save();*/
+        }
+        else {
+            actualGame.save();
+        }
     }
 
     this.getGameTree = function() {
