@@ -52,6 +52,13 @@ describe("AdventureGame", function() {
         .not.toThrow();
     });
 
+    it("the game folder should be set", function() {
+      var gameFolder = __dirname + "/game-folder-example";
+      game.open(gameFolder);
+      expect(gameFolder).toEqual(game.getFolder());
+
+    });
+
   });
 
   describe("when save to json", function() {

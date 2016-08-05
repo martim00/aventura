@@ -162,6 +162,10 @@ aventura.app.AdventureGame.prototype.setFolder = function(folder) {
 	this.folder = folder;
 }
 
+aventura.app.AdventureGame.prototype.getFolder = function() {
+	return this.folder;
+}
+
 aventura.app.AdventureGame.prototype.isPristine = function() {
 	return this.folder == "";
 }
@@ -265,6 +269,8 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
 }
 
 aventura.app.AdventureGame.prototype.open = function(folder, fn) {
+	this.setFolder(folder);
+
     var gameFile = path.resolve(folder, "game.json");
     try {
     	var content = readFile(gameFile);

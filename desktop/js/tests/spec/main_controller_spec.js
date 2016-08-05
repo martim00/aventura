@@ -1,7 +1,7 @@
 describe('MainController', function() {
   beforeEach(module('adventureApp'));
 
-  var $controller, gameService, inputService, canvasService, currentGame;
+  var $controller, gameService, inputService, canvasService, actualGame;
   /*
     JsHamcrest.Integration.jasmine();
     JsMockito.Integration.JsTestDriver();
@@ -19,8 +19,8 @@ describe('MainController', function() {
     actualGame = {
         saveAs : jasmine.createSpy(),
         isPristine : jasmine.createSpy(),
-        save: jasmine.createSpy()
-
+        save: jasmine.createSpy(),
+        open: jasmine.createSpy(),
     }
     // jasmine.createSpyObj('actualGame', ['saveAs']);
     // spyOn(actualGame, "isPristine").and.returnValue(true);
@@ -33,12 +33,14 @@ describe('MainController', function() {
     }
 
     inputService = {
-      askForFolder : function(fn) {}
+      askForFolder : function(fn) {},
+      askForNewOrOpen: function(fn) {}
     }
 
     spyOn(inputService, "askForFolder").and.callFake(function(fn) {
         fn(true, "/home/");
     });
+
 
     previewService = $injector.get('previewService');
 
@@ -47,9 +49,14 @@ describe('MainController', function() {
       invalidate: function() {}
     }
 
+    timeout = function(fn) {
+      fn();
+    }
+
+
     controller = $controller('MainController', { 
           $scope: $scope, inputService: inputService, previewService: previewService, 
-          gameService: gameService, canvasService: canvasService });
+          gameService: gameService, canvasService: canvasService, $timeout: timeout });
   }));
 
   describe('MainController save behaviour', function() {
@@ -76,5 +83,39 @@ describe('MainController', function() {
     });
 
 
+  });
+
+  describe('User onboarding', function() {
+
+    it('should ask for open existing game or create new one', function() {
+      spyOn(inputService, "askForNewOrOpen").and.callFake(function(fn) {
+      });
+      controller = $controller('MainController', { 
+          $scope: $scope, inputService: inputService, previewService: previewService, 
+          gameService: gameService, canvasService: canvasService, $timeout: timeout });
+      expect(inputService.askForNewOrOpen).toHaveBeenCalled();
+    });
+
+    it('should open existing game if user choose it', function() {
+      spyOn(inputService, "askForNewOrOpen").and.callFake(function(fn) {
+        fn(true, "/game-folder");
+      });
+      controller = $controller('MainController', { 
+          $scope: $scope, inputService: inputService, previewService: previewService, 
+          gameService: gameService, canvasService: canvasService, $timeout: timeout });
+      expect(actualGame.open).toHaveBeenCalledWith("/game-folder");
+
+    });
+
+    it('should create new game if user choose it', function() {
+      spyOn(inputService, "askForNewOrOpen").and.callFake(function(fn) {
+        fn(false, "/game-folder-to-save");
+      });
+      controller = $controller('MainController', { 
+          $scope: $scope, inputService: inputService, previewService: previewService, 
+          gameService: gameService, canvasService: canvasService, $timeout: timeout });
+      expect(actualGame.saveAs).toHaveBeenCalledWith("/game-folder-to-save");
+
+    });
   });
 });

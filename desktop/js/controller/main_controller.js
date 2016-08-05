@@ -1,9 +1,9 @@
 var app = angular.module('adventureApp');
 
 app.controller('MainController', ["inputService", "previewService", 
-        "gameService", "canvasService", "$scope", 
+        "gameService", "canvasService", "$scope", "$timeout", 
 
-    function(inputService, previewService, gameService, canvasService, $scope) {
+    function(inputService, previewService, gameService, canvasService, $scope, $timeout) {
 
     this.inputService = inputService;
     this.previewService = previewService;
@@ -278,6 +278,20 @@ app.controller('MainController', ["inputService", "previewService",
 
     }
 
+    this.showUserOptions = function() {
+        this.inputService.askForNewOrOpen(function(isOpen, folder) {
+            $timeout(function() {
+                if (isOpen) {
+                    this.gameService.getActualGame().open(folder);
+                }
+                else {
+                    this.gameService.getActualGame().saveAs(folder);
+                }
+            }.bind(this), 1000);
+
+        }.bind(this));
+    }
+
     this.openGame = function() {
 
             this.inputService.askForFolder(function(result, folder) {
@@ -300,6 +314,8 @@ app.controller('MainController', ["inputService", "previewService",
     this.initializeCanvas();
     this.invalidateCanvas();
     this.initializeTestValues();
+    this.showUserOptions();
+    
 
     /*$('#game-tree').treeview({
         data: this.getGameTree()

@@ -25,16 +25,7 @@ app.service("inputService", function() {
                     '</form> </div>'
         );
 
-        var chooser = content.find('#folderChooser');
-        var folderInput = content.find('#folder');
-        chooser.unbind('change');
-        chooser.change(function(evt) {
-            var files = evt.target.files;
-            if (files.length > 0)
-                folderInput.val(files[0].path);
-
-            
-        }.bind(this));
+        this.bindFolderEvents(content);
 
         return content;
     }
@@ -53,16 +44,7 @@ app.service("inputService", function() {
                     '</form> </div>'
         );
 
-        var chooser = content.find('#folderChooser');
-        var folderInput = content.find('#folder');
-        chooser.unbind('change');
-        chooser.change(function(evt) {
-            var files = evt.target.files;
-            if (files.length > 0)
-                folderInput.val(files[0].path);
-
-            
-        }.bind(this));
+        this.bindFolderEvents(content);
 
         return content;
     }
@@ -221,6 +203,32 @@ app.service("inputService", function() {
 
     }
 
+    this.askForNewOrOpen = function(fn) {
+        bootbox.dialog({
+            message: this.getSaveOrOpenContent(),
+            title: "",
+            buttons: {
+                success: {
+                    label: "Ok",
+                    className: "btn-success",
+                    callback: function() {
+                        var checked = $('input[name=openOrSave]:checked').val();
+                        var folder = $('#folder').val();
+                        fn(checked == "open", folder);
+                    } 
+                },
+                cancel : {
+                    label: "Cancel",
+                    className: "btn-primary",
+                    callback: function() {
+                        fn(null);
+                    }
+                }
+            }
+        });
+
+    }
+
     this.askForCharacter = function(fn) {
         bootbox.dialog({
             message: this.getCharacterSettingsContent(),
@@ -265,6 +273,40 @@ app.service("inputService", function() {
                         '</form>' +
                     '</div>'
                 );
+        return content;
+    }
+
+    this.bindFolderEvents = function(content) {
+        var chooser = content.find('#folderChooser');
+        var folderInput = content.find('#folder');
+        chooser.unbind('change');
+        chooser.change(function(evt) {
+            var files = evt.target.files;
+            if (files.length > 0)
+                folderInput.val(files[0].path);
+
+            
+        }.bind(this));
+
+    }
+
+    this.getSaveOrOpenContent = function() {
+        var content = $('<div class="row"></div>').html(            
+                    '<div class="col-md-12"> ' +
+                        '<form class="form-horizontal"> ' +
+                            '<div class="form-group"> ' +
+                                '<label class="col-md-4 control-label" for="name">What do you want to do?</label> ' +
+                                    '<div class="col-md-4"> ' +
+                                        '<input type="radio" checked name="openOrSave" value="open">Open existing game <br>' +
+                                        '<input type="radio" name="openOrSave" value="new">Create new game<br>' +
+                                        '<input id="folder" name="folder" type="text" placeholder="Game folder" class="form-control input-md"> ' +
+                                        '<input id="folderChooser" type="file" nwdirectory webkitdirectory />' +
+                                    '</div> ' +
+                            ' </div> ' +
+                        '</form>' +
+                    '</div>'
+                );
+        this.bindFolderEvents(content);
         return content;
     }
 
