@@ -39,10 +39,10 @@ function toBuffer(ab) {
     return buffer;
 }
 
-function writeBinaryFile(filename, content, fn) {
+function writeBinaryFile(filename, content) {
 
   // chunk is the Uint8Array object
-  writeToFile(filename, toBuffer(content), fn);
+  writeToFile(filename, toBuffer(content));
 
   /*return;
 
@@ -70,11 +70,11 @@ function writeBinaryFile(filename, content, fn) {
   }); */
 }
 
-function writeTextFile(filename, content, fn) {
-  writeToFile(filename, content, fn);
+function writeTextFile(filename, content) {
+  writeToFile(filename, content);
 }
 
-function writeToFile(filename, content, fn) {
+function writeToFile(filename, content) {
   writeFileSync(filename, content);
 
   // chunk is the Uint8Array object

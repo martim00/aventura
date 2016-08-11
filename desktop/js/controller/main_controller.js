@@ -87,11 +87,9 @@ app.controller('MainController', ["inputService", "previewService",
         this.inputService.askForFile("#item-sprite-input", function(file, rawData) {
 
             this.gameService.getActualGame().setItemSprite(
-                this.getSelectedElement().element, file.name, 48, 32, rawData, function() {
-                this.invalidateView();
-                console.log("done");
-
-            }.bind(this));
+                this.getSelectedElement().element, file.name, 48, 32, rawData);
+            console.log("done");
+            this.invalidateView();
 
         }.bind(this));
 
@@ -102,10 +100,8 @@ app.controller('MainController', ["inputService", "previewService",
             //console.log(file);
             //console.log(rawData);
 
-            this.gameService.getActualGame().setCurrentRoomBg(file.name, rawData, function() {
-                this.invalidateCanvas();
-
-            }.bind(this));
+            this.gameService.getActualGame().setCurrentRoomBg(file.name, rawData);
+            this.invalidateCanvas();
 
             //writeToFile("c:/tmp/nw.png", rawData);
             //writeToFile(path, rawData);
@@ -152,11 +148,9 @@ app.controller('MainController', ["inputService", "previewService",
         this.inputService.askForFile("#sprite-input", function(file, rawData) {
 
             // TODO: parametrize this 
-            this.gameService.getActualGame().setCharacterSprite("player1", file.name, 48, 32, rawData, function() {
-                this.invalidateView();
-                console.log("done");
-
-            }.bind(this));
+            this.gameService.getActualGame().setCharacterSprite("player1", file.name, 48, 32, rawData);
+            console.log("done");
+            this.invalidateView();
 
         }.bind(this));
 
@@ -190,11 +184,11 @@ app.controller('MainController', ["inputService", "previewService",
     };
 
     this.getItemSpritePath = function() {
-        return this.isElementSelected('item') ? this.gameService.getActualGame().getItemSpritePath() : "";
+        return this.isElementSelected('item') ? this.getActualGame().getItemSpritePath() : "";
     }
 
     this.runGame = function() {
-        this.previewService.previewGame();
+        this.previewService.previewGame(this.getActualGame().getGameIndex());
     }
 
     this.liveReload = function() {
@@ -204,7 +198,7 @@ app.controller('MainController', ["inputService", "previewService",
     this.saveAs = function() {
         inputService.askForFolder(function(result, folder) {
             if (result) {
-                this.gameService.getActualGame().saveAs(folder);
+                this.getActualGame().saveAs(folder);
             }
 
         }.bind(this));
@@ -212,7 +206,7 @@ app.controller('MainController', ["inputService", "previewService",
     }
 
     this.save = function() {
-        var actualGame = this.gameService.getActualGame();
+        var actualGame = this.getActualGame();
         if (actualGame.isPristine()) {
             this.saveAs();
         }

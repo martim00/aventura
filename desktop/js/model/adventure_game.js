@@ -100,28 +100,28 @@ aventura.app.AdventureGame.prototype.getGameIndex = function() {
 }
 
 aventura.app.AdventureGame.prototype.setCurrentRoomBg = 
-	function(filename, rawData, fn) {
+	function(filename, rawData) {
 
 	DbC.require(this.currentRoom != undefined, "should have a current room to set its bg");
 
     this.currentRoom.setBg(filename);
-	this.copyFileToGameFolder(filename, rawData, fn);
+	this.copyFileToGameFolder(filename, rawData);
 }
 
 /*
 *	Sets the current character sprite
 */
-aventura.app.AdventureGame.prototype.setCharacterSprite = function(name, filename, width, height, rawData, fn) {
+aventura.app.AdventureGame.prototype.setCharacterSprite = function(name, filename, width, height, rawData) {
 	DbC.require(this.currentCharacter != undefined, "should have a current character to set its sprite");
 
     this.currentCharacter.setSprite(new aventura.app.SpriteSheet(name, filename, width, height));
-	this.copyFileToGameFolder(filename, rawData, fn);
+	this.copyFileToGameFolder(filename, rawData);
 }
 
-aventura.app.AdventureGame.prototype.setItemSprite = function(item, filename, width, height, rawData, fn) {
+aventura.app.AdventureGame.prototype.setItemSprite = function(item, filename, width, height, rawData) {
 	DbC.require(item.getName());
     item.setSprite(new aventura.app.SpriteSheet(item.getName(), filename, width, height));
-	this.copyFileToGameFolder(filename, rawData, fn);
+	this.copyFileToGameFolder(filename, rawData);
 }
 
 aventura.app.AdventureGame.prototype.getCurrentRoom = function() {
@@ -154,10 +154,11 @@ aventura.app.AdventureGame.prototype.getAbsPath = function(relativePath) {
 }
 
 aventura.app.AdventureGame.prototype.copyFileToGameFolder = 
-	function(targetFileName, rawData, fn) {
+	function(targetFileName, rawData) {
 
-    writeBinaryFile(this.getAbsPath(targetFileName), rawData, fn);
+    writeBinaryFile(this.getAbsPath(targetFileName), rawData);
 }
+
 aventura.app.AdventureGame.prototype.setFolder = function(folder) {
 	this.folder = folder;
 }
@@ -180,9 +181,8 @@ aventura.app.AdventureGame.prototype.save = function() {
 	if (!this.folder) 
 		throw new Error("the game folder is unset");
 
-    writeTextFile(this.getAbsPath("game.json"), this.getGameAsJson(), function() {
+    writeTextFile(this.getAbsPath("game.json"), this.getGameAsJson());
 
-    });
 	this.copyResourceToGameFolder("ns.js");
 	this.copyResourceToGameFolder("async.js");
 	this.copyResourceToGameFolder("lazy_loader.js");
