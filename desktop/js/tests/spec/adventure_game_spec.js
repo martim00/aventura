@@ -52,13 +52,25 @@ describe("AdventureGame", function() {
         .not.toThrow();
     });
 
+    it("the game folder should be set", function() {
+      var gameFolder = __dirname + "/game-folder-example";
+      game.open(gameFolder);
+      expect(gameFolder).toEqual(game.getFolder());
+
+    });
+
   });
+
   describe("when save to json", function() {
+
     beforeEach(function() {
+
       var points = [{'x' : 10, 'y' : 10}, {'x' : 100, 'y' : 100}, {'x' : 10, 'y' : 100}];
       game.createNewRoom("room1");
+
       var room1 = game.getRoomByName("room1");
       room1.createClickableArea(points);
+
       game.createNewItem("ticket", "Ticket");
       json = JSON.parse(game.getGameAsJson());
     });

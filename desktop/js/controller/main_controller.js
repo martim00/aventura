@@ -1,13 +1,16 @@
 var app = angular.module('adventureApp');
 
-app.controller('MainController', ["inputService", "previewService", "gameService", "$scope", 
-    function(inputService, previewService, gameService, $scope) {
+app.controller('MainController', ["inputService", "previewService", 
+        "gameService", "canvasService", "$scope", "$timeout", 
+
+    function(inputService, previewService, gameService, canvasService, $scope, $timeout) {
 
     this.inputService = inputService;
     this.previewService = previewService;
     this.gameService = gameService;
+    this.canvasService = canvasService;
 
-    this.canvas = new aventura.app.EditorCanvas();
+    //this.canvas = new aventura.app.EditorCanvas();
 
     this.elementSelected = undefined;
 
@@ -27,13 +30,11 @@ app.controller('MainController', ["inputService", "previewService", "gameService
 
 
     this.initializeCanvas = function() {
-        this.canvas.init(this.gameService.getActualGame());
+        this.canvasService.init(this.gameService.getActualGame());
     };
 
     this.invalidateCanvas = function() {
-
-        this.canvas.invalidate();
-
+        this.canvasService.invalidate();
     };
 
     this.makeNewGame = function() {
@@ -86,11 +87,9 @@ app.controller('MainController', ["inputService", "previewService", "gameService
         this.inputService.askForFile("#item-sprite-input", function(file, rawData) {
 
             this.gameService.getActualGame().setItemSprite(
-                this.getSelectedElement().element, file.name, 48, 32, rawData, function() {
-                this.invalidateView();
-                console.log("done");
-
-            }.bind(this));
+                this.getSelectedElement().element, file.name, 48, 32, rawData);
+            console.log("done");
+            this.invalidateView();
 
         }.bind(this));
 
@@ -101,10 +100,8 @@ app.controller('MainController', ["inputService", "previewService", "gameService
             //console.log(file);
             //console.log(rawData);
 
-            this.gameService.getActualGame().setCurrentRoomBg(file.name, rawData, function() {
-                this.invalidateCanvas();
-
-            }.bind(this));
+            this.gameService.getActualGame().setCurrentRoomBg(file.name, rawData);
+            this.invalidateCanvas();
 
             //writeToFile("c:/tmp/nw.png", rawData);
             //writeToFile(path, rawData);
@@ -131,7 +128,7 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     }
 
     this.askForWalkableArea = function() {
-        this.setActiveTool(new aventura.app.DrawTool(this.canvas, this.gameService.getActualGame()));
+        this.setActiveTool(new aventura.app.DrawTool(this.canvasService.getCanvas(), this.gameService.getActualGame()));
     }
 
     this.askForStartPosition = function() {
@@ -151,11 +148,9 @@ app.controller('MainController', ["inputService", "previewService", "gameService
         this.inputService.askForFile("#sprite-input", function(file, rawData) {
 
             // TODO: parametrize this 
-            this.gameService.getActualGame().setCharacterSprite("player1", file.name, 48, 32, rawData, function() {
-                this.invalidateView();
-                console.log("done");
-
-            }.bind(this));
+            this.gameService.getActualGame().setCharacterSprite("player1", file.name, 48, 32, rawData);
+            console.log("done");
+            this.invalidateView();
 
         }.bind(this));
 
@@ -189,11 +184,11 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     };
 
     this.getItemSpritePath = function() {
-        return this.isElementSelected('item') ? this.gameService.getActualGame().getItemSpritePath() : "";
+        return this.isElementSelected('item') ? this.getActualGame().getItemSpritePath() : "";
     }
 
     this.runGame = function() {
-        this.previewService.previewGame();
+        this.previewService.previewGame(this.getActualGame().getGameIndex());
     }
 
     this.liveReload = function() {
@@ -201,24 +196,23 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     }
 
     this.saveAs = function() {
+        inputService.askForFolder(function(result, folder) {
+            if (result) {
+                this.getActualGame().saveAs(folder);
+            }
+
+        }.bind(this));
 
     }
 
     this.save = function() {
-        /*try {
-            this.gameService.getActualGame().save();
-            this.previewService.liveReload();
-        } catch (e) {
-            bootbox.alert(e.message);
-        }*/
-
-    }
-
-    this.saveGame = function() {
-        /*if (!this.gameService.getActualGame().hasFolder())
+        var actualGame = this.getActualGame();
+        if (actualGame.isPristine()) {
             this.saveAs();
-        else 
-            this.save();*/
+        }
+        else {
+            actualGame.save();
+        }
     }
 
     this.getGameTree = function() {
@@ -278,6 +272,20 @@ app.controller('MainController', ["inputService", "previewService", "gameService
 
     }
 
+    this.showUserOptions = function() {
+        this.inputService.askForNewOrOpen(function(isOpen, folder) {
+            $timeout(function() {
+                if (isOpen) {
+                    this.gameService.getActualGame().open(folder);
+                }
+                else {
+                    this.gameService.getActualGame().saveAs(folder);
+                }
+            }.bind(this), 1000);
+
+        }.bind(this));
+    }
+
     this.openGame = function() {
 
             this.inputService.askForFolder(function(result, folder) {
@@ -300,6 +308,8 @@ app.controller('MainController', ["inputService", "previewService", "gameService
     this.initializeCanvas();
     this.invalidateCanvas();
     this.initializeTestValues();
+    this.showUserOptions();
+    
 
     /*$('#game-tree').treeview({
         data: this.getGameTree()
