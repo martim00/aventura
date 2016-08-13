@@ -269,7 +269,18 @@ app.controller('MainController', ["inputService", "previewService",
 
     this.getActualGameIndex = function() {
         return this.gameService.getActualGame().getGameIndex();
+    }
 
+    this.getCurrentRoom = function() {
+        return this.getActualGame().getCurrentRoom();
+    }
+
+    this.setInitialRoom = function(room) {
+        this.getActualGame().setInitialRoom(room);        
+    }
+
+    this.isInitialRoom = function(room) {
+        return this.getActualGame().isInitialRoom(room);
     }
 
     this.showUserOptions = function() {

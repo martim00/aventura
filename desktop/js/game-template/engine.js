@@ -35,8 +35,9 @@ aventura.Engine.prototype.initRoom = function(roomName, playerStart) {
 
     this.createClickableAreas(actualRoomData);
 
-    this.configurePlayerAt(this.playerStart[0], this.playerStart[1]
-        , this.data.players[0]); // for now only one player
+    if (this.data.players.length > 0)
+        this.configurePlayerAt(this.playerStart[0], this.playerStart[1]
+            , this.data.players[0]); // for now only one player
 
     this.createExitRoom(actualRoomData);
 
@@ -154,7 +155,9 @@ aventura.Engine.prototype.loadAndStart = function() {
         }
         else {
             //this.game.state.start("room", true, false, "room1", [32, 500], this);
-            this.game.state.start("room", true, false, "room1", [32, 400], this);
+            if (!this.data.initialRoom)
+                throw new Exception("the game.json does not have an initialRoom");
+            this.game.state.start("room", true, false, this.data.initialRoom, [32, 400], this);
         }
 
     }.bind(this));

@@ -13,6 +13,10 @@ aventura.app.AdventureGame = function(name, folder, width, height) {
 	this.folder = folder;
 	this.width = width;
 	this.height = height;
+	this.clear();
+}
+
+aventura.app.AdventureGame.prototype.clear = function(jsonAsString) {
 	this.rooms = [];
 	this.characters = [];
 	this.walkableAreas = [];
@@ -64,6 +68,11 @@ aventura.app.AdventureGame.prototype.getInitialRoom = function() {
 	return this.initialRoom;
 }
 
+aventura.app.AdventureGame.prototype.isInitialRoom = function(room) {
+	console.log(this.initialRoom === room);
+	return this.initialRoom === room;
+}
+
 aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
 	for (var i = 0; i < this.rooms.length; i++) {
 		if (this.rooms[i].name == roomName)
@@ -72,6 +81,10 @@ aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
 
 	return null;
 }
+
+aventura.app.AdventureGame.prototype.getRoomsCount = function() {
+	return this.rooms.length;
+}	
 
 aventura.app.AdventureGame.prototype.hasRoom = function(room) {
 	return this.getRoomByName(room) != null;
@@ -258,6 +271,8 @@ aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 }
 
 aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
+
+	this.clear();
 
 	var json = JSON.parse(jsonAsString);
 	this.width = json.width;

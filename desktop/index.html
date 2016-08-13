@@ -59,8 +59,8 @@
           $(document).ready(function () {
               $('body').layout({
                   applyDefaultStyles: true,
-                  west__size:			150,
-                  west__minSize:				100
+                  west__size:			170,
+                  west__minSize:				170
 
                   ,	west__spacing_closed:			1
                   ,	west__spacing_open:				1
@@ -135,8 +135,10 @@
             <div id="rooms">
               <div class="accordion-tools"><a ng-click="mainController.createNewRoom()" href="">+</a></div>
               <ul class="rooms-list">
-                <li class="rooms-list-item element-{{mainController.getElementStyle(room)}}" ng-repeat="room in mainController.getActualGame().getRooms()" ng-click="mainController.setSelectedRoom(room)">
-                    <span>{{room.name}}</span>
+                <li class="rooms-list-item element-{{mainController.getElementStyle(room)}}" ng-repeat="room in mainController.getActualGame().getRooms()" >
+                    <div style="display:inline-block; width: 80%" ng-click="mainController.setSelectedRoom(room)">{{room.name}}</div>
+                    <input type="checkbox" ng-model="mainController.isInitialRoom(room)" 
+                        ng-click="mainController.setInitialRoom(room)">
                 </li>
               </ul>
               <!--<div id="game-tree"></div>-->
@@ -167,14 +169,18 @@
         <div class="properties-window">
           <div ng-show="mainController.isElementSelected('room')">
             <ul>
-                <li><label>room : </label><span>{{mainController.getActualGame().currentRoom.name}}</span></li>
+                <li><label>room : </label><span>{{mainController.getCurrentRoom().name}}</span></li>
                 <li><label>bg: </label><a ng-click="mainController.askForBackground()" href="">..</a></li>
                 <!--<output id="list"></output>-->
                 <input id="bg-input" type="file" name="bg-input" style="display: none;" accept=".png,.jpg,.jpeg" /> 
                 <li><label>clickable areas: </label><span>..</span></li>
                 <li><label>walkable areas: </label><span><a ng-click="mainController.askForWalkableArea()" href="">..</a></span></li>
-                <li><label>is initial room? </label><span><input type="checkbox"></span></li>
-            </ul>
+<!--                 <li><label>is initial room? </label><span>
+                  <input type="checkbox" 
+                    ng-checked="mainController.isInitialRoom(mainController.getCurrentRoom())" 
+                    ng-click="mainController.setInitialRoom()">
+                </span></li>
+ -->            </ul>
           </div>
           <div ng-show="mainController.isElementSelected('character')" ng-controller="CharacterController as characterController">
             <ul>
