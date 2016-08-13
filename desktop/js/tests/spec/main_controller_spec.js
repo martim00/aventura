@@ -27,7 +27,7 @@ describe('MainController', function() {
 
     // gameService = $injector.get('gameService')
     gameService = {
-      getActualGame : function() {
+      getActualGame: function() {
         return actualGame;
       }
     }
@@ -38,7 +38,7 @@ describe('MainController', function() {
     }
 
     spyOn(inputService, "askForFolder").and.callFake(function(fn) {
-        fn(true, "/home/");
+      fn(true, "/home/");
     });
 
 

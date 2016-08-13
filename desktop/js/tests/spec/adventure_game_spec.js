@@ -1,15 +1,38 @@
 var __dirname = path.dirname(document.currentScript.src.slice(8));
 
 describe("AdventureGame", function() {
-  var game;
+   var game;
 
-  beforeEach(function() {
-    game = new aventura.app.AdventureGame();
-  });
+   beforeEach(function() {
+      game = new aventura.app.AdventureGame();
+   });
 
-  this.getAsJsonString = function(obj) {
-    return JSON.stringify(obj);
-  };
+   this.getAsJsonString = function(obj) {
+      return JSON.stringify(obj);
+   };
+
+   describe("rooms", function() {
+      it("should be able to create a room", function() {
+         game.createNewRoom("room");
+         expect(game.hasRoom("room")).toEqual(true);
+         var room = game.getRoomByName("room");
+         expect(room.getName()).toEqual("room");
+      });
+
+      it("the first room is the initial room", function() {
+         game.createNewRoom("room");
+         expect(game.getInitialRoom()).not.toBeUndefined();
+         expect(game.getInitialRoom().getName()).toEqual("room");
+      });
+
+      it("should be able to configure the initial room", function() {
+         game.createNewRoom("room1");
+         game.createNewRoom("room2");
+         game.setInitialRoom(game.getRoomByName("room2"));
+         expect(game.getInitialRoom()).not.toBeUndefined();
+         expect(game.getInitialRoom().getName()).toEqual("room2");
+      });
+   });
 
   describe("inventory items", function() {
     it("should be able to add an inventory item", function() {
@@ -121,6 +144,7 @@ describe("AdventureGame", function() {
         "items" : [
           { "name" : "ticket", "label" : "Ticket", "visible" : true, "position" : { "x" : 100, "y" : 100 }, "image" : "ticket" }
         ],
+        "initialRoom": "room 1",
         "rooms" : 
         {
             "room 1" : {
@@ -229,6 +253,10 @@ describe("AdventureGame", function() {
       expect(item.getPosition().x).toEqual(100);
       expect(item.getPosition().y).toEqual(100);
       expect(item.getSprite().getName()).toEqual("ticket");
+    });
+
+    it("should be able to load the initial room", function() {
+       expect(game.getInitialRoom().getName()).toEqual("room 1");
     });
   });
 

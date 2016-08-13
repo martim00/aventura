@@ -19,6 +19,7 @@ aventura.app.AdventureGame = function(name, folder, width, height) {
 	this.currentRoom = undefined;
 	this.currentCharacter = undefined;
 	this.items = [];
+	this.initialRoom = undefined;
 }
 
 aventura.app.AdventureGame.prototype.getItems = function() {
@@ -42,6 +43,8 @@ aventura.app.AdventureGame.prototype.createNewRoom = function(roomName) {
 	var room = new aventura.app.GameRoom(roomName, this.width, this.height);
 	this.rooms.push(room);
 	this.currentRoom = room;
+	if (this.rooms.length == 1)
+		this.setInitialRoom(room);
 }
 
 aventura.app.AdventureGame.prototype.createNewCharacter = function(name) {
@@ -53,6 +56,14 @@ aventura.app.AdventureGame.prototype.createWalkableArea = function(points) {
 	this.currentRoom.createWalkableArea(points);
 }
 
+aventura.app.AdventureGame.prototype.setInitialRoom = function(room) {
+	this.initialRoom = room;
+}
+
+aventura.app.AdventureGame.prototype.getInitialRoom = function() {
+	return this.initialRoom;
+}
+
 aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
 	for (var i = 0; i < this.rooms.length; i++) {
 		if (this.rooms[i].name == roomName)
@@ -60,6 +71,10 @@ aventura.app.AdventureGame.prototype.getRoomByName = function(roomName) {
 	}
 
 	return null;
+}
+
+aventura.app.AdventureGame.prototype.hasRoom = function(room) {
+	return this.getRoomByName(room) != null;
 }
 
 aventura.app.AdventureGame.prototype.setCurrentRoom = function(room) {
@@ -227,6 +242,8 @@ aventura.app.AdventureGame.prototype.getGameAsJson = function() {
 		room.serialize(json);
 	});
 
+	json.initialRoom = this.initialRoom ? this.initialRoom.getName() : "";
+
 	json.players = [];
 	this.characters.forEach(function(character) {
 		character.serialize(json);
@@ -253,19 +270,28 @@ aventura.app.AdventureGame.prototype.load = function(jsonAsString) {
 		}
   	}
 
+  	this.currentRoom = this.rooms.length > 0 ? this.rooms[0]: null;
+
   	if (this.rooms.length > 0) {
-  		this.currentRoom = this.rooms[0];
+  		if (!json.initialRoom || !this.hasRoom(json.initialRoom))
+  			throw new Exception("cant load the json: the initialRoom points to an invalid room");
   	}
 
-  	json.players.forEach(function(playerJson) {
-		var character = aventura.app.Character.loadFrom(json, playerJson);
-		this.characters.push(character); 
-  	}.bind(this));
+  	this.initialRoom = this.rooms.length > 0 ? this.getRoomByName(json.initialRoom): null;
 
-  	json.items.forEach(function(itemJson) {
-  		var item = aventura.app.InventoryItem.loadFrom(json, itemJson);
-  		this.items.push(item);
-  	}.bind(this));
+  	if (json.players) {
+  		json.players.forEach(function(playerJson) {
+			var character = aventura.app.Character.loadFrom(json, playerJson);
+			this.characters.push(character); 
+  		}.bind(this));
+  	}
+
+  	if (json.items) {
+  		json.items.forEach(function(itemJson) {
+  			var item = aventura.app.InventoryItem.loadFrom(json, itemJson);
+  			this.items.push(item);
+  		}.bind(this));
+  	}
 }
 
 aventura.app.AdventureGame.prototype.open = function(folder, fn) {
