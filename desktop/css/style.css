@@ -111,6 +111,7 @@ body{
 
 .ui-layout-center {
     padding: 0 !important;
+    overflow: hidden!important;
 }
 
 .accordion-tools {
@@ -203,6 +204,21 @@ body{
 
 .ui-spinner-button {
     cursor: pointer;
+}
+
+.toolbar {
+    padding: 5px;
+    background-color: rgb(249, 248, 248);
+    border-bottom: solid 1px rgb(203, 198, 198);
+}
+
+.toolbar li {
+    display: inline-block;
+}
+
+.toolbar li a {
+    text-decoration: none;
+    padding: 5px 5px;
 }
 
 /*
