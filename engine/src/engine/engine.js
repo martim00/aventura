@@ -8,8 +8,6 @@ import {forEachOf} from 'async-es'
 
 export class Engine {
     constructor(game) {
-        // this.game = game;
-        // this.data = JSON.parse(this.game.cache.text.get('gameData'));
         // TODO: scalemanager is not present in phaser3 
         // this.game.scale.setGameSize(this.data.width, this.data.height);
 
@@ -18,7 +16,6 @@ export class Engine {
         this.clickableAreaManager = new ClickableAreas(this);
         this.exitAreaManager = new ExitAreas(this);
         this.inventory = new Inventory(this);
-        // this.game = game;
     }
 
     getData() {
@@ -61,9 +58,6 @@ export class Engine {
         this.createExitRoom(actualRoomData);
 
         this.game.input.mouse.capture = true;
-
-        // this.game.input.on('gameobjectdown', this.callMouseHandlers);
-        // this.game.input.on('POINTER_DOWN_EVENT', this.callMouseHandlers);
         this.game.input.on('pointerdown', this.callMouseHandlers, this);
     }
 
@@ -78,8 +72,6 @@ export class Engine {
         }
         
         this.text = this.game.add.text(this.getConfig().width/2, this.getConfig().height/2 - textMarginBottom, txt, style);
-        
-        // this.text.anchor.set(0.5);
 
         this.textTimeout = setTimeout(function() {
             this.text.destroy();
@@ -168,10 +160,8 @@ export class Engine {
     }
 
     load(scene) {
-        // this.load.text("gameData", "assets/game.json");
         this.game = scene;
 
-        // this.data = JSON.parse(scene.cache.json.get('gameData'));
         this.data = scene.cache.json.get('gameData');
         this.data.resources.forEach((resource) => {
             console.log('loading ', resource);
@@ -193,39 +183,10 @@ export class Engine {
 
     start() {
 
-        // this.game.load.once('complete', () => {
-            if (this.data.initialRoom === undefined)
-                throw new Error("the game.json does not have an initialRoom");
-            this.goToRoom(this.data.initialRoom, [32, 40]);
-        // });
+        if (this.data.initialRoom === undefined)
+            throw new Error("the game.json does not have an initialRoom");
 
-        // var lazyLoader = new LazyLoader(this.game);
-
-        // forEachOf(this.data.resources, (resource, callback) => {
-        //     if (resource.type === 'image') {
-        //         lazyLoader.loadLazyImage(resource.name, resource.path, function() {
-        //             callback();
-        //         });
-        //     }
-        //     else if (resource.type === 'spritesheet') {
-        //         lazyLoader.loadLazySpritesheet(resource.name, resource.path, resource.width, resource.height, function() {
-        //             callback();
-        //         });
-
-        //     }
-
-        // }, function(err) {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        //     else {
-        //         //this.game.state.start("room", true, false, "room1", [32, 500], this);
-        //         if (this.data.initialRoom === undefined)
-        //             throw new Error("the game.json does not have an initialRoom");
-        //         this.game.state.start("room", true, false, this.data.initialRoom, [32, 400], this);
-        //     }
-
-        // }.bind(this));
+        this.goToRoom(this.data.initialRoom, [32, 40]);
     }
 
 

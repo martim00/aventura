@@ -17,6 +17,7 @@
     "async-es": "2.6.1"
   },
   "dependencies": {
+    "npm": "^6.3.0",
     "phaser": "^3.10.1"
   }
 }

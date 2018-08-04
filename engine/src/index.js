@@ -23,6 +23,3 @@ const gameConfig = {
 };
 
 var game = new Phaser.Game(gameConfig);
-// game.scene.add('load', LoadScene);
-// game.scene.add('room', RoomScene);
-// engine = new Engine(game);

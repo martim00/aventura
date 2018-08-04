@@ -84,10 +84,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         });
 
         this.anims.play('stand', true);
-        // game.anims.create('left', [10, 11, 12, 14], 10, true);
-        // game.anims.create('right', [5, 6, 8, 9], 10, true);
-        // game.anims.create('up', [15, 16, 18, 19], 10, true);
-        // game.anims.create('down', [0, 1, 3, 4], 10, true);
 
         this.isMoving = false;
         // move character on input down/tap
