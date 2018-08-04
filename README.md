@@ -1,9 +1,17 @@
-# New stuff is here
+# Aventura Game Engine
 
-This is pretty much the game engine. You can just cloning it and starting using.
+A game engine for making adventure games.
+
+Heavily inspired by AGS (http://www.adventuregamestudio.co.uk/) but with a focus on the web.
+
+The engine is made on top of phaser 3 (http://phaser.io/).
+
+I'm streaming periodically at twitch.com (https://www.twitch.tv/martim00). Come and see me doing this engine and listen to good music.
 
 
 ## Using This Project
+
+This is pretty much the game engine. You can just clone it and starting using.
 
 1. Make a directory somewhere in your file system where you want to keep your project.
 1. `cd` into that directory from the command line.
@@ -12,7 +20,6 @@ This is pretty much the game engine. You can just cloning it and starting using.
 
 ## Installing Dependencies
 
-1. Follow the blog post for instructions on how to install [Yarn](https://yarnpkg.com/en/) if you don't already have it installed.
 1. From the cloned project's directory, run `yarn install`.
 
 ## Running The Project
