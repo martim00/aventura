@@ -155,8 +155,8 @@ aventura.Engine.prototype.loadAndStart = function() {
         }
         else {
             //this.game.state.start("room", true, false, "room1", [32, 500], this);
-            if (!this.data.initialRoom)
-                throw new Exception("the game.json does not have an initialRoom");
+            if (this.data.initialRoom === undefined)
+                throw new Error("the game.json does not have an initialRoom");
             this.game.state.start("room", true, false, this.data.initialRoom, [32, 400], this);
         }
 
