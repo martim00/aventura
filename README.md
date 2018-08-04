@@ -6,7 +6,7 @@ Heavily inspired by AGS (http://www.adventuregamestudio.co.uk/) but with a focus
 
 The engine is made on top of phaser 3 (http://phaser.io/).
 
-I'm streaming periodically at twitch.com (https://www.twitch.tv/martim00). Come and see me doing this engine and listen to good music.
+I'm streaming periodically at twitch.com (https://www.twitch.tv/martim00). Come and watch me doing this engine and listen to good music.
 
 
 ## Using This Project
