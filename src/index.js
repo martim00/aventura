@@ -1,7 +1,6 @@
 import 'phaser';
 import {Engine} from './engine/engine'
 
-import { SimpleScene } from './scenes/simple-scene';
 import { LoadScene } from './engine/load_scene';
 import { RoomScene } from './engine/room_scene';
 import { BootScene } from './engine/boot_scene';

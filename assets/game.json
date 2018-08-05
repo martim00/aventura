@@ -5,9 +5,12 @@
 		{ "name": "ticket", "path" : "assets/ticket.png", "type" : "image" },
 		{ "name": "player1Sprite", "path" : "assets/adventure_time_grid.png", "type" : "spritesheet", "width" : 32, "height" : 48 },
 		{ "name": "bg1", "path" : "assets/bg3.png", "type" : "image" },
-		{ "name": "bg2", "path" : "assets/bg2.png", "type" : "image" }
+		{ "name": "bg2", "path" : "assets/bg2.png", "type" : "image" },
+		{ "name": "audio_bg", "path" : "assets/chuva.mp3", "type" : "audio" },
+		{ "name": "audio_room2", "path" : "assets/super-soccer.mp3", "type" : "audio" }
 	],
 	"initialRoom": "room1",
+	"defaultAudio": "audio_bg",
 
 	"players" : [
 		{
@@ -84,6 +87,7 @@
 		"room2" : {
 			"width" : 671, 
 			"height" : 419,
+			"audio": "audio_room2",
 			"bg" : { "image" : "bg2" },
 			"startPoint": {"x": 300, "y": 400},
 			"walkableAreas" : [ [

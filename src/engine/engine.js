@@ -3,6 +3,7 @@ import {ClickableAreas} from './clickable_areas'
 import {ExitAreas} from './exit_areas'
 import {Inventory} from './inventory'
 import {Player} from './player'
+import {AudioManager} from './audio_manager'
 import {LazyLoader} from './lazy_loader'
 import {forEachOf} from 'async-es'
 
@@ -16,6 +17,9 @@ export class Engine {
         this.clickableAreaManager = new ClickableAreas(this);
         this.exitAreaManager = new ExitAreas(this);
         this.inventory = new Inventory(this);
+        this.audioManager = new AudioManager(this);
+        this.loadScene = null;
+        this.roomScene = null;
     }
 
     getData() {
@@ -24,16 +28,20 @@ export class Engine {
 
     getConfig() {
         // wtf
-        return this.game.scene.manager.game.config;
+        return this.loadScene.scene.manager.game.config;
         // return this.game.scene.sys.game.config;
     }
 
-    getCurrentScene() {
-        return this.game;
+    getRoomScene() {
+        return this.roomScene;
+    }
+
+    getLoadScene() {
+        return this.loadScene;
     }
 
     initRoom(scene, roomName) {
-        this.game = scene;
+        this.roomScene = scene;
         this.actualRoomName = roomName;
         this.mouseHandlers = [];
         this.updateHandlers = [];
@@ -46,6 +54,8 @@ export class Engine {
 
         this.configureBackground(actualRoomData);
 
+        this.configureAudio(actualRoomData);
+
         this.createWalkableArea(actualRoomData);
         this.createInventory();
 
@@ -57,8 +67,8 @@ export class Engine {
 
         this.createExitRoom(actualRoomData);
 
-        this.game.input.mouse.capture = true;
-        this.game.input.on('pointerdown', this.callMouseHandlers, this);
+        this.roomScene.input.mouse.capture = true;
+        this.roomScene.input.on('pointerdown', this.callMouseHandlers, this);
     }
 
     showTextAtCenter(txt) {
@@ -71,7 +81,7 @@ export class Engine {
             clearTimeout(this.textTimeout);
         }
         
-        this.text = this.game.add.text(this.getConfig().width/2, this.getConfig().height/2 - textMarginBottom, txt, style);
+        this.text = this.roomScene.add.text(this.getConfig().width/2, this.getConfig().height/2 - textMarginBottom, txt, style);
 
         this.textTimeout = setTimeout(function() {
             this.text.destroy();
@@ -83,7 +93,7 @@ export class Engine {
 
         var style = { font: "12px Arial", fill: "#000000", align: "center" };
 
-        var text = this.game.add.text(x, y, text, style);
+        var text = this.roomScene.add.text(x, y, text, style);
 
         text.anchor.set(0.5);
 
@@ -99,8 +109,8 @@ export class Engine {
     }
 
     createGroups() {
-        this.backLayer = this.game.add.group();
-        this.frontLayer = this.game.add.group();
+        this.backLayer = this.roomScene.add.group();
+        this.frontLayer = this.roomScene.add.group();
     }
 
     configureBackground(roomData) {
@@ -111,27 +121,31 @@ export class Engine {
         bg.height = roomData.height;
     }
 
+    configureAudio(roomData) {
+        this.audioManager.playRoomAudio(roomData.audio)
+    }
+
     configurePlayerAt(x, y, playerData) {
-        this.player = new Player(this.game, playerData.spritesheet, this.frontLayer, x, y, this.walkableAreaManager, this.exitAreaManager, this);
+        this.player = new Player(this.roomScene, playerData.spritesheet, this.frontLayer, x, y, this.walkableAreaManager, this.exitAreaManager, this);
         this.mouseHandlers.push(this.player);
         this.updateHandlers.push(this.player);
     }
 
     createClickableAreas(roomData) {
-        this.clickableAreaManager.init(roomData, this.game);
+        this.clickableAreaManager.init(roomData, this.roomScene);
         this.mouseHandlers.push(this.clickableAreaManager);
     }
 
     createExitRoom(roomData) {
-        this.exitAreaManager.init(roomData, this.game);
+        this.exitAreaManager.init(roomData, this.roomScene);
     }
 
     createWalkableArea(roomData) {
-        this.walkableAreaManager.init(roomData, this.game);
+        this.walkableAreaManager.init(roomData, this.roomScene);
     }
 
     createInventory() {
-        this.inventory.init(this.game);
+        this.inventory.init(this.roomScene);
     }
 
     callMouseHandlers(pointer) {
@@ -156,11 +170,15 @@ export class Engine {
     }
 
     goToRoom(roomName) {
-        this.game.scene.start("room", {'roomName': roomName, 'engine': this});
+        if (this.roomScene)
+            this.roomScene.scene.start("room", {'roomName': roomName, 'engine': this});
+        else
+            this.loadScene.scene.start("room", {'roomName': roomName, 'engine': this});
     }
 
     load(scene) {
-        this.game = scene;
+        // this.game = scene;
+        this.loadScene = scene;
 
         this.data = scene.cache.json.get('gameData');
         this.data.resources.forEach((resource) => {
@@ -170,18 +188,22 @@ export class Engine {
             }
             else if (resource.type === 'spritesheet') {
                 scene.load.spritesheet(resource.name, resource.path, {frameWidth: resource.width, frameHeight: resource.height});
+            } else if (resource.type === 'audio') {
+                scene.load.audio(resource.name, [resource.path]);
             }
         });
 
-        this.game.load.on('progress', (percentage) => {
+        this.loadScene.load.on('progress', (percentage) => {
             console.log(percentage);
         });
 
-        this.game.sys.game.resize(this.data.width, this.data.height);
+        this.loadScene.sys.game.resize(this.data.width, this.data.height);
         this.inventory.loadItems();
     }
 
     start() {
+
+        this.audioManager.playDefaultAudio(this.data.defaultAudio);
 
         if (this.data.initialRoom === undefined)
             throw new Error("the game.json does not have an initialRoom");

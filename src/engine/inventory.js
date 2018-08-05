@@ -104,7 +104,7 @@ export class Inventory {
     drawItemAt(item, index) {
         var xPosition = this.x + this.itemSlotWidth/2 + (this.itemSlotWidth * index);
         var yPosition = this.y + this.itemSlotHeight/2;
-        this.engine.getCurrentScene().add.sprite(xPosition, yPosition, item.image);
+        this.engine.getRoomScene().add.sprite(xPosition, yPosition, item.image);
     }
 
 

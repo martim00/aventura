@@ -29,7 +29,7 @@ Once you've installed the project's dependencies, you can run the project using 
 1. From your project's directory, run `yarn webpack-dev-server`.
 1. Open up your browser to `http://localhost:8080`.
 1. You should see a web page with the example game. 
-1. Starting changing `assets/game.json` with your stuff.
+1. Start changing `assets/game.json` with your stuff.
 1. All assets should be located in `assets` folder.
 
 Because you are running the project through Webpack Dev Server, any time you make a change to your source code, the browser will automatically refresh with your updated code.
@@ -40,3 +40,11 @@ This is your game configuration file. Ideally all logic for your game should be 
 
 TODO: put complete game.json documentation
 
+
+## The example music
+
+There are two audio files I put here to show how to use background music.
+
+Both files were created by me. If you liked you can use it in your games as well.
+
+Also, if you liked you can listen more here: https://www.youtube.com/watch?v=QtLf24SzwC0
